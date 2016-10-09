@@ -22,6 +22,9 @@ class Still_Image(object):
     self.image = self.image.resize(
         (MATRIX_WIDTH, MATRIX_HEIGHT), Image.ANTIALIAS)
 
+    # Make sure it's RGB
+    self.image = self.image.convert("RGB")
+
   def display(self, duration=10):
     """ Display the image on the matrix for duration seconds """
 
