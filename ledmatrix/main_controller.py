@@ -2,6 +2,7 @@ import time
 
 import lirc
 from gif_player import Gif_Player
+from gif_playlist import Gif_Playlist
 from rgbmatrix import Adafruit_RGBmatrix
 
 
@@ -14,14 +15,15 @@ class Main_Controller(object):
     self.matrix = Adafruit_RGBmatrix(32, 1)
 
     # Initialize the remote control
-    self.remote_controller = lirc.init("ledmatrix", "lircrc", blocking=False)
+    self.remote_controller = lirc.init(
+        "ledmatrix", "./lircrc", blocking=False)
 
   def run(self):
     """ Run the animations """
 
-    filename = "/home/pi/github/ledmatrix/icons/gifs/ufo.gif"
+    folder = "/home/pi/github/ledmatrix/icons/gifs"
 
-    gif_player = Gif_Player(filename, self.matrix)
+    gif_player = Gif_Playlist(folder, self.matrix)
 
     while True:
 
@@ -31,3 +33,9 @@ class Main_Controller(object):
         print "EOF"
 
       time.sleep(delay)
+
+      code = lirc.nextcode()
+
+      if len(code) > 0 and code[0] == u"KEY_RIGHT":
+        print "moving"
+        gif_player.move_next()
