@@ -29,13 +29,11 @@ class Main_Controller(object):
 
       delay, eof = gif_player.draw_frame()
 
-      if eof:
-        print "EOF"
-
       time.sleep(delay)
 
       code = lirc.nextcode()
 
       if len(code) > 0 and code[0] == u"KEY_RIGHT":
-        print "moving"
-        gif_player.move_next()
+        gif_player.move(1)
+      elif len(code) > 0 and code[0] == u"KEY_LEFT":
+        gif_player.move(-1)

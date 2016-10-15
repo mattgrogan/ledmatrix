@@ -23,13 +23,16 @@ class Gif_Playlist(object):
     self.current_index = 0
     # TODO: Ensure that there's an image for this index
 
-  def move_next(self):
+  def move(self, step=1):
     """ Move to next image """
 
-    self.current_index += 1
+    self.current_index += step
 
     if self.current_index >= len(self.images):
       self.current_index = 0
+
+    if self.current_index < 0:
+      self.current_index = len(self.images) - 1
 
   def draw_frame(self):
     """ Draw the frame of the current image """
