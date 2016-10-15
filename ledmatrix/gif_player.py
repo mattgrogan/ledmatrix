@@ -13,11 +13,12 @@ class Gif_Player(object):
     self.image = Image.open(filename)
 
     self.current_frame = 0
+    self.eof = False
 
   def draw_frame(self):
     """ Draw a single frame and return the requested delay """
 
-    eof = False
+    self.eof = False
 
     image_copy = self.image.copy()
 
@@ -38,6 +39,6 @@ class Gif_Player(object):
     except EOFError:
       self.current_frame = 0
       self.image.seek(self.current_frame)
-      eof = True
+      self.eof = True
 
-    return (frame_duration, eof)
+    return frame_duration

@@ -27,9 +27,9 @@ class Main_Controller(object):
 
     while True:
 
-      delay, eof = gif_player.draw_frame()
+      requested_delay = gif_player.draw_frame()
 
-      time.sleep(delay)
+      time.sleep(requested_delay)
 
       code = lirc.nextcode()
 
