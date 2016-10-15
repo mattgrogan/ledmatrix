@@ -10,31 +10,43 @@ class Gif_Playlist(object):
   def __init__(self, folder, matrix):
     """ Create a playlist of all files in the folder """
 
-    self.images = []
-
     self.folder = folder
+    self.matrix = matrix
 
-    self.files = [name for name in glob.glob(os.path.join(
+    # Store all the generated items
+    self.items = []
+    self.current_index = 0
+
+    self.load_items()
+
+    if len(self.items) == 0:
+      raise ValueError("No GIF images found in %s" % self.folder)
+
+    self.current_item = self.items[self.current_index]
+
+  def load_items(self):
+    """ Load all items from a folder """
+
+    files = [name for name in glob.glob(os.path.join(
         self.folder, '*.gif')) if os.path.isfile(os.path.join(self.folder, name))]
 
-    for filename in self.files:
-      self.images.append(Gif_Player(filename, matrix))
-
-    self.current_index = 0
-    # TODO: Ensure that there's an image for this index
+    for filename in files:
+      self.items.append(Gif_Player(filename, self.matrix))
 
   def move(self, step=1):
     """ Move to next image """
 
     self.current_index += step
 
-    if self.current_index >= len(self.images):
+    if self.current_index >= len(self.items):
       self.current_index = 0
 
     if self.current_index < 0:
-      self.current_index = len(self.images) - 1
+      self.current_index = len(self.items) - 1
+
+    self.current_item = self.items[self.current_index]
 
   def draw_frame(self):
     """ Draw the frame of the current image """
 
-    return self.images[self.current_index].draw_frame()
+    return self.items[self.current_index].draw_frame()
