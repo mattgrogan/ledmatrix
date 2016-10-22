@@ -28,10 +28,10 @@ class Time_Player(object):
     self.date_color = None
     self.old_time = None
 
-  def randomize_colors(self, new_time):
+  def randomize_colors(self, new_time=None, force=False):
     """ Pick some random colors """
 
-    if new_time != self.old_time:
+    if new_time != self.old_time or force:
 
       rand_color = randomcolor.RandomColor()
 
@@ -39,6 +39,11 @@ class Time_Player(object):
       self.date_color = rand_color.generate()[0]
 
       self.old_time = new_time
+
+  def move(self, step=None):
+    """ Respond to the right and left remote buttons. Step value is ignored """
+
+    self.randomize_colors(force=True)
 
   def draw_frame(self):
     """ Draw the time on the screen """
