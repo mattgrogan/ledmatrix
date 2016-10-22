@@ -15,6 +15,9 @@ class Main_Controller(object):
 
     self.menu_items = []
     self.current_index = 0
+    self.is_running = True
+
+    self.null_player = None
 
   @property
   def current_item(self):
@@ -23,7 +26,28 @@ class Main_Controller(object):
     if len(self.menu_items) == 0:
       raise ValueError("You must add menu items to the controller")
 
-    return self.menu_items[self.current_index]
+    if self.null_player is None:
+      raise ValueError("You must add a null player to the controller")
+
+    if self.is_running:
+      item = self.menu_items[self.current_index]
+    else:
+      item = self.null_player
+
+    return item
+
+  def toggle_running(self):
+    """ toggle self.is_running """
+
+    if self.is_running:
+      self.is_running = False
+    else:
+      self.is_running = True
+
+  def add_null_player(self, null_player):
+    """ Add a null player """
+
+    self.null_player = null_player
 
   def add_menu_item(self, menu_item):
     """ Add a menu item to the list """
@@ -47,6 +71,8 @@ class Main_Controller(object):
 
       requested_delay = self.current_item.draw_frame()
 
+      # TODO: Do not wait for requested_delay, instead aggregate the delay so
+      # as to not hold up the ui
       time.sleep(requested_delay)
 
       code = lirc.nextcode()
@@ -59,3 +85,7 @@ class Main_Controller(object):
         self.move(1)
       elif len(code) > 0 and code[0] == u"KEY_UP":
         self.move(-1)
+      elif len(code) > 0 and code[0] == u"KEY_STOP":
+        self.toggle_running()
+      elif len(code) > 0 and code[0] == u"KEY_ENTER":
+        self.is_running = True
