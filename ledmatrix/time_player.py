@@ -54,7 +54,7 @@ class Time_Player(object):
     time_str = time.strftime("%I:%M", time.localtime()).lstrip("0")
     self.randomize_colors(time_str)
 
-    w, h = draw.textsize(time_str, font=self.small_font)
+    w, h = self.small_font.getsize(time_str)
     xloc = (self.width - w) / 2
 
     draw.text((xloc, 2), time_str, font=self.small_font, fill=self.time_color)

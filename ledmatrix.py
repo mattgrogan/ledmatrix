@@ -16,13 +16,13 @@ if __name__ == "__main__":
   # cherry.display(30)
   # utext = u"\uf080 \uf080 \uf080 \uf080 \uf080 \uf188 \uf219" # for
   # fontawsome
-  text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-  t = Text(matrix)
-  t.display_scroll(text)
+  #text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+  #t = Text(matrix)
+  # t.display_scroll(text)
 
   #w = Wander_Image(filename, matrix)
   # w.display()
 
-  #filename = "/home/pi/github/ledmatrix/icons/weather/Drizzle.png"
-  #i = Still_Image(filename, matrix)
-  # i.display()
+  filename = "/home/pi/github/ledmatrix/ovc.png"
+  i = Still_Image(filename, matrix)
+  i.display()
