@@ -2,6 +2,8 @@ import time
 
 import lirc
 
+TICK_SECS = 0.005
+
 
 class Main_Controller(object):
   """ This is the main controller for the LED Matrix """
@@ -67,13 +69,18 @@ class Main_Controller(object):
   def run(self):
     """ Run the animations """
 
+    current_delay = 0.0
+    requested_delay = 0.0
+
     while True:
 
-      requested_delay = self.current_item.draw_frame()
+      if current_delay >= requested_delay:
+        requested_delay = self.current_item.draw_frame()
+        current_delay = 0.0
+      else:
+        current_delay += TICK_SECS
 
-      # TODO: Do not wait for requested_delay, instead aggregate the delay so
-      # as to not hold up the ui
-      time.sleep(requested_delay)
+      time.sleep(TICK_SECS)
 
       code = lirc.nextcode()
 
