@@ -51,10 +51,13 @@ class Time_Player(object):
     image = Image.new("RGB", (self.width, self.height))
     draw = ImageDraw.Draw(image)
 
-    time_str = time.strftime("%I:%M", time.localtime())
+    time_str = time.strftime("%I:%M", time.localtime()).lstrip("0")
     self.randomize_colors(time_str)
 
-    draw.text((1, -2), time_str, font=self.font, fill=self.time_color)
+    w, h = draw.textsize(time_str, font=self.small_font)
+    xloc = (self.width - w) / 2
+
+    draw.text((xloc, 2), time_str, font=self.small_font, fill=self.time_color)
 
     day_str = time.strftime("%a", time.localtime())
     draw.text((1, 12), day_str, font=self.small_font, fill=self.date_color)
