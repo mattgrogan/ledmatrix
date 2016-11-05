@@ -39,6 +39,6 @@ class Gif_Player(object):
     except EOFError:
       self.current_frame = 0
       self.image.seek(self.current_frame)
-      self.eof = True
+      frame_duration = "EOF"
 
     return frame_duration
