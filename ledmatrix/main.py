@@ -18,7 +18,17 @@ if __name__ == "__main__":
   if args.output == "led":
     matrix = Adafruit_RGBmatrix(32, 1)
 
-  controller = Main_Controller(matrix)
+    import lirc
+    from remote_control import Remote_Control
+
+    controller = Main_Controller(matrix)
+
+    rc = Remote_Control()
+    rc.register(u"KEY_STOP", controller, controller.handle_stop)
+    rc.register(u"KEY_UP", controller, controller.handle_up)
+    rc.register(u"KEY_DOWN", controller, controller.handle_down)
+    rc.register(u"KEY_LEFT", controller, controller.handle_left)
+    rc.register(u"KEY_RIGHT", controller, controller.handle_right)
 
   #wp = Weather_Playlist(matrix, 32, 32)
   # wp.update_weather()
@@ -32,4 +42,4 @@ if __name__ == "__main__":
   halogifs_folder = "/home/pi/github/ledmatrix/icons/halogifs"
   controller.add_menu_item(Gif_Playlist(halogifs_folder))
 
-  controller.run()
+  controller.run(rc)

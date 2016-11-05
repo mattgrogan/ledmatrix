@@ -1,4 +1,4 @@
-import Image
+import PIL.Image as Image
 
 
 class Gif_Player(object):

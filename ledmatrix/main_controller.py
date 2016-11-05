@@ -1,8 +1,5 @@
 import time
 
-import lirc
-from remote_control import Remote_Control
-
 TICK_SECS = 0.005
 
 
@@ -13,13 +10,6 @@ class Main_Controller(object):
     """ Initialize the controller """
 
     self.matrix = matrix
-
-    self.rc = Remote_Control()
-    self.rc.register(u"KEY_STOP", self, self.handle_stop)
-    self.rc.register(u"KEY_UP", self, self.handle_up)
-    self.rc.register(u"KEY_DOWN", self, self.handle_down)
-    self.rc.register(u"KEY_LEFT", self, self.handle_left)
-    self.rc.register(u"KEY_RIGHT", self, self.handle_right)
 
     self.menu_items = []
     self.current_index = 0
@@ -73,7 +63,7 @@ class Main_Controller(object):
     elif self.current_index < 0:
       self.current_index = len(self.menu_items) - 1
 
-  def run(self):
+  def run(self, rc):
     """ Run the animations """
 
     current_delay = 0.0
@@ -81,7 +71,7 @@ class Main_Controller(object):
 
     while True:
 
-      received_cmd = self.rc.read_command()
+      received_cmd = rc.read_command()
       delay_timeout = current_delay >= requested_delay
 
       if self.is_running and (received_cmd or delay_timeout):
