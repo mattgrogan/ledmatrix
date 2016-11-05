@@ -1,6 +1,7 @@
 import time
 
 import lirc
+from remote_control import Remote_Control
 
 TICK_SECS = 0.005
 
@@ -11,15 +12,33 @@ class Main_Controller(object):
   def __init__(self):
     """ Initialize the controller """
 
-    # Initialize the remote control
-    self.remote_controller = lirc.init(
-        "ledmatrix", "./lircrc", blocking=False)
+    self.rc = Remote_Control()
+    self.rc.register(u"KEY_STOP", self, self.handle_stop)
+    self.rc.register(u"KEY_UP", self, self.handle_up)
+    self.rc.register(u"KEY_DOWN", self, self.handle_down)
+    self.rc.register(u"KEY_LEFT", self, self.handle_left)
+    self.rc.register(u"KEY_RIGHT", self, self.handle_right)
 
     self.menu_items = []
     self.current_index = 0
     self.is_running = True
 
     self.null_player = None
+
+  def handle_stop(self, message=None):
+    self.toggle_running()
+
+  def handle_up(self, message=None):
+    self.move(-1)
+
+  def handle_down(self, message=None):
+    self.move(1)
+
+  def handle_left(self, message=None):
+    self.current_item.move(-1)
+
+  def handle_right(self, message=None):
+    self.current_item.move(1)
 
   @property
   def current_item(self):
@@ -74,25 +93,10 @@ class Main_Controller(object):
 
     while True:
 
-      if current_delay >= requested_delay:
+      if self.rc.read_command() or current_delay >= requested_delay:
         requested_delay = self.current_item.draw_frame()
         current_delay = 0.0
       else:
         current_delay += TICK_SECS
 
       time.sleep(TICK_SECS)
-
-      code = lirc.nextcode()
-
-      if len(code) > 0 and code[0] == u"KEY_RIGHT":
-        self.current_item.move(1)
-      elif len(code) > 0 and code[0] == u"KEY_LEFT":
-        self.current_item.move(-1)
-      elif len(code) > 0 and code[0] == u"KEY_DOWN":
-        self.move(1)
-      elif len(code) > 0 and code[0] == u"KEY_UP":
-        self.move(-1)
-      elif len(code) > 0 and code[0] == u"KEY_STOP":
-        self.toggle_running()
-      elif len(code) > 0 and code[0] == u"KEY_ENTER":
-        self.is_running = True

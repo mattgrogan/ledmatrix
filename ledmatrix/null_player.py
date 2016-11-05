@@ -6,6 +6,9 @@ class Null_Player(object):
 
     self.matrix = matrix
 
+  def move(self, step):
+    pass
+
   def draw_frame(self):
     """ Clear the matrix """
 
