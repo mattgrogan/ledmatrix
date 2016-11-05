@@ -25,8 +25,6 @@ class Main_Controller(object):
     self.current_index = 0
     self.is_running = True
 
-    self.null_player = None
-
   def handle_stop(self, message=None):
     self.toggle_running()
 
@@ -49,28 +47,16 @@ class Main_Controller(object):
     if len(self.menu_items) == 0:
       raise ValueError("You must add menu items to the controller")
 
-    if self.null_player is None:
-      raise ValueError("You must add a null player to the controller")
-
-    if self.is_running:
-      item = self.menu_items[self.current_index]
-    else:
-      item = self.null_player
-
-    return item
+    return self.menu_items[self.current_index]
 
   def toggle_running(self):
     """ toggle self.is_running """
 
     if self.is_running:
       self.is_running = False
+      self.matrix.Clear()
     else:
       self.is_running = True
-
-  def add_null_player(self, null_player):
-    """ Add a null player """
-
-    self.null_player = null_player
 
   def add_menu_item(self, menu_item):
     """ Add a menu item to the list """
@@ -95,12 +81,12 @@ class Main_Controller(object):
 
     while True:
 
-      if self.rc.read_command() or current_delay >= requested_delay:
+      received_cmd = self.rc.read_command()
+      delay_timeout = current_delay >= requested_delay
+
+      if self.is_running and (received_cmd or delay_timeout):
         image, requested_delay = self.current_item.draw_frame()
-
-        if image is not None:
-          self.matrix.SetImage(image.im.id)
-
+        self.matrix.SetImage(image.im.id)
         current_delay = 0.0
       else:
         current_delay += TICK_SECS
