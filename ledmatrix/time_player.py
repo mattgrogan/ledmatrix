@@ -14,10 +14,9 @@ SMALLFONTSIZE = 8
 class Time_Player(object):
   """ Show the time and date """
 
-  def __init__(self, matrix, width, height):
+  def __init__(self, width, height):
     """ Initialize the player """
 
-    self.matrix = matrix
     self.width = width
     self.height = height
 
@@ -64,7 +63,5 @@ class Time_Player(object):
 
     date_str = time.strftime("%b %d", time.localtime())
     draw.text((1, 20), date_str, font=self.small_font, fill=self.date_color)
-
-    # self.matrix.SetImage(image.im.id)
 
     return image, 1

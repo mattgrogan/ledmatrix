@@ -4,11 +4,10 @@ import Image
 class Gif_Player(object):
   """ Draw a single gif image """
 
-  def __init__(self, filename, matrix):
+  def __init__(self, filename):
     """ Open filename as the GIF """
 
     self.filename = filename
-    self.matrix = matrix
 
     self.image = Image.open(filename)
 
@@ -28,9 +27,6 @@ class Gif_Player(object):
     except KeyError:
       frame_duration = 25 / 1000.0
 
-    # Show the image
-    # self.matrix.SetImage(image_copy.im.id)
-
     self.current_frame += 1
 
     # Seek to the current frame, if it exists
@@ -39,6 +35,5 @@ class Gif_Player(object):
     except EOFError:
       self.current_frame = 0
       self.image.seek(self.current_frame)
-      frame_duration = "EOF"
 
     return image_copy, frame_duration

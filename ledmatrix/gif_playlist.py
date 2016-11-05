@@ -8,11 +8,10 @@ from gif_player import Gif_Player
 class Gif_Playlist(object):
   """ Playlist of all Gif Files """
 
-  def __init__(self, folder, matrix, randomize=True):
+  def __init__(self, folder, randomize=True):
     """ Create a playlist of all files in the folder """
 
     self.folder = folder
-    self.matrix = matrix
 
     # Store all the generated items
     self.items = []
@@ -32,7 +31,7 @@ class Gif_Playlist(object):
         self.folder, '*.gif')) if os.path.isfile(os.path.join(self.folder, name))]
 
     for filename in files:
-      self.items.append(Gif_Player(filename, self.matrix))
+      self.items.append(Gif_Player(filename))
 
     if len(self.items) == 0:
       raise ValueError("No GIF images found in %s" % self.folder)

@@ -100,6 +100,7 @@ class Main_Controller(object):
 
         if image is not None:
           self.matrix.SetImage(image.im.id)
+
         current_delay = 0.0
       else:
         current_delay += TICK_SECS

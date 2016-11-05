@@ -26,12 +26,12 @@ if __name__ == "__main__":
   # wp.update_weather()
   # controller.add_menu_item(wp)
 
-  controller.add_menu_item(Time_Player(matrix, 32, 32))
+  controller.add_menu_item(Time_Player(32, 32))
 
   gengifs_folder = "/home/pi/github/ledmatrix/icons/gifs"
-  controller.add_menu_item(Gif_Playlist(gengifs_folder, matrix))
+  controller.add_menu_item(Gif_Playlist(gengifs_folder))
 
   halogifs_folder = "/home/pi/github/ledmatrix/icons/halogifs"
-  controller.add_menu_item(Gif_Playlist(halogifs_folder, matrix))
+  controller.add_menu_item(Gif_Playlist(halogifs_folder))
 
   controller.run()
