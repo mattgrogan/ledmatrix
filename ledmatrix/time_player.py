@@ -65,6 +65,6 @@ class Time_Player(object):
     date_str = time.strftime("%b %d", time.localtime())
     draw.text((1, 20), date_str, font=self.small_font, fill=self.date_color)
 
-    self.matrix.SetImage(image.im.id)
+    # self.matrix.SetImage(image.im.id)
 
-    return 1
+    return image, 1

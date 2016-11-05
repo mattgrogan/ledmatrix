@@ -14,4 +14,4 @@ class Null_Player(object):
 
     self.matrix.Clear()
 
-    return 0.025  # Return a short requested delay
+    return None, 0.025  # Return a short requested delay

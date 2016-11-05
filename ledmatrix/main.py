@@ -19,7 +19,7 @@ if __name__ == "__main__":
   if args.output == "led":
     matrix = Adafruit_RGBmatrix(32, 1)
 
-  controller = Main_Controller()
+  controller = Main_Controller(matrix)
   controller.add_null_player(Null_Player(matrix))
 
   #wp = Weather_Playlist(matrix, 32, 32)

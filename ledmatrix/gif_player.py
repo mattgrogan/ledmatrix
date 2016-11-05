@@ -29,7 +29,7 @@ class Gif_Player(object):
       frame_duration = 25 / 1000.0
 
     # Show the image
-    self.matrix.SetImage(image_copy.im.id)
+    # self.matrix.SetImage(image_copy.im.id)
 
     self.current_frame += 1
 
@@ -41,4 +41,4 @@ class Gif_Player(object):
       self.image.seek(self.current_frame)
       frame_duration = "EOF"
 
-    return frame_duration
+    return image_copy, frame_duration

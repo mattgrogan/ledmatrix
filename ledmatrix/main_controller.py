@@ -9,8 +9,10 @@ TICK_SECS = 0.005
 class Main_Controller(object):
   """ This is the main controller for the LED Matrix """
 
-  def __init__(self):
+  def __init__(self, matrix):
     """ Initialize the controller """
+
+    self.matrix = matrix
 
     self.rc = Remote_Control()
     self.rc.register(u"KEY_STOP", self, self.handle_stop)
@@ -94,7 +96,10 @@ class Main_Controller(object):
     while True:
 
       if self.rc.read_command() or current_delay >= requested_delay:
-        requested_delay = self.current_item.draw_frame()
+        image, requested_delay = self.current_item.draw_frame()
+
+        if image is not None:
+          self.matrix.SetImage(image.im.id)
         current_delay = 0.0
       else:
         current_delay += TICK_SECS
