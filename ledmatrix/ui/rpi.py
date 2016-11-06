@@ -22,5 +22,6 @@ class Rpi_UI(object):
   def mainloop(self):
 
     while True:
-      delay = self.controller.run(self.rc)
-      time.sleep(delay)
+      # TODO: Handle the delay here
+      requested_delay_ms = self.controller.run()
+      time.sleep(requested_delay_ms * 1000.0)

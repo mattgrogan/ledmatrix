@@ -59,5 +59,5 @@ class Gui(tk.Tk):
 
   def start(self):
 
-    self.controller.run(self.rc)
-    self.after(1, self.start)
+    requested_delay_ms = self.controller.run()
+    self.after(requested_delay_ms, self.start)

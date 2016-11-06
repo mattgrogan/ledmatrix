@@ -66,17 +66,11 @@ class Main_Controller(object):
     elif self.current_index < 0:
       self.current_index = len(self.menu_items) - 1
 
-  def run(self, rc):
+  def run(self):
     """ Run the animations """
 
-    received_cmd = rc.read_command()
-    delay_timeout = self.current_delay >= self.requested_delay
-
-    if self.is_running and (received_cmd or delay_timeout):
+    if self.is_running:
       image, self.requested_delay = self.current_item.draw_frame()
       self.matrix.set_image(image)
-      self.current_delay = 0.0
-    else:
-      self.current_delay += TICK_SECS
 
-    return TICK_SECS
+    return self.requested_delay

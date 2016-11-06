@@ -23,9 +23,9 @@ class Gif_Player(object):
 
     # Find the encoded duration in milliseconds
     try:
-      frame_duration = image_copy.info["duration"] / 1000.0
+      frame_duration_ms = image_copy.info["duration"]
     except KeyError:
-      frame_duration = 25 / 1000.0
+      frame_duration_ms = 25
 
     self.current_frame += 1
 
@@ -36,4 +36,4 @@ class Gif_Player(object):
       self.current_frame = 0
       self.image.seek(self.current_frame)
 
-    return image_copy, frame_duration
+    return image_copy, frame_duration_ms
