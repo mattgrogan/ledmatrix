@@ -20,7 +20,7 @@ if __name__ == "__main__":
   controller = Main_Controller()
 
   controller.add_menu_item(Time_Player(32, 32))
-  controller.add_menu_item(Gif_Playlist(GENGIFS_FOLDER))
+  controller.add_menu_item(Gif_Playlist(GENGIFS_FOLDER, timeout_ms=10000))
 
   # Running on the Raspberry Pi
   if args.output == "rpi":

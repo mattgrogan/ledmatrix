@@ -1,7 +1,5 @@
 import time
 
-TICK_SECS = 0.005
-
 
 class Main_Controller(object):
   """ This is the main controller for the LED Matrix """
@@ -14,9 +12,6 @@ class Main_Controller(object):
     self.menu_items = []
     self.current_index = 0
     self.is_running = True
-
-    self.current_delay = 0.0
-    self.requested_delay = 0.0
 
   def handle_stop(self, message=None):
     self.toggle_running()

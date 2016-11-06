@@ -27,6 +27,8 @@ class Time_Player(object):
     self.date_color = None
     self.old_time = None
 
+    self.is_finished = False
+
   def randomize_colors(self, new_time=None, force=False):
     """ Pick some random colors """
 
