@@ -1,11 +1,16 @@
 import argparse
+import time
 
 from gif_playlist import Gif_Playlist
 from main_controller import Main_Controller
-from message_player import Message_Player
-from rgbmatrix import Adafruit_RGBmatrix
 from time_player import Time_Player
-from weather_playlist import Weather_Playlist
+
+class Tester(object):
+  def __init__(self, root):
+    self.root = root
+  def doit(self):
+    print "doing it"
+    root.after(1000, self.doit)
 
 if __name__ == "__main__":
 
@@ -16,6 +21,8 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   if args.output == "led":
+
+    from rgbmatrix import Adafruit_RGBmatrix
     matrix = Adafruit_RGBmatrix(32, 1)
 
     import lirc
@@ -30,16 +37,25 @@ if __name__ == "__main__":
     rc.register(u"KEY_LEFT", controller, controller.handle_left)
     rc.register(u"KEY_RIGHT", controller, controller.handle_right)
 
-  #wp = Weather_Playlist(matrix, 32, 32)
-  # wp.update_weather()
-  # controller.add_menu_item(wp)
+    controller.add_menu_item(Time_Player(32, 32))
 
-  controller.add_menu_item(Time_Player(32, 32))
+    gengifs_folder = "/home/pi/github/ledmatrix/icons/gifs"
+    controller.add_menu_item(Gif_Playlist(gengifs_folder))
 
-  gengifs_folder = "/home/pi/github/ledmatrix/icons/gifs"
-  controller.add_menu_item(Gif_Playlist(gengifs_folder))
+    halogifs_folder = "/home/pi/github/ledmatrix/icons/halogifs"
+    controller.add_menu_item(Gif_Playlist(halogifs_folder))
 
-  halogifs_folder = "/home/pi/github/ledmatrix/icons/halogifs"
-  controller.add_menu_item(Gif_Playlist(halogifs_folder))
+    while True:
+      delay = controller.run(rc)
+      time.sleep(delay)
 
-  controller.run(rc)
+  elif args.output == "gui":
+    import Tkinter as tk
+    from gui import LED_Gui
+
+    root = tk.Tk()
+    app = LED_Gui(root)
+    tester = Tester(root)
+    tester.doit()
+
+    root.mainloop()

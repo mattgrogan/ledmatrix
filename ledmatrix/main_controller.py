@@ -15,6 +15,9 @@ class Main_Controller(object):
     self.current_index = 0
     self.is_running = True
 
+    self.current_delay = 0.0
+    self.requested_delay = 0.0
+
   def handle_stop(self, message=None):
     self.toggle_running()
 
@@ -66,19 +69,14 @@ class Main_Controller(object):
   def run(self, rc):
     """ Run the animations """
 
-    current_delay = 0.0
-    requested_delay = 0.0
+    received_cmd = rc.read_command()
+    delay_timeout = self.current_delay >= self.requested_delay
 
-    while True:
-
-      received_cmd = rc.read_command()
-      delay_timeout = current_delay >= requested_delay
-
-      if self.is_running and (received_cmd or delay_timeout):
-        image, requested_delay = self.current_item.draw_frame()
+    if self.is_running and (received_cmd or delay_timeout):
+        image, self.requested_delay = self.current_item.draw_frame()
         self.matrix.SetImage(image.im.id)
-        current_delay = 0.0
-      else:
-        current_delay += TICK_SECS
+        self.current_delay = 0.0
+    else:
+        self.current_delay += TICK_SECS
 
-      time.sleep(TICK_SECS)
+    return TICK_SECS
