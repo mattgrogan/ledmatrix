@@ -1,13 +1,13 @@
+import os
 import time
 
+import randomcolor
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
-import randomcolor
-
-FONTFILE = "/home/pi/github/ledmatrix/fonts/RPGSystem.ttf"
+FONTFILE = os.path.join(os.path.dirname(__file__), "../fonts/RPGSystem.ttf")
 FONTSIZE = 16
 
-SMALLFONT = "/home/pi/github/ledmatrix/fonts/small_pixel.ttf"
+SMALLFONT = os.path.join(os.path.dirname(__file__), "../fonts/small_pixel.ttf")
 SMALLFONTSIZE = 8
 
 

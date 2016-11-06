@@ -1,4 +1,3 @@
-import lirc
 
 LIRCRC_CONFIG_FILE = "./lircrc"
 
@@ -8,6 +7,8 @@ class Remote_Control(object):
 
   def __init__(self):
     """ Initialize the remote control """
+
+    import lirc
 
     self.rc = lirc.init("ledmatrix", LIRCRC_CONFIG_FILE, blocking=False)
 
@@ -36,6 +37,7 @@ class Remote_Control(object):
   def read_command(self):
     """ Read a command from the remote """
 
+    import lirc
     code = lirc.nextcode()
 
     if len(code) > 0 and code[0] in self._event_names:
@@ -43,3 +45,9 @@ class Remote_Control(object):
       return True
     else:
       return False
+
+
+class Mock_Remote_Control(object):
+
+  def read_command(self):
+    pass

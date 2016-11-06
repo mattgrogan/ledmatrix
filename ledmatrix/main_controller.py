@@ -6,7 +6,7 @@ TICK_SECS = 0.005
 class Main_Controller(object):
   """ This is the main controller for the LED Matrix """
 
-  def __init__(self, matrix):
+  def __init__(self, matrix=None):
     """ Initialize the controller """
 
     self.matrix = matrix
