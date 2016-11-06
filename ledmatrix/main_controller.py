@@ -47,7 +47,7 @@ class Main_Controller(object):
 
     if self.is_running:
       self.is_running = False
-      self.matrix.Clear()
+      self.matrix.clear()
     else:
       self.is_running = True
 
@@ -73,10 +73,10 @@ class Main_Controller(object):
     delay_timeout = self.current_delay >= self.requested_delay
 
     if self.is_running and (received_cmd or delay_timeout):
-        image, self.requested_delay = self.current_item.draw_frame()
-        self.matrix.SetImage(image.im.id)
-        self.current_delay = 0.0
+      image, self.requested_delay = self.current_item.draw_frame()
+      self.matrix.set_image(image)
+      self.current_delay = 0.0
     else:
-        self.current_delay += TICK_SECS
+      self.current_delay += TICK_SECS
 
     return TICK_SECS

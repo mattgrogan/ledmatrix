@@ -16,14 +16,16 @@ if __name__ == "__main__":
 
   parser = argparse.ArgumentParser(description="LED Matrix Animation")
   parser.add_argument("-output", required=False, choices=[
-                      "gui", "led"], default="led")
+                      "gui", "rpi"], default="rpi")
 
   args = parser.parse_args()
 
-  if args.output == "led":
+  if args.output == "rpi":
+    # Running on the Raspberry Pi
 
-    from rgbmatrix import Adafruit_RGBmatrix
-    matrix = Adafruit_RGBmatrix(32, 1)
+    from matrix_adapter import Adafruit_Matrix_Adapter
+
+    matrix = Adafruit_Matrix_Adapter()
 
     import lirc
     from remote_control import Remote_Control
