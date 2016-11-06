@@ -2,7 +2,7 @@ import argparse
 import os
 import time
 
-from gif_playlist import Gif_Playlist
+from animation import Gif_Playlist
 from main_controller import Main_Controller
 from time_player import Time_Player
 
