@@ -13,17 +13,3 @@ class Adafruit_Matrix_Adapter(object):
   def clear(self):
 
     self.matrix.Clear()
-
-
-class Mock_Matrix_Adapter(object):
-
-  def __init__(self):
-    pass
-
-  def set_image(self, image):
-
-    print "Setting image"
-
-  def clear(self):
-
-    print "Clearing image"

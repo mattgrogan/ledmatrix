@@ -4,15 +4,19 @@ import PIL.Image as Image
 import PIL.ImageTk as ImageTk
 
 
-class LED_Gui(object):
+class Gui(tk.Tk):
 
-  def __init__(self, root, controller, rc):
+  def __init__(self, controller):
 
-    self.root = root
+    tk.Tk.__init__(self, None, None)
+
     self.controller = controller
-    self.rc = rc
+    self.controller.matrix = self
 
-    frame = tk.Frame(root)
+    from remote_control import Mock_Remote_Control
+    self.rc = Mock_Remote_Control()
+
+    frame = tk.Frame(self)
     frame.pack()
 
     up_button = tk.Button(frame, text="Up", command=controller.handle_up)
@@ -37,6 +41,8 @@ class LED_Gui(object):
     self.img_label.image = self.blank_image
     self.img_label.pack(side=tk.RIGHT)
 
+    self.after(0, self.start)
+
   def set_image(self, image):
 
     image = image.resize((128, 128))
@@ -44,14 +50,14 @@ class LED_Gui(object):
 
     self.img_label.image = image
     self.img_label.configure(image=image)
-    self.root.update()
+    self.update()
 
   def clear(self):
     self.img_label.image = self.blank_image
     self.img_label.configure(image=self.blank_image)
-    self.root.update()
+    self.update()
 
   def start(self):
 
     self.controller.run(self.rc)
-    self.root.after(1, self.start)
+    self.after(1, self.start)
