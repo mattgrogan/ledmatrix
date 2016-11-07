@@ -5,6 +5,7 @@ import time
 from animation import Gif_Playlist
 from info import Clock
 from main_controller import Main_Controller
+from pattern import Pattern_Fire
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 GENGIFS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gifs/"))
@@ -19,6 +20,7 @@ if __name__ == "__main__":
 
   controller = Main_Controller()
 
+  controller.add_menu_item(Pattern_Fire(32, 32))
   controller.add_menu_item(Clock(32, 32))
   controller.add_menu_item(Gif_Playlist(GENGIFS_FOLDER, timeout_ms=10000))
 

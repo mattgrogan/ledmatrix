@@ -65,7 +65,7 @@ class Main_Controller(object):
     """ Run the animations """
 
     if self.is_running:
-      image, self.requested_delay = self.current_item.draw_frame()
+      image, requested_delay = self.current_item.draw_frame()
       self.matrix.set_image(image)
 
-    return self.requested_delay
+    return requested_delay
