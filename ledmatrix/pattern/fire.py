@@ -28,7 +28,7 @@ class Pattern_Fire(object):
     # COOLING: How much does the air cool as it rises?
     # Less cooling = taller flames.  More cooling = shorter flames.
     # Default 55, suggested range 20-100
-    self.cooling = 30
+    self.cooling = 70
 
     # SPARKING: What chance (out of 255) is there that a new spark will be lit?
     # Higher chance = more roaring fire.  Lower chance = more flickery fire.
@@ -38,16 +38,23 @@ class Pattern_Fire(object):
     black = Color("black")
     red = Color("red")
     yellow = Color("yellow")
+    blue = Color("#6b99ff")
     white = Color("white")
 
     self.colors = []
-    self.colors += list(black.range_to(red, 126))
+    self.colors += list(black.range_to(red, 116))
     self.colors += list(red.range_to(yellow, 100))
     self.colors += list(yellow.range_to(white, 30))
+    self.colors += list(white.range_to(blue, 10))
 
     self.image = None
 
   def move(self, step=1):
+
+    self.cooling += step
+    self.cooling = min(max(self.cooling, 0), 255)
+
+  def draw_frame(self):
 
     self.image = Image.new("RGB", (self.width, self.height))
     pix = self.image.load()
@@ -57,7 +64,7 @@ class Pattern_Fire(object):
       # Step 1: cool down every cell a little
       for y in range(self.height):
         cooling_factor = random.randint(
-            0, int(((self.cooling * 32) / self.height)))
+            0, int(((self.cooling * 10) / self.height) + 2))
         self.heat[x][y] = max(self.heat[x][y] - cooling_factor, 0)
 
       # Step 2: Heat from each cell drifts up and diffuses a little
@@ -78,9 +85,5 @@ class Pattern_Fire(object):
         color_index = int(self.heat[x][y])  # int(math.ceil(self.heat[x][y]))
         c = self.colors[color_index]
         pix[x, y] = (int(c.red * 255), int(c.green * 255), int(c.blue * 255))
-
-  def draw_frame(self):
-
-    self.move()
 
     return self.image, 25

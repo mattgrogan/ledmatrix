@@ -3,6 +3,9 @@ import Tkinter as tk
 import PIL.Image as Image
 import PIL.ImageTk as ImageTk
 
+GUI_WIDTH = 512
+GUI_HEIGHT = 512
+
 
 class Gui(tk.Tk):
 
@@ -34,7 +37,8 @@ class Gui(tk.Tk):
     stop_button.pack(side=tk.LEFT)
     quit_button.pack(side=tk.LEFT)
 
-    self.blank_image = Image.new("RGB", (128, 128), color="#000000")
+    self.blank_image = Image.new(
+        "RGB", (GUI_WIDTH, GUI_HEIGHT), color="#000000")
     self.blank_image = ImageTk.PhotoImage(self.blank_image)
 
     self.img_label = tk.Label(frame, image=self.blank_image)
@@ -45,7 +49,7 @@ class Gui(tk.Tk):
 
   def set_image(self, image):
 
-    image = image.resize((128, 128))
+    image = image.resize((GUI_WIDTH, GUI_HEIGHT))
     image = ImageTk.PhotoImage(image)
 
     self.img_label.image = image
