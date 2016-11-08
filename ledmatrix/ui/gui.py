@@ -20,7 +20,7 @@ class Gui(tk.Tk):
     self.rc = Mock_Remote_Control()
 
     frame = tk.Frame(self)
-    frame.pack()
+    frame.grid(row=0, column=0, sticky=tk.W)
 
     up_button = tk.Button(frame, text="Up", command=controller.handle_up)
     down_button = tk.Button(frame, text="Down", command=controller.handle_down)
@@ -30,20 +30,19 @@ class Gui(tk.Tk):
     stop_button = tk.Button(frame, text="Stop", command=controller.handle_stop)
     quit_button = tk.Button(frame, text="Quit", command=frame.quit)
 
-    up_button.pack(side=tk.LEFT)
-    down_button.pack(side=tk.LEFT)
-    left_button.pack(side=tk.LEFT)
-    right_button.pack(side=tk.LEFT)
-    stop_button.pack(side=tk.LEFT)
-    quit_button.pack(side=tk.LEFT)
+    up_button.grid(row=1, column=2)
+    down_button.grid(row=3, column=2)
+    left_button.grid(row=2, column=1)
+    right_button.grid(row=2, column=3)
+    stop_button.grid(row=1, column=3)
 
     self.blank_image = Image.new(
         "RGB", (GUI_WIDTH, GUI_HEIGHT), color="#000000")
     self.blank_image = ImageTk.PhotoImage(self.blank_image)
 
-    self.img_label = tk.Label(frame, image=self.blank_image)
+    self.img_label = tk.Label(self, image=self.blank_image)
     self.img_label.image = self.blank_image
-    self.img_label.pack(side=tk.RIGHT)
+    self.img_label.grid(row=0, column=1, sticky=tk.E)
 
     self.after(0, self.start)
 
