@@ -24,7 +24,8 @@ class Gui(tk.Tk):
 
     # Row 1
     voldown_btn = tk.Button(frame, text="Vol-")
-    playpause_btn = tk.Button(frame, text="Play/Pause", command=controller.handle_playpause)
+    playpause_btn = tk.Button(
+        frame, text="Play/Pause", command=controller.handle_playpause)
     volup_btn = tk.Button(frame, text="Vol+")
 
     voldown_btn.grid(row=1, column=1)
@@ -57,6 +58,12 @@ class Gui(tk.Tk):
     zero_btn.grid(row=4, column=1)
     down_btn.grid(row=4, column=2)
     back_btn.grid(row=4, column=3)
+
+    # Bind the keys
+    self.bind("<Left>", controller.handle_left)
+    self.bind("<Right>", controller.handle_right)
+    self.bind("<Up>", controller.handle_up)
+    self.bind("<Down>", controller.handle_down)
 
     self.blank_image = Image.new(
         "RGB", (GUI_WIDTH, GUI_HEIGHT), color="#000000")
