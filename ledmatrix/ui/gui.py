@@ -22,19 +22,35 @@ class Gui(tk.Tk):
     frame = tk.Frame(self)
     frame.grid(row=0, column=0, sticky=tk.W)
 
-    up_button = tk.Button(frame, text="Up", command=controller.handle_up)
-    down_button = tk.Button(frame, text="Down", command=controller.handle_down)
-    left_button = tk.Button(frame, text="Left", command=controller.handle_left)
-    right_button = tk.Button(
-        frame, text="Right", command=controller.handle_right)
-    stop_button = tk.Button(frame, text="Stop", command=controller.handle_stop)
-    quit_button = tk.Button(frame, text="Quit", command=frame.quit)
+    # Row 1
+    setup_btn = tk.Button(frame, text="Setup", command=controller.handle_setup)
+    up_btn = tk.Button(frame, text="Up", command=controller.handle_up)
+    mode_btn = tk.Button(frame, text="Mode", command=controller.handle_mode)
 
-    up_button.grid(row=1, column=2)
-    down_button.grid(row=3, column=2)
-    left_button.grid(row=2, column=1)
-    right_button.grid(row=2, column=3)
-    stop_button.grid(row=1, column=3)
+    setup_btn.grid(row=1, column=1)
+    up_btn.grid(row=1, column=2)
+    mode_btn.grid(row=1, column=3)
+
+    # Row 2
+    left_btn = tk.Button(frame, text="Left", command=controller.handle_left)
+    enter_btn = tk.Button(frame, text="Enter", command=controller.handle_enter)
+    right_btn = tk.Button(frame, text="Right", command=controller.handle_right)
+
+    left_btn.grid(row=2, column=1)
+    enter_btn.grid(row=2, column=2)
+    right_btn.grid(row=2, column=3)
+
+    # Row 3
+    zero_btn = tk.Button(frame, text="0/10+", command=controller.handle_zero)
+    down_btn = tk.Button(frame, text="Down", command=controller.handle_down)
+    back_btn = tk.Button(frame, text="Back", command=controller.handle_back)
+
+    zero_btn.grid(row=3, column=1)
+    down_btn.grid(row=3, column=2)
+    back_btn.grid(row=3, column=3)
+
+    quit_btn = tk.Button(frame, text="Quit", command=frame.quit)
+    quit_btn.grid(row=4, column=1)
 
     self.blank_image = Image.new(
         "RGB", (GUI_WIDTH, GUI_HEIGHT), color="#000000")

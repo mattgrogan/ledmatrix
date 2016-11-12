@@ -13,20 +13,32 @@ class Main_Controller(object):
     self.current_index = 0
     self.is_running = True
 
-  def handle_stop(self, message=None):
-    self.toggle_running()
+  def handle_setup(self, message=None):
+      pass
 
   def handle_up(self, message=None):
     self.move(-1)
 
-  def handle_down(self, message=None):
-    self.move(1)
+  def handle_mode(self, message=None):
+    self.toggle_running()
 
   def handle_left(self, message=None):
     self.current_item.move(-1)
 
+  def handle_enter(self, message=None):
+    pass
+
   def handle_right(self, message=None):
     self.current_item.move(1)
+
+  def handle_zero(self, message=None):
+    pass
+
+  def handle_down(self, message=None):
+    self.move(1)
+
+  def handle_back(self, message=None):
+    pass
 
   @property
   def current_item(self):
