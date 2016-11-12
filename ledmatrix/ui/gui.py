@@ -23,34 +23,40 @@ class Gui(tk.Tk):
     frame.grid(row=0, column=0, sticky=tk.W)
 
     # Row 1
+    voldown_btn = tk.Button(frame, text="Vol-")
+    playpause_btn = tk.Button(frame, text="Play/Pause", command=controller.handle_playpause)
+    volup_btn = tk.Button(frame, text="Vol+")
+
+    voldown_btn.grid(row=1, column=1)
+    playpause_btn.grid(row=1, column=2)
+    volup_btn.grid(row=1, column=3)
+
+    # Row 2
     setup_btn = tk.Button(frame, text="Setup", command=controller.handle_setup)
     up_btn = tk.Button(frame, text="Up", command=controller.handle_up)
     mode_btn = tk.Button(frame, text="Mode", command=controller.handle_mode)
 
-    setup_btn.grid(row=1, column=1)
-    up_btn.grid(row=1, column=2)
-    mode_btn.grid(row=1, column=3)
+    setup_btn.grid(row=2, column=1)
+    up_btn.grid(row=2, column=2)
+    mode_btn.grid(row=2, column=3)
 
-    # Row 2
+    # Row 3
     left_btn = tk.Button(frame, text="Left", command=controller.handle_left)
     enter_btn = tk.Button(frame, text="Enter", command=controller.handle_enter)
     right_btn = tk.Button(frame, text="Right", command=controller.handle_right)
 
-    left_btn.grid(row=2, column=1)
-    enter_btn.grid(row=2, column=2)
-    right_btn.grid(row=2, column=3)
+    left_btn.grid(row=3, column=1)
+    enter_btn.grid(row=3, column=2)
+    right_btn.grid(row=3, column=3)
 
-    # Row 3
-    zero_btn = tk.Button(frame, text="0/10+", command=controller.handle_zero)
+    # Row 4
+    zero_btn = tk.Button(frame, text="0/10+")
     down_btn = tk.Button(frame, text="Down", command=controller.handle_down)
     back_btn = tk.Button(frame, text="Back", command=controller.handle_back)
 
-    zero_btn.grid(row=3, column=1)
-    down_btn.grid(row=3, column=2)
-    back_btn.grid(row=3, column=3)
-
-    quit_btn = tk.Button(frame, text="Quit", command=frame.quit)
-    quit_btn.grid(row=4, column=1)
+    zero_btn.grid(row=4, column=1)
+    down_btn.grid(row=4, column=2)
+    back_btn.grid(row=4, column=3)
 
     self.blank_image = Image.new(
         "RGB", (GUI_WIDTH, GUI_HEIGHT), color="#000000")

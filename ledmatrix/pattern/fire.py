@@ -43,16 +43,24 @@ class Pattern_Fire(object):
 
     self.colors = []
     self.colors += list(black.range_to(red, 116))
-    self.colors += list(red.range_to(yellow, 100))
-    self.colors += list(yellow.range_to(white, 30))
-    self.colors += list(white.range_to(blue, 10))
+    self.colors += list(red.range_to(yellow, 140))
+    self.colors += list(yellow.range_to(white, 10))
 
     self.image = None
 
-  def move(self, step=1):
+  def handle_input(self, command):
 
-    self.cooling += step
-    self.cooling = min(max(self.cooling, 0), 255)
+      if command == "UP":
+          self.cooling -= 1
+      elif command == "DOWN":
+          self.cooling += 1
+      elif command == "LEFT":
+          self.sparking += 1
+      elif command == "RIGHT":
+          self.sparking -= 1
+
+      self.cooling = min(max(self.cooling, 0), 255)
+      self.sparking = min(max(self.sparking, 0), 255)
 
   def draw_frame(self):
 

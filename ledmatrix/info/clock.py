@@ -42,10 +42,10 @@ class Clock(object):
 
       self.old_time = new_time
 
-  def move(self, step=None):
-    """ Respond to the right and left remote buttons. Step value is ignored """
+  def handle_input(self, command):
 
-    self.randomize_colors(force=True)
+    if command == "ENTER":
+        self.randomize_colors(force=True)
 
   def draw_frame(self):
     """ Draw the time on the screen """

@@ -14,31 +14,31 @@ class Main_Controller(object):
     self.is_running = True
 
   def handle_setup(self, message=None):
-      pass
+    pass
 
   def handle_up(self, message=None):
-    self.move(-1)
+    self.current_item.handle_input("UP")
 
   def handle_mode(self, message=None):
-    self.toggle_running()
+    self.move(1)
 
   def handle_left(self, message=None):
-    self.current_item.move(-1)
+    self.current_item.handle_input("LEFT")
 
   def handle_enter(self, message=None):
-    pass
+    self.current_item.handle_input("ENTER")
 
   def handle_right(self, message=None):
-    self.current_item.move(1)
-
-  def handle_zero(self, message=None):
-    pass
+    self.current_item.handle_input("RIGHT")
 
   def handle_down(self, message=None):
-    self.move(1)
+    self.current_item.handle_input("DOWN")
 
   def handle_back(self, message=None):
     pass
+
+  def handle_playpause(self, message=None):
+    self.toggle_running()
 
   @property
   def current_item(self):

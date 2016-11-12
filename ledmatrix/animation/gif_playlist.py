@@ -43,6 +43,15 @@ class Gif_Playlist(object):
     if len(self.items) == 0:
       raise ValueError("No GIF images found in %s" % self.folder)
 
+  def handle_input(self, command):
+
+    if command == "LEFT":
+        self.move(1)
+    elif command == "RIGHT":
+        self.move(-1)
+    elif command == "ENTER":
+        self.move_random()
+
   def move(self, step=1):
     """ Move to next image """
 
