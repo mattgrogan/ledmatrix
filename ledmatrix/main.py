@@ -3,6 +3,7 @@ import os
 import time
 
 from animation import Gif_Playlist
+from games import Game_Snake
 from info import Clock
 from main_controller import Main_Controller
 from pattern import Pattern_Fire
@@ -22,6 +23,7 @@ if __name__ == "__main__":
 
   controller = Main_Controller()
 
+  controller.add_menu_item(Game_Snake(MATRIX_WIDTH, MATRIX_HEIGHT))
   controller.add_menu_item(Pattern_Fire(MATRIX_WIDTH, MATRIX_HEIGHT))
   controller.add_menu_item(Clock(MATRIX_WIDTH, MATRIX_HEIGHT))
   controller.add_menu_item(Gif_Playlist(GENGIFS_FOLDER, timeout_ms=10000))
