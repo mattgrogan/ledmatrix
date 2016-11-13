@@ -31,8 +31,6 @@ class Game_Snake(object):
     self.apple_color = None
     self.black_color = (0, 0, 0)
 
-    print self.snake_color
-
     self.image = None
     self.pix = None
 
