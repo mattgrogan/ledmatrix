@@ -3,7 +3,8 @@ import random
 import time
 from collections import deque
 
-from PIL import Image
+import randomcolor
+from PIL import Image, ImageColor
 
 
 class Game_Snake(object):
@@ -23,9 +24,14 @@ class Game_Snake(object):
 
     self.is_setup = False
 
-    self.snake_color = (0, 255, 0)
-    self.apple_color = (255, 0, 0)
+    rand_color = randomcolor.RandomColor()
+
+    self.snake_color = rand_color.generate(hue="red", luminosity="light")[0]
+    self.snake_color = ImageColor.getrgb(self.snake_color)
+    self.apple_color = None
     self.black_color = (0, 0, 0)
+
+    print self.snake_color
 
     self.image = None
     self.pix = None
@@ -40,6 +46,11 @@ class Game_Snake(object):
     self.new_apple()
 
   def new_apple(self):
+
+    rand_color = randomcolor.RandomColor()
+
+    self.apple_color = rand_color.generate(hue="green", luminosity="light")[0]
+    self.apple_color = ImageColor.getrgb(self.apple_color)
 
     while True:
       self.apple[0] = random.randint(0, self.width - 1)
@@ -139,4 +150,4 @@ class Game_Snake(object):
     for point in list(self.segments):
       self.pix[point[0], point[1]] = self.snake_color
 
-    return self.image, 150
+    return self.image, 100
