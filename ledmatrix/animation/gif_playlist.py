@@ -46,11 +46,11 @@ class Gif_Playlist(object):
   def handle_input(self, command):
 
     if command == "LEFT":
-        self.move(1)
+      self.move(1)
     elif command == "RIGHT":
-        self.move(-1)
+      self.move(-1)
     elif command == "ENTER":
-        self.move_random()
+      self.move_random()
 
   def move(self, step=1):
     """ Move to next image """
@@ -68,7 +68,7 @@ class Gif_Playlist(object):
   def move_random(self):
     """ Find a random gif image """
 
-    self.current_index = random.randint(0, len(self.items))
+    self.current_index = random.randint(0, len(self.items) - 1)
     self.current_item = self.items[self.current_index]
     self.current_item.start(timeout_ms=self.timeout_ms)
 
