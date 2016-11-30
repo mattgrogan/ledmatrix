@@ -17,7 +17,13 @@ class Gui(tk.Tk):
     self.controller.matrix = self
 
     from remote_control import Mock_Remote_Control
-    self.rc = Mock_Remote_Control()
+    from zmq_control import ZeroMQ_Control
+    self.rc = ZeroMQ_Control()
+    self.rc.register(u"KEY_STOP", controller, controller.handle_mode)
+    self.rc.register(u"KEY_UP", controller, controller.handle_up)
+    self.rc.register(u"KEY_DOWN", controller, controller.handle_down)
+    self.rc.register(u"KEY_LEFT", controller, controller.handle_left)
+    self.rc.register(u"KEY_RIGHT", controller, controller.handle_right)
 
     frame = tk.Frame(self)
     frame.grid(row=0, column=0, sticky=tk.W)
@@ -91,5 +97,6 @@ class Gui(tk.Tk):
 
   def start(self):
 
+    self.rc.read_command()
     requested_delay_ms = self.controller.run()
     self.after(requested_delay_ms, self.start)
