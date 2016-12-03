@@ -5,12 +5,12 @@ LIRCRC_CONFIG_FILE = "./lircrc"
 class Remote_Control(object):
   """ Configure LIRC to receive remote control """
 
-  def __init__(self):
+  def __init__(self, blocking=False):
     """ Initialize the remote control """
 
     import lirc
 
-    self.rc = lirc.init("ledmatrix", LIRCRC_CONFIG_FILE, blocking=False)
+    self.rc = lirc.init("ledmatrix", LIRCRC_CONFIG_FILE, blocking=blocking)
 
     # These are all the possible events that can be sent by lirc. They
     # are configured in the lirc configuration file.
@@ -40,7 +40,11 @@ class Remote_Control(object):
     import lirc
     code = lirc.nextcode()
 
+    if len(code) > 0:
+      print code
+
     if len(code) > 0 and code[0] in self._event_names:
+      print "Found %s" % code[0]
       self.notify(code[0])
       return True
     else:

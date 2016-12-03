@@ -38,7 +38,6 @@ class ZeroMQ_Control(object):
     events = self.socket.poll(timeout=1)
 
     if events:
-      print "found events %i" % events
       message = self.socket.recv()
 
       if message in self._event_names:

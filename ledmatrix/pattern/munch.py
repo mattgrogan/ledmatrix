@@ -31,6 +31,9 @@ class Pattern_Munch(object):
 
     self.maxc = 0
 
+  def handle_input(self, command):
+    pass
+
   def draw_frame(self):
 
     for x in range(self.width):
@@ -57,4 +60,4 @@ class Pattern_Munch(object):
 
     self.generation += 1
 
-    return self.image, 60
+    return self.image, 40
