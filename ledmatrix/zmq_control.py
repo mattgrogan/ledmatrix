@@ -15,7 +15,7 @@ class ZeroMQ_Control(object):
 
     self._event_names = [u"KEY_RIGHT", u"KEY_LEFT",
                          u"KEY_UP", u"KEY_DOWN",
-                         u"KEY_STOP"]
+                         u"KEY_STOP", u"KEY_PLAYPAUSE"]
     self._events = None
     self._events = {event: dict() for event in self._event_names}
 

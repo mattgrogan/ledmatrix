@@ -1,6 +1,6 @@
 import zmq
 
-from button import Button
+from state_button import State_Button
 
 GPIO_PIN = 24
 
@@ -11,35 +11,32 @@ class Button_Control(object):
   def __init__(self, blocking=False):
 
     # The button
-    self.button = Button("Mode", GPIO_PIN)
-    self.button.enabled = True
+    self.button = State_Button("Mode", GPIO_PIN)
+    #self.button.enabled = True
 
     # The zmq
     self.context = zmq.Context()
     self.socket = self.context.socket(zmq.PUSH)
     self.socket.connect("tcp://localhost:%s" % 5555)
 
-    self._event_names = ["KEY_STOP"]
+    self._event_names = ["KEY_STOP", "KEY_RIGHT", "KEY_PLAYPAUSE"]
     self._events = None
     self._events = {event: dict() for event in self._event_names}
 
-  def register(self, event, who, callback=None):
+  def read_command(self, is_running):
 
-    if callback is None:
-      callback = getattr(who, 'update')
+    code = None
+    event = self.button.event_detected
 
-    try:
-      self._events[event][who] = callback
-    except KeyError:
-      print "Key %s not supported in Button_Control" % event
+    if event == "BUTTON_CLICK":
+      code = "KEY_STOP"
+    elif event == "BUTTON_PRESS":
+      code = "KEY_RIGHT"
+    elif event == "BUTTON_TIMEOUT":
+      code = "KEY_PLAYPAUSE"
 
-  def notify(self, event, message=None):
+    if code is not None and not is_running:
+      code = "KEY_PLAYPAUSE"
 
-    for subscriber, callback in self._events[event].iteritems():
-      callback(message)
-
-  def read_command(self):
-
-    if self.button.event_detected:
-      code = self._event_names[0]
+    if code is not None:
       self.socket.send(code)
