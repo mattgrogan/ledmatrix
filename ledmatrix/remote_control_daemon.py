@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
   context = zmq.Context()
   socket = context.socket(zmq.PUSH)
-  socket.connect("tcp://localhost:%s" % 5555)
+  socket.connect("tcp://ledmatrix:%s" % 5555)
 
   while True:
     code = lirc.nextcode()
