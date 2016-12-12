@@ -1,10 +1,12 @@
+import os
 import time
 
 import zmq
 
 import lirc
 
-LIRC_CONFIG_FILE = "./lircrc"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+LIRC_CONFIG_FILE = os.path.normpath(os.path.join(current_dir, "lircrc"))
 
 
 class IR_Remote(object):
@@ -24,7 +26,7 @@ class IR_Remote(object):
     self.zmq_context = zmq.Context()
 
     # Initialize lirc
-    lirc.init("ledmatrix", LIRC_CONFIG_FILE)
+    lirc.init("ledmatrix", LIRC_CONFIG_FILE, blocking=False)
 
   def read_ir_code(self):
 

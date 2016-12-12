@@ -6,10 +6,16 @@ import time
 
 # Import the VCNL40xx module.
 import Adafruit_VCNL40xx
+import influxdb
 
+DBHOST = "LEDMATRIX"
+DBPORT = 8086
+DBNAME = "home"
 
 # Create a VCNL4010 instance.
 vcnl = Adafruit_VCNL40xx.VCNL4010()
+
+client = influxdb.InfluxDBClient(DBHOST, DBPORT, database=DBNAME)
 
 # Or create a VCNL4000 instance.
 #vcnl = Adafruit_VCNL40xx.VCNL4000()
@@ -25,5 +31,12 @@ while True:
     ambient = vcnl.read_ambient()
     # Print out the results.
     print('Proximity={0}, Ambient light={1}'.format(proximity, ambient))
+    
+
+    point = { "measurement": "ambient_light",
+              "fields": { "value": ambient }}
+    client.write_points([point])
+
+
     # Wait half a second and repeat.
     time.sleep(0.5)
