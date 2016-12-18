@@ -1,9 +1,12 @@
+import logging
 import os
 import time
 
 import zmq
 
 import lirc
+
+log = logging.getLogger("ledmatrix")
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 LIRC_CONFIG_FILE = os.path.normpath(os.path.join(current_dir, "lircrc"))
@@ -22,11 +25,10 @@ class IR_Remote(object):
     self.events = ["KEY_RIGHT", "KEY_LEFT", "KEY_UP", "KEY_DOWN",
                    "KEY_STOP", "KEY_ENTER", "KEY_PLAYPAUSE"]
 
-    # ZMQ setup
-    self.zmq_context = zmq.Context()
-
     # Initialize lirc
     lirc.init("ledmatrix", LIRC_CONFIG_FILE, blocking=False)
+
+    log.info("Initialized IR Remote")
 
   def read_ir_code(self):
 
@@ -45,11 +47,18 @@ class IR_Remote(object):
     code = self.read_ir_code()
 
     if code is not None:
-      print "Received: %s " % code
-      socket = self.zmq_context.socket(zmq.PUSH)
-      socket.connect(self.addr)
-      socket.send(code)
-      socket.close()
+
+      log.info("Received: %s " % code)
+
+      zmq_context = zmq.Context()
+      socket = zmq_context.socket(zmq.PUSH)
+      try:
+        socket.connect(self.addr)
+        socket.send(code)
+      except zmq.ZMQError:
+        log.critical("Unable to connect to %s" % self.addr)
+      finally:
+        socket.close()
 
 if __name__ == "__main__":
 

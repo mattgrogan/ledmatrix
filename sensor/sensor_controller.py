@@ -1,5 +1,6 @@
-import time
 import sys
+import time
+
 
 class Sensor_Controller(object):
 
@@ -19,8 +20,9 @@ class Sensor_Controller(object):
       for sensor in self.sensors:
         try:
           sensor.execute()
-        except:
-          e = sys.exc_info()[0]
-          print e
+        except KeyboardInterrupt:
+          sys.exit("Exiting...")
+        except Exception, e:
+          logger.critical("Error", exec_info=True)
 
       time.sleep(0.1)
