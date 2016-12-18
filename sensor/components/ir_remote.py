@@ -45,6 +45,7 @@ class IR_Remote(object):
     code = self.read_ir_code()
 
     if code is not None:
+      print "Received: %s " % code
       socket = self.zmq_context.socket(zmq.PUSH)
       socket.connect(self.addr)
       socket.send(code)
