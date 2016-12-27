@@ -10,7 +10,7 @@ class ZeroMQ_Control(object):
 
     self.context = zmq.Context()
     self.socket = self.context.socket(zmq.PULL)
-    self.socket.bind("tcp://127.0.0.1:%s" % port)
+    self.socket.bind("tcp://*:%s" % port)
     #self.socket.setsockopt(zmq.SUBSCRIBE, "LEDMATRIX")
 
     self._event_names = [u"KEY_RIGHT", u"KEY_LEFT",
