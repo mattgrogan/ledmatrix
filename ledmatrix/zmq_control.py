@@ -10,12 +10,12 @@ class ZeroMQ_Control(object):
 
     self.context = zmq.Context()
     self.socket = self.context.socket(zmq.PULL)
-    self.socket.bind("tcp://127.0.0.1:%s" % port)
+    self.socket.bind("tcp://*:%s" % port)
     #self.socket.setsockopt(zmq.SUBSCRIBE, "LEDMATRIX")
 
     self._event_names = [u"KEY_RIGHT", u"KEY_LEFT",
                          u"KEY_UP", u"KEY_DOWN",
-                         u"KEY_STOP"]
+                         u"KEY_STOP", u"KEY_PLAYPAUSE"]
     self._events = None
     self._events = {event: dict() for event in self._event_names}
 
@@ -38,7 +38,6 @@ class ZeroMQ_Control(object):
     events = self.socket.poll(timeout=1)
 
     if events:
-      print "found events %i" % events
       message = self.socket.recv()
 
       if message in self._event_names:

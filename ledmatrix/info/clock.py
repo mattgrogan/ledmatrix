@@ -45,7 +45,7 @@ class Clock(object):
   def handle_input(self, command):
 
     if command == "ENTER":
-        self.randomize_colors(force=True)
+      self.randomize_colors(force=True)
 
   def draw_frame(self):
     """ Draw the time on the screen """
@@ -67,4 +67,4 @@ class Clock(object):
     date_str = time.strftime("%b %d", time.localtime())
     draw.text((1, 20), date_str, font=self.small_font, fill=self.date_color)
 
-    return image, 1
+    return image, 1000

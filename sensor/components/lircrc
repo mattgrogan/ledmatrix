@@ -53,3 +53,9 @@ begin
 	button = KEY_BACK
 	config = KEY_BACK
 end
+
+begin
+  prog = ledmatrix
+	button = KEY_PLAYPAUSE
+	config = KEY_PLAYPAUSE
+end

@@ -50,17 +50,17 @@ class Pattern_Fire(object):
 
   def handle_input(self, command):
 
-      if command == "UP":
-          self.cooling -= 1
-      elif command == "DOWN":
-          self.cooling += 1
-      elif command == "LEFT":
-          self.sparking += 1
-      elif command == "RIGHT":
-          self.sparking -= 1
+    if command == "UP":
+      self.cooling -= 1
+    elif command == "DOWN":
+      self.cooling += 1
+    elif command == "LEFT":
+      self.sparking += 1
+    elif command == "RIGHT":
+      self.sparking -= 1
 
-      self.cooling = min(max(self.cooling, 0), 255)
-      self.sparking = min(max(self.sparking, 0), 255)
+    self.cooling = min(max(self.cooling, 0), 255)
+    self.sparking = min(max(self.sparking, 0), 255)
 
   def draw_frame(self):
 
@@ -94,4 +94,4 @@ class Pattern_Fire(object):
         c = self.colors[color_index]
         pix[x, y] = (int(c.red * 255), int(c.green * 255), int(c.blue * 255))
 
-    return self.image, 25
+    return self.image, 10
