@@ -15,11 +15,15 @@ class Pattern_Sine(object):
 
     self.offset = int(self.height / 2)
     self.scale = int((self.height - 2) / 2)
-    self.angle_increment = math.pi / 10.0
+    self.angle_increment = math.pi / 25.0
 
     self.x = 0
     self.y = 0
     self.angle = 0.0
+
+  def handle_input(self, command):
+      pass
+
 
   def draw_frame(self):
 

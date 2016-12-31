@@ -3,7 +3,7 @@ from __future__ import division, print_function
 import sys
 import time
 
-TICK_MS = 25.0
+TICK_MS = 10.0
 
 
 class Rpi_UI(object):
@@ -41,4 +41,13 @@ class Rpi_UI(object):
 
       if requested_delay_ms < TICK_MS:
         requested_delay_ms = TICK_MS
-      time.sleep(requested_delay_ms / 1000.0)
+
+      current_timeout_ms = 0
+
+      while current_timeout_ms < requested_delay_ms:
+        self.rc2.read_command(self.controller.is_running)
+        self.rc.read_command()
+        time.sleep(TICK_MS / 1000.0)
+        current_timeout_ms += TICK_MS
+
+      #time.sleep(requested_delay_ms / 1000.0)
