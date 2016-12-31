@@ -4,7 +4,6 @@ import time
 
 log = logging.getLogger("ledmatrix")
 
-
 class Sensor_Controller(object):
 
   def __init__(self):

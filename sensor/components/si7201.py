@@ -8,6 +8,9 @@ import smbus
 
 log = logging.getLogger("ledmatrix")
 
+DELAY_SECS = 60 # Run only once every sixty seconds
+HUMIDITY_ADDR = 0xF5
+TEMP_ADDR = 0xF3
 
 class SI7201(object):
   """ SI7201 Temperature and humidity sensor """
@@ -17,6 +20,7 @@ class SI7201(object):
     self.i2c_addr = i2c_addr
     self.bus = smbus.SMBus(1)
     self.dbclient = influxdb.InfluxDBClient(dbhost, dbport, database=dbname)
+    self.last_check = None
 
   def write_byte(self, byte):
 
@@ -36,19 +40,25 @@ class SI7201(object):
 
     return data
 
-  def execute(self):
+  def read_sensor_value(self, address):
 
-    humidity = None
-    temp_c = None
-    temp_f = None
-
-    # Query for relative humidity
-    self.write_byte(0xF5)
+    self.write_byte(address)
     time.sleep(0.3)
 
     # Read the two byes back
     data0 = self.read_byte()
     data1 = self.read_byte()
+
+    return (data0, data1)
+
+  def get_readings(self):
+    """ Get the readings from the sensor """
+
+    humidity = None
+    temp_c = None
+    temp_f = None
+
+    h_data0, h_data1 = self.read_sensor_value(HUMIDITY_ADDR)
 
     # Convert the data
     if data0 is not None and data1 is not None:
@@ -56,13 +66,7 @@ class SI7201(object):
 
     time.sleep(0.3)
 
-    # Select temperature NO HOLD master mode
-    self.write_byte(0xF3)
-    time.sleep(0.3)
-
-    # Read data back
-    data0 = self.read_byte()
-    data1 = self.read_byte()
+    t_data0, t_data1 = self.read_sensor_value(HUMIDITY_ADDR)
 
     # Convert data
     if data0 is not None and data1 is not None:
@@ -79,3 +83,11 @@ class SI7201(object):
       self.dbclient.write_points([point])
     except requests.exceptions.ConnectionError:
       log.critical("Unable to connect to InfluxDB")
+
+  def execute(self):
+
+    first_run = self.last_check is null
+    delay_expired = time.time > (self.last_check + DELAY_SECS)
+
+    if first_run or delay_expired:
+      self.get_readings()
