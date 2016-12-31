@@ -35,9 +35,9 @@ if __name__ == "__main__":
   controller = Sensor_Controller()
 
   ir_remote = IR_Remote(host=ZMQ_HOST)
-  temp_humidity = SI7201(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
+  #temp_humidity = SI7201(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
 
   controller.add_sensor(ir_remote)
-  controller.add_sensor(temp_humidity)
+  #controller.add_sensor(temp_humidity)
 
   controller.mainloop()

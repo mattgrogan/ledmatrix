@@ -1,5 +1,8 @@
+import logging
 import sys
 import time
+
+log = logging.getLogger("ledmatrix")
 
 
 class Sensor_Controller(object):
@@ -22,7 +25,7 @@ class Sensor_Controller(object):
           sensor.execute()
         except KeyboardInterrupt:
           sys.exit("Exiting...")
-        except Exception, e:
-          logger.critical("Error", exec_info=True)
+        except Exception as e:
+          log.exception("Exception")
 
-      time.sleep(0.1)
+      time.sleep(0.01)

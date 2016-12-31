@@ -25,6 +25,10 @@ class IR_Remote(object):
     self.events = ["KEY_RIGHT", "KEY_LEFT", "KEY_UP", "KEY_DOWN",
                    "KEY_STOP", "KEY_ENTER", "KEY_PLAYPAUSE"]
 
+    self.zmq_context = zmq.Context()
+    self.socket = self.zmq_context.socket(zmq.PUSH)
+    self.socket.connect(self.addr)
+
     # Initialize lirc
     lirc.init("ledmatrix", LIRC_CONFIG_FILE, blocking=False)
 
@@ -50,15 +54,15 @@ class IR_Remote(object):
 
       log.info("Received: %s " % code)
 
-      zmq_context = zmq.Context()
-      socket = zmq_context.socket(zmq.PUSH)
       try:
-        socket.connect(self.addr)
-        socket.send(code)
+        self.socket.connect(self.addr)
+        self.socket.send(code)
       except zmq.ZMQError:
         log.critical("Unable to connect to %s" % self.addr)
       finally:
-        socket.close()
+        pass
+        # self.socket.close()
+
 
 if __name__ == "__main__":
 
