@@ -57,37 +57,45 @@ class SI7201(object):
     humidity = None
     temp_c = None
     temp_f = None
+    point = None
 
     h_data0, h_data1 = self.read_sensor_value(HUMIDITY_ADDR)
 
     # Convert the data
-    if data0 is not None and data1 is not None:
-      humidity = ((data0 * 256 + data1) * 125 / 65536.0) - 6
+    if h_data0 is not None and h_data1 is not None:
+      humidity = ((h_data0 * 256 + h_data1) * 125 / 65536.0) - 6
 
     time.sleep(0.3)
 
-    t_data0, t_data1 = self.read_sensor_value(HUMIDITY_ADDR)
+    t_data0, t_data1 = self.read_sensor_value(TEMP_ADDR)
 
     # Convert data
-    if data0 is not None and data1 is not None:
-      temp_c = ((data0 * 256 + data1) * 175.72 / 65536.0) - 46.85
+    if t_data0 is not None and t_data1 is not None:
+      temp_c = ((t_data0 * 256 + t_data1) * 175.72 / 65536.0) - 46.85
       temp_f = temp_c * 9 / 5 + 32
 
-    point = {"measurement": "SI7201 Temp+Humidity", "fields": {
-        "humidity": humidity,
-        "temp_c": temp_c,
-        "temp_f": temp_f
-    }}
+    if humidity is not None and temp_c is not None and temp_f is not None:
+      point = {"measurement": "SI7201 Temp+Humidity", "fields": {
+          "humidity": humidity,
+          "temp_c": temp_c,
+          "temp_f": temp_f
+      }}
+    else:
+      log.critical("At least one measurement is None")
 
-    try:
-      self.dbclient.write_points([point])
-    except requests.exceptions.ConnectionError:
-      log.critical("Unable to connect to InfluxDB")
+    if point is not None:
+      try:
+        self.dbclient.write_points([point])
+      except requests.exceptions.ConnectionError:
+        log.critical("Unable to connect to InfluxDB")
 
   def execute(self):
 
-    first_run = self.last_check is null
-    delay_expired = time.time > (self.last_check + DELAY_SECS)
+    if self.last_check is None:
+      delay_expired = True # This is the first run
+    else:
+      delay_expired = time.time() > (self.last_check + DELAY_SECS)
 
-    if first_run or delay_expired:
+    if delay_expired:
       self.get_readings()
+      self.last_check = time.time()
