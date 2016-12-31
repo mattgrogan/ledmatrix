@@ -73,7 +73,7 @@ class Countdown(object):
       # rand_color = randomcolor.RandomColor()
 
       hours = math.floor(countdown_secs / 60 / 60)
-      mins = round(countdown_secs / 60, 0)
+      mins = math.floor(countdown_secs / 60)
       secs = round(countdown_secs, 0)
 
       hour_str = "%i hrs" % hours
