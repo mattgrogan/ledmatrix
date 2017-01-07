@@ -4,7 +4,7 @@ import time
 
 from animation import Gif_Playlist
 from games import Game_Snake
-from info import Clock
+from info import Clock, Countdown
 from main_controller import Main_Controller
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
 
@@ -23,6 +23,8 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   controller = Main_Controller()
+
+  controller.add_menu_item(Countdown(MATRIX_WIDTH, MATRIX_HEIGHT))
 
   controller.add_menu_item(Pattern_Sine(MATRIX_WIDTH, MATRIX_HEIGHT))
   controller.add_menu_item(Clock(MATRIX_WIDTH, MATRIX_HEIGHT))
