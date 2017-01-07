@@ -4,6 +4,7 @@ import os
 import sys
 
 from components.ir_remote import IR_Remote
+from components.phototransistor import Phototransistor
 from components.si7201 import SI7201
 from sensor_controller import Sensor_Controller
 
@@ -36,8 +37,10 @@ if __name__ == "__main__":
 
   ir_remote = IR_Remote(host=ZMQ_HOST)
   temp_humidity = SI7201(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
+  phototransistor = Phototransistor(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
 
   controller.add_sensor(ir_remote)
   controller.add_sensor(temp_humidity)
+  controller.add_sensor(phototransistor)
 
   controller.mainloop()
