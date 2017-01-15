@@ -4,6 +4,7 @@ import time
 
 log = logging.getLogger("ledmatrix")
 
+
 class Sensor_Controller(object):
 
   def __init__(self):
@@ -27,4 +28,4 @@ class Sensor_Controller(object):
         except Exception as e:
           log.exception("Exception")
 
-      time.sleep(0.01)
+        time.sleep(0.01)
