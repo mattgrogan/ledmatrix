@@ -22,6 +22,7 @@ class PIR(object):
 
     self.last_state = GPIO.input(PIR_PIN)
     self.last_check = None
+    self.last_event = time.time()
 
     log.info("Started PIR with state: %i" % self.last_state)
 
@@ -29,12 +30,16 @@ class PIR(object):
 
     state = GPIO.input(PIR_PIN)
 
+    if state:
+      self.last_event = time.time()
+
     if state != self.last_state:
       log.info("PIR State change to %i" % state)
       self.last_state = state
 
     point = {"measurement": "PIR", "fields": {
         "motion": int(state),
+        "inactivity_mins": round((time.time() - self.last_event) / 60)
     }}
 
     try:
