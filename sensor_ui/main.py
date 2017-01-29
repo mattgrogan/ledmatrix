@@ -6,10 +6,14 @@ from Adafruit_LED_Backpack import AlphaNum4
 import influxdb
 import iso8601      # for date string -> date object
 from datetime import datetime
+import gpiozero
+from rotary_encoder import RotaryEncoder
 
 
 INFLUX_HOST = "ledmatrix"
 INFLUX_DB = "home"
+
+
 
 class Sensor_UI(object):
 
@@ -26,12 +30,23 @@ class Sensor_UI(object):
             disp.begin()
             disp.set_brightness(5)
             disp.clear()
+            disp.write_display()
             self.displays.append(disp)
+
+        # For rotary encoder
+        self.threshold = 4
+        self.counter = 0
+        self.last = 1
+
+        # Menu position
+        self.menu_items = [self.identify, self.show_temp]
+        self.current_index = 0
 
     def identify(self):
         """ Identify the displays """
 
         for i, disp in enumerate(self.displays):
+            disp.clear()
             disp.print_str(str(i))
             disp.write_display()
 
@@ -80,9 +95,47 @@ class Sensor_UI(object):
         for disp in self.displays:
             disp.write_display()
 
+    def rotary_changed(self, value):
+
+        if value != self.last:
+            self.counter = 0 # Reset counter if different direction
+
+        self.last = value
+        self.counter += value
+
+        if abs(self.counter) >= self.threshold:
+            if self.counter > 0:
+                self.move(1)
+            else:
+                self.move(-1)
+            self.counter = 0
+
+    def move(self, step):
+
+        self.current_index += step
+
+        if self.current_index >= len(self.menu_items):
+          self.current_index = 0
+        elif self.current_index < 0:
+          self.current_index = len(self.menu_items) - 1
+
+        print "current index: %i" % self.current_index
+
+        self.menu_items[self.current_index]()
+
+
+
 if __name__ == "__main__":
 
+    rotary_btn = gpiozero.Button(6)
+    rc = RotaryEncoder(19, 13)
+
     ui = Sensor_UI()
-    ui.identify()
-    time.sleep(0.25)
-    ui.show_temp()
+    rc.when_rotated = ui.rotary_changed
+
+    while True:
+        time.sleep(0.01)
+
+    #ui.identify()
+    #rotary_btn.wait_for_press()
+    #ui.show_temp()
