@@ -13,8 +13,6 @@ from rotary_encoder import RotaryEncoder
 INFLUX_HOST = "ledmatrix"
 INFLUX_DB = "home"
 
-
-
 class Sensor_UI(object):
 
     def __init__(self):
@@ -26,6 +24,7 @@ class Sensor_UI(object):
 
         for i in range(4):
             addr = start_addr + i
+            print "Connecting to %i" % i
             disp = AlphaNum4.AlphaNum4(address=addr)
             disp.begin()
             disp.set_brightness(5)
@@ -41,6 +40,10 @@ class Sensor_UI(object):
         # Menu position
         self.menu_items = [self.identify, self.show_temp]
         self.current_index = 0
+
+        # RGB LED
+        #self.led = gpiozero.RGBLED(16, 20, 21)
+        #self.led.color(1,0,1)
 
     def identify(self):
         """ Identify the displays """
