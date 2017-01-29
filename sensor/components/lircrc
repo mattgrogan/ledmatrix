@@ -59,3 +59,15 @@ begin
 	button = KEY_PLAYPAUSE
 	config = KEY_PLAYPAUSE
 end
+
+begin
+  prog = ledmatrix
+	button = KEY_A
+	config = KEY_STOP
+end
+
+begin
+  prog = ledmatrix
+	button = KEY_B
+	config = KEY_PLAYPAUSE
+end
