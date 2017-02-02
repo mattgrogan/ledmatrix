@@ -3,6 +3,7 @@ from __future__ import division
 
 import time
 from datetime import datetime
+import textwrap
 
 import gpiozero
 import influxdb
@@ -30,7 +31,7 @@ class Sensor_UI(object):
       print "Connecting to %i" % i
       disp = AlphaNum4.AlphaNum4(address=addr)
       disp.begin()
-      disp.set_brightness(5)
+      disp.set_brightness(15)
       disp.clear()
       disp.write_display()
       self.displays.append(disp)
@@ -128,6 +129,12 @@ class Sensor_UI(object):
     for disp in self.displays:
       disp.write_display()
 
+    # Trying out string wrapping
+    weather = self.current_conditions.build_string()
+
+    print textwrap.wrap(weather, 8)
+
+
   def rotary_changed(self, value):
 
     if value != self.last:
@@ -155,6 +162,8 @@ class Sensor_UI(object):
     print "current index: %i" % self.current_index
 
     self.menu_items[self.current_index]()
+
+
 
 
 if __name__ == "__main__":

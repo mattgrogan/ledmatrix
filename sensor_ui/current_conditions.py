@@ -81,11 +81,18 @@ class Current_Conditions(object):
       last_updated = root.find("observation_time_rfc822").text
       self._last_updated = self.convert_rfc822(last_updated)
 
+      print "Finished updating weather"
+
       # print (datetime.datetime.now() - last_updated).total_seconds() / 60
+
+  def build_string(self):
+    """ Put all this into a sensible string """
+
+    return "LGA %sF %s %im AGO " % (self.temp_f, self.weather, (self.last_updated / 60))
 
 
 if __name__ == "__main__":
-  cc = Current_Conditions()
+  cc=Current_Conditions()
   print cc.temp_f
   print cc.weather
   print "Updated %i minutes ago" % (cc.last_updated / 60)
