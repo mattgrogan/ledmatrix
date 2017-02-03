@@ -25,7 +25,6 @@ class Clock(Drawable):
     self._cc = None         # Hold the current conditions
 
     self._col = []
-
     self.prev_time = None
 
     if self.station is not None:
