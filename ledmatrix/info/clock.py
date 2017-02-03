@@ -4,6 +4,8 @@ import time
 import randomcolor
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
+from data import Current_Conditions
+
 FONTFILE = os.path.join(os.path.dirname(__file__), "../../fonts/RPGSystem.ttf")
 FONTSIZE = 16
 
@@ -29,6 +31,8 @@ class Clock(object):
     self.old_time = None
 
     self.is_finished = False
+
+    self.cc = Current_Conditions()
 
   def randomize_colors(self, new_time=None, force=False):
     """ Pick some random colors """
@@ -61,7 +65,8 @@ class Clock(object):
 
     draw.text((xloc, 2), time_str, font=self.small_font, fill=self.time_color)
 
-    day_str = time.strftime("%a", time.localtime())
+    day_str = "%s  %iF" % (time.strftime(
+        "%a", time.localtime()), int(self.cc.temp_f))
     draw.text((1, 12), day_str, font=self.small_font, fill=self.date_color)
 
     date_str = time.strftime("%b %d", time.localtime())
