@@ -18,12 +18,14 @@ def hex_to_rgb(value):
 class Pattern_Fire(object):
   """ Create a fire animation """
 
-  def __init__(self, width, height):
+  def __init__(self, device):
 
-    self.width = width
-    self.height = height
+    self.device = device
+    self.width = device.width
+    self.height = device.height
 
-    self.heat = [[0 for x in range(width)] for y in range(height)]
+    self.heat = [[0 for x in range(device.width)]
+                 for y in range(device.height)]
 
     # COOLING: How much does the air cool as it rises?
     # Less cooling = taller flames.  More cooling = shorter flames.
@@ -64,8 +66,7 @@ class Pattern_Fire(object):
 
   def draw_frame(self):
 
-    self.image = Image.new("RGB", (self.width, self.height))
-    pix = self.image.load()
+    pix = self.device.image.load()
 
     for x in range(self.width):
 
@@ -94,4 +95,6 @@ class Pattern_Fire(object):
         c = self.colors[color_index]
         pix[x, y] = (int(c.red * 255), int(c.green * 255), int(c.blue * 255))
 
-    return self.image, 10
+    self.device.display()
+
+    return 10

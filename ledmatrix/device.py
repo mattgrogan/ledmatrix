@@ -26,8 +26,6 @@ class Device(object):
 
     self.image = Image.new(self.mode, self.size)
 
-    self.display()
-
 
 class RGB_Matrix(Device):
   """

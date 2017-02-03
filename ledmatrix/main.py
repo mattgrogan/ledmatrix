@@ -24,9 +24,6 @@ if __name__ == "__main__":
 
   controller = Main_Controller()
 
-  #controller.add_menu_item(Clock(MATRIX_WIDTH, MATRIX_HEIGHT))
-
-  # controller.add_menu_item(Countdown(MATRIX_WIDTH, MATRIX_HEIGHT))
   # controller.add_menu_item(Pattern_Sine(MATRIX_WIDTH, MATRIX_HEIGHT))
   # controller.add_menu_item(Pattern_Munch(MATRIX_WIDTH, MATRIX_HEIGHT))
   # controller.add_menu_item(Pattern_Fire(MATRIX_WIDTH, MATRIX_HEIGHT))
@@ -41,6 +38,7 @@ if __name__ == "__main__":
 
   dev = controller.matrix
 
+  controller.items.append("Fire", Pattern_Fire(dev))
   controller.items.append("GIF", Gif_Playlist(
       dev, GENGIFS_FOLDER, timeout_ms=10000))
   controller.items.append("Clock", Clock(dev, station="KLGA"))
