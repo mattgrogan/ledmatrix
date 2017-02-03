@@ -16,13 +16,17 @@ class Device(object):
     self.bounding_box = (0, 0, self.width - 1, self.height - 1)
     self.mode = mode
 
+    self.image = Image.new(self.mode, self.size)
+
   def display(self, image):
 
     raise NotImplementedError()
 
   def clear(self):
 
-    self.display(Image.new(self.mode, self.size))
+    self.image = Image.new(self.mode, self.size)
+
+    self.display()
 
 
 class RGB_Matrix(Device):
@@ -38,9 +42,9 @@ class RGB_Matrix(Device):
     from rgbmatrix import Adafruit_RGBmatrix
     self._matrix = Adafruit_RGBmatrix(32, 1)
 
-  def display(self, image):
+  def display(self):
 
-    self._matrix.SetImage(image.im.id)
+    self._matrix.SetImage(self.image.im.id)
 
   def clear(self):
 
@@ -70,17 +74,17 @@ class Tk_Image(Device):
 
     self.capabilities(MATRIX_WIDTH, MATRIX_HEIGHT, mode="RGB")
 
-  def display(self, image):
+  def display(self):
 
     import PIL.ImageTk as ImageTk
 
     w = self.width * self._zoom
     h = self.height * self._zoom
 
-    image = image.resize((w, h))
-    image = ImageTk.PhotoImage(image)
+    im = self.image
 
-    self._label.image = image
-    self._label.configure(image=image)
+    im = im.resize((w, h))
+    im = ImageTk.PhotoImage(im)
 
-Tk_Image.set_image = Tk_Image.display
+    self._label.image = im
+    self._label.configure(image=im)

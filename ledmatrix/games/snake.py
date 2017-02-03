@@ -1,18 +1,23 @@
 import copy
 import random
 import time
+from canvas import canvas
 from collections import deque
 
 import randomcolor
 from PIL import Image, ImageColor
 
+from drawable import Drawable
 
-class Game_Snake(object):
 
-  def __init__(self, width, height):
+class Game_Snake(Drawable):
 
-    self.width = width
-    self.height = height
+  def __init__(self, device):
+
+    self.device = device
+
+    self.width = device.width
+    self.height = device.height
 
     self.direction = "RIGHT"
     self.snakehead = None
@@ -34,13 +39,9 @@ class Game_Snake(object):
     self.image = None
     self.pix = None
 
-  def clear_screen(self):
-    self.image = Image.new("RGB", (self.width, self.height))
-    self.pix = self.image.load()
-
   def reset(self):
 
-    self.clear_screen()
+    self.device.clear()
     self.new_apple()
 
   def new_apple(self):
@@ -50,11 +51,13 @@ class Game_Snake(object):
     self.apple_color = rand_color.generate(hue="green", luminosity="light")[0]
     self.apple_color = ImageColor.getrgb(self.apple_color)
 
+    pix = self.device.image.load()
+
     while True:
       self.apple[0] = random.randint(0, self.width - 1)
       self.apple[1] = random.randint(0, self.height - 1)
 
-      current_color = self.pix[self.apple[0], self.apple[1]]
+      current_color = pix[self.apple[0], self.apple[1]]
 
       # Make sure we're not drawing over anything
       if current_color == self.black_color:
@@ -99,7 +102,9 @@ class Game_Snake(object):
     elif new_snakehead[1] < 0:
       new_snakehead[1] = self.height - 1
 
-    color = self.pix[new_snakehead[0], new_snakehead[1]]
+    pix = self.device.image.load()
+
+    color = pix[new_snakehead[0], new_snakehead[1]]
 
     if color == self.snake_color:
       self.die()
@@ -141,11 +146,14 @@ class Game_Snake(object):
 
     self.update()
 
-    self.clear_screen()
+    self.device.clear()
+    pix = self.device.image.load()
 
-    self.pix[self.apple[0], self.apple[1]] = self.apple_color
+    pix[self.apple[0], self.apple[1]] = self.apple_color
 
     for point in list(self.segments):
-      self.pix[point[0], point[1]] = self.snake_color
+      pix[point[0], point[1]] = self.snake_color
 
-    return self.image, 100
+    self.device.display()
+
+    return 100

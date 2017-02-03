@@ -30,16 +30,9 @@ class Menu(object):
 
     return self._items[self.current_item_name]
 
-  def move(self, step=None, name=None):
+  def move(self, step):
 
-    if step is not None and name is not None:
-      raise ValueError("Specify step or name, not both")
-
-    if step is not None:
-      self._current_index = (self._current_index + step) % len(self._keys)
-
-    if name is not None:
-      self._current_index = self._keys.index(name)
+    self._current_index = (self._current_index + step) % len(self._keys)
 
   def next(self):
 

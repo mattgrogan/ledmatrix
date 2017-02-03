@@ -44,5 +44,6 @@ if __name__ == "__main__":
     controller.items.add_item("Clock", Clock(
         controller.matrix, station="KLGA"))
     controller.items.add_item("Countdown", Countdown(controller.matrix))
+    controller.items.add_item("Snake", Game_Snake(controller.matrix))
 
   ui.mainloop()

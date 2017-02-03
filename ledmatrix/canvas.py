@@ -22,7 +22,8 @@ class canvas(object):
     if type is None:
 
       # do the drawing onto the device
-      self.device.display(self.image)
+      self.device.image = self.image
+      self.device.display()
 
-    del self.draw   # Tidy up the resources
+    del self.draw
     return False
