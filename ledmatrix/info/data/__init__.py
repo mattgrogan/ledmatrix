@@ -1,1 +1,1 @@
-from current_conditions import Current_Conditions
+from current_conditions import NOAA_Current_Observation

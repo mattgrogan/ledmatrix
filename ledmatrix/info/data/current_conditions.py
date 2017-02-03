@@ -1,58 +1,119 @@
-from __future__ import division
-
 import datetime
 import rfc822
 import urllib2
 import xml.etree.ElementTree as ET
 
-CURRENT_WEATHER_URL = "http://w1.weather.gov/xml/current_obs/KLGA.xml"
-REFRESH_SECS = 60 * 60  # Refresh every sixty minutes
-# ATTEMPT_TIMEOUT = 60 * 10 # Don't refresh more than every 10 mins
 
+class NOAA_Current_Observation(object):
+  """
+  Represents a connection to weather.gov
 
-class Current_Conditions(object):
+  This class handles connections to weather.gov for the current observation. It
+  attempts to behave by limiting the number of possible connection attempts.
 
-  def __init__(self):
+  :param string url:
+    The URL To connect to. Example:
+    "http://w1.weather.gov/xml/current_obs/KLGA.xml"
 
-    self._temp_f = None
-    self._weather = None
-    self._last_updated = None
+  :param int pickup_period:
+    The number of seconds to wait for the next observation. The duration starts
+    at the last observation time from weather.gov. Defaults to 60 minutes.
 
-  @property
-  def data_expired(self):
-    """ Return true if the data are expired """
+  :param int timeout:
+    The number of seconds to timeout after the last connection attempt. Defaults
+    to 10 minutes.
+  """
 
-    if self._last_updated is None:
-      return True
+  def __init__(self, station, pickup_period=60 * 60, timeout=10 * 60):
 
-    return self.last_updated > REFRESH_SECS
+    self.station = station
+    self.url = "http://w1.weather.gov/xml/current_obs/%s.xml" % station
+    self.pickup_period = pickup_period
+    self.timeout = timeout
 
-  @property
-  def temp_f(self):
-    """ Return the temperature in fahrenheit """
+    self.current_obs = {}   # Dict to hold observation data
+    self._last_observation = None  # Time of the last observation from XML
+    self._last_attempt = None      # Time of the last connection attempt
 
-    self.update_weather()
-    return self._temp_f
+  def __getitem__(self, name):
+    """
+    Checks for new data and returns the appropriate value.
+    """
 
-  @property
-  def weather(self):
+    self.update()
 
-    self.update_weather()
-    return self._weather
-
-  @property
-  def last_updated(self):
-    """ How many seconds since the last update """
-
-    if self._last_updated is None:
+    if name in self.current_obs.keys():
+      return self.current_obs[name]
+    else:
       return None
 
-    now = datetime.datetime.now()
-    then = self._last_updated
+  @property
+  def _timeout_expired(self):
+    """
+    Determines if the timeout since last attempt has expired.
+    """
 
-    secs_since_updated = (now - then).total_seconds()
+    # This is the first attempt
+    if self._last_attempt is None:
+      return True
 
-    return round(secs_since_updated)
+    # How many seconds since the last attempt?
+    delta = (datetime.datetime.now() - self._last_attempt).total_seconds()
+
+    return delta > self.timeout
+
+  @property
+  def _pickup_expired(self):
+    """
+    Determines if the pickup time has expired
+    """
+
+    if self._last_observation is None:
+      return True
+
+    # How many seconds since the last attempt?
+    delta = (datetime.datetime.now() - self._last_observation).total_seconds()
+
+    return delta > self.pickup_period
+
+  def _fetch_data(self):
+
+    # Attempt a connection
+    try:
+      self._last_attempt = datetime.datetime.now()
+      s = urllib2.urlopen(self.url)
+    except urllib2.URLError as e:
+      print "Unable to update current conditions: %s" % e.reason
+      return False
+
+    # Parse the data
+    root = ET.fromstring(s.read())
+    for child in root:
+      self.current_obs[child.tag] = child.text
+
+    # Save the observation time
+    last_obs = self.current_obs["observation_time_rfc822"]
+    self._last_observation = self.convert_rfc822(last_obs)
+
+    return True
+
+  def update(self, force=False):
+    """
+    Obtains the latest observation from weather.gov.
+
+    :param bool force:
+      Forces a connection to weather.gov irrespective of pickup period and
+      timeouts. Defaults to False.
+    """
+
+    # Check for good behavior
+    if (self._pickup_expired and self._timeout_expired) or force:
+      print "Updating weather..."
+      self._fetch_data()
+      return True
+    else:
+      print "Skipping weather update."
+      return False
 
   def convert_rfc822(self, date_string):
     """ Helper to convert rfc822 to datetime object """
@@ -62,37 +123,3 @@ class Current_Conditions(object):
     date_object = datetime.datetime.fromtimestamp(date_object)
 
     return date_object
-
-  def update_weather(self):
-
-    if self.data_expired:
-
-      print "Updating weather"
-
-      # Pull the XML from NOAA
-      s = urllib2.urlopen(CURRENT_WEATHER_URL)
-      root = ET.fromstring(s.read())
-
-      # Extract interesting variables
-
-      self._temp_f = float(root.find("temp_f").text)
-      self._weather = root.find("weather").text
-
-      last_updated = root.find("observation_time_rfc822").text
-      self._last_updated = self.convert_rfc822(last_updated)
-
-      print "Finished updating weather"
-
-      # print (datetime.datetime.now() - last_updated).total_seconds() / 60
-
-  def build_string(self):
-    """ Put all this into a sensible string """
-
-    return "LGA %sF %s %im AGO " % (self.temp_f, self.weather, (self.last_updated / 60))
-
-
-if __name__ == "__main__":
-  cc = Current_Conditions()
-  print cc.temp_f
-  print cc.weather
-  print "Updated %i minutes ago" % (cc.last_updated / 60)

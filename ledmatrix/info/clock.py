@@ -4,7 +4,7 @@ import time
 import randomcolor
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
-from data import Current_Conditions
+from data import NOAA_Current_Observation
 
 FONTFILE = os.path.join(os.path.dirname(__file__), "../../fonts/RPGSystem.ttf")
 FONTSIZE = 16
@@ -32,7 +32,7 @@ class Clock(object):
 
     self.is_finished = False
 
-    self.cc = Current_Conditions()
+    self.cc = NOAA_Current_Observation("KLGA")
 
   def randomize_colors(self, new_time=None, force=False):
     """ Pick some random colors """
@@ -66,7 +66,7 @@ class Clock(object):
     draw.text((xloc, 2), time_str, font=self.small_font, fill=self.time_color)
 
     day_str = "%s  %iF" % (time.strftime(
-        "%a", time.localtime()), int(self.cc.temp_f))
+        "%a", time.localtime()), int(float(self.cc["temp_f"])))
     draw.text((1, 12), day_str, font=self.small_font, fill=self.date_color)
 
     date_str = time.strftime("%b %d", time.localtime())
