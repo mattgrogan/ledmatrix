@@ -24,16 +24,15 @@ if __name__ == "__main__":
 
   controller = Main_Controller()
 
-  controller.add_menu_item(Clock(MATRIX_WIDTH, MATRIX_HEIGHT))
+  #controller.add_menu_item(Clock(MATRIX_WIDTH, MATRIX_HEIGHT))
 
-  controller.add_menu_item(Countdown(MATRIX_WIDTH, MATRIX_HEIGHT))
-
-  controller.add_menu_item(Pattern_Sine(MATRIX_WIDTH, MATRIX_HEIGHT))
-  controller.add_menu_item(Gif_Playlist(XMAS_FOLDER, timeout_ms=10000))
-  controller.add_menu_item(Gif_Playlist(GENGIFS_FOLDER, timeout_ms=10000))
-  controller.add_menu_item(Pattern_Munch(MATRIX_WIDTH, MATRIX_HEIGHT))
-  controller.add_menu_item(Game_Snake(MATRIX_WIDTH, MATRIX_HEIGHT))
-  controller.add_menu_item(Pattern_Fire(MATRIX_WIDTH, MATRIX_HEIGHT))
+  # controller.add_menu_item(Countdown(MATRIX_WIDTH, MATRIX_HEIGHT))
+  # controller.add_menu_item(Pattern_Sine(MATRIX_WIDTH, MATRIX_HEIGHT))
+  # controller.add_menu_item(Gif_Playlist(XMAS_FOLDER, timeout_ms=10000))
+  # controller.add_menu_item(Gif_Playlist(GENGIFS_FOLDER, timeout_ms=10000))
+  # controller.add_menu_item(Pattern_Munch(MATRIX_WIDTH, MATRIX_HEIGHT))
+  # controller.add_menu_item(Game_Snake(MATRIX_WIDTH, MATRIX_HEIGHT))
+  # controller.add_menu_item(Pattern_Fire(MATRIX_WIDTH, MATRIX_HEIGHT))
 
   # Running on the Raspberry Pi
   if args.output == "rpi":
@@ -42,5 +41,7 @@ if __name__ == "__main__":
   elif args.output == "gui":
     from ui.gui import Gui
     ui = Gui(controller)
+    controller.add_menu_item(Clock(controller.matrix))
+    controller.add_menu_item(Countdown(controller.matrix))
 
   ui.mainloop()
