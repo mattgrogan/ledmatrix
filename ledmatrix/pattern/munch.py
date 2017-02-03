@@ -4,10 +4,11 @@ from PIL import Image, ImageColor
 
 class Pattern_Munch(object):
 
-  def __init__(self, width, height):
+  def __init__(self, device):
 
-    self.width = width
-    self.height = height
+    self.device = device
+    self.width = device.width
+    self.height = device.height
 
     self.count = 0
     self.dir = 1
@@ -26,9 +27,6 @@ class Pattern_Munch(object):
     self.colors += list(green.range_to(purple, 100))
     self.colors += list(purple.range_to(blue, 100))
 
-    self.image = Image.new("RGB", (self.width, self.height))
-    self.pix = self.image.load()
-
     self.maxc = 0
 
   def handle_input(self, command):
@@ -36,16 +34,19 @@ class Pattern_Munch(object):
 
   def draw_frame(self):
 
+    self.device.clear()
+    pix = self.device.image.load()
+
     for x in range(self.width):
       for y in range(self.height):
         if (x ^ y ^ self.flip) < self.count:
           color_index = (self.generation % len(self.colors)) - 1
           color_index = (((x ^ y) << 3) + self.generation) % len(self.colors)
           c = self.colors[color_index]
-          self.pix[x, y] = (
+          pix[x, y] = (
               int(c.red * 255), int(c.green * 255), int(c.blue * 255))
         else:
-          self.pix[x, y] = (0, 0, 0)
+          pix[x, y] = (0, 0, 0)
 
     self.count += self.dir
 
@@ -60,4 +61,6 @@ class Pattern_Munch(object):
 
     self.generation += 1
 
-    return self.image, 40
+    self.device.display()
+
+    return 10

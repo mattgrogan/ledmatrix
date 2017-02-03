@@ -26,7 +26,6 @@ if __name__ == "__main__":
 
   # controller.add_menu_item(Pattern_Sine(MATRIX_WIDTH, MATRIX_HEIGHT))
   # controller.add_menu_item(Pattern_Munch(MATRIX_WIDTH, MATRIX_HEIGHT))
-  # controller.add_menu_item(Pattern_Fire(MATRIX_WIDTH, MATRIX_HEIGHT))
 
   # Running on the Raspberry Pi
   if args.output == "rpi":
@@ -38,6 +37,7 @@ if __name__ == "__main__":
 
   dev = controller.matrix
 
+  controller.items.append("Munch", Pattern_Munch(dev))
   controller.items.append("Fire", Pattern_Fire(dev))
   controller.items.append("GIF", Gif_Playlist(
       dev, GENGIFS_FOLDER, timeout_ms=10000))
