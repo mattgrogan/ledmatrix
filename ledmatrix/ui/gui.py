@@ -83,23 +83,9 @@ class Gui(tk.Tk):
 
     #self.image = Tk_Image(self.img_label, zoom=10)
 
-    self.controller.matrix = Tk_Image(label=self.img_label, zoom=10)
+    self.controller.matrix = Tk_Image(label=self.img_label, zoom=16)
 
     self.after(0, self.start)
-
-  def set_image(self, image):
-
-    image = image.resize((GUI_WIDTH, GUI_HEIGHT))
-    image = ImageTk.PhotoImage(image)
-
-    self.img_label.image = image
-    self.img_label.configure(image=image)
-    self.update()
-
-  def clear(self):
-    self.img_label.image = self.blank_image
-    self.img_label.configure(image=self.blank_image)
-    self.update()
 
   def start(self):
 
