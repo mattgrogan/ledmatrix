@@ -12,6 +12,10 @@ class Menu(object):
     self._keys = []
     self._items = {}
 
+  def __len__(self):
+
+    return len(self._keys)
+
   def add_item(self, name, item):
 
     self._keys.append(name)
@@ -20,7 +24,7 @@ class Menu(object):
   @property
   def current_item_name(self):
 
-    if len(self._keys) == 0:
+    if len(self) == 0:
       raise ValueError("You must add menu items to the controller")
 
     return self._keys[self._current_index]
@@ -41,6 +45,8 @@ class Menu(object):
   def prev(self):
 
     self.move(-1)
+
+Menu.append = Menu.add_item
 
 
 class Main_Controller(object):

@@ -3,6 +3,7 @@ import os
 import random
 
 from gif_player import Gif_Player
+from main_controller import Menu
 
 TIMEOUT_MS = 1000
 
@@ -10,26 +11,22 @@ TIMEOUT_MS = 1000
 class Gif_Playlist(object):
   """ Playlist of all Gif Files """
 
-  def __init__(self, folder, playmode="RANDOM", timeout_ms=TIMEOUT_MS):
+  def __init__(self, device, folder, timeout_ms=TIMEOUT_MS):
     """ Create a playlist of all files in the folder """
 
-    self.folder = folder
-    self.playmode = playmode  # "RANDOM" "NORMAL"
-    self.timeout_ms = timeout_ms
+    self.device = device
 
-    # Store all the generated items
-    self.items = []
-    self.current_index = 0
+    self.folder = folder
+    self.timeout_ms = timeout_ms
+    self.items = Menu()
 
     self.load_items()
-
-    self.current_item = self.items[self.current_index]
 
   @property
   def is_finished(self):
     """ Is the current item finished playing? """
 
-    return self.current_item.is_finished
+    return self.item.current_item.is_finished
 
   def load_items(self):
     """ Load all items from a folder """
@@ -38,7 +35,7 @@ class Gif_Playlist(object):
         self.folder, '*.gif')) if os.path.isfile(os.path.join(self.folder, name))]
 
     for filename in files:
-      self.items.append(Gif_Player(filename))
+      self.items.append(filename, Gif_Player(filename))
 
     if len(self.items) == 0:
       raise ValueError("No GIF images found in %s" % self.folder)
@@ -46,36 +43,22 @@ class Gif_Playlist(object):
   def handle_input(self, command):
 
     if command == "LEFT":
-      self.move(1)
+      self.items.next()
+      self.items.current_item.start()
     elif command == "RIGHT":
-      self.move(-1)
-    elif command == "ENTER":
-      self.move_random()
-
-  def move(self, step=1):
-    """ Move to next image """
-
-    self.current_index += step
-
-    if self.current_index >= len(self.items):
-      self.current_index = 0
-    elif self.current_index < 0:
-      self.current_index = len(self.items) - 1
-
-    self.current_item = self.items[self.current_index]
-    self.current_item.start(timeout_ms=self.timeout_ms)
-
-  def move_random(self):
-    """ Find a random gif image """
-
-    self.current_index = random.randint(0, len(self.items) - 1)
-    self.current_item = self.items[self.current_index]
-    self.current_item.start(timeout_ms=self.timeout_ms)
+      self.items.prev()
+      self.items.current_item.start()
 
   def draw_frame(self):
     """ Draw the frame of the current image """
 
-    if self.playmode == "RANDOM" and self.current_item.is_finished:
-      self.move_random()
+    if self.items.current_item.is_finished:
+      self.items.next()
+      self.items.current_item.start()
 
-    return self.current_item.draw_frame()
+    im, dur = self.items.current_item.draw_frame()
+
+    self.device.image = im
+    self.device.display()
+
+    return dur
