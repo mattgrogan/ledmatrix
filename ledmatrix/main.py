@@ -41,7 +41,7 @@ if __name__ == "__main__":
   elif args.output == "gui":
     from ui.gui import Gui
     ui = Gui(controller)
-    controller.add_menu_item(Clock(controller.matrix))
+    controller.add_menu_item(Clock(controller.matrix, station="KLGA"))
     controller.add_menu_item(Countdown(controller.matrix))
 
   ui.mainloop()

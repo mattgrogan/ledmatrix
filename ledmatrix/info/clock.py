@@ -1,50 +1,82 @@
-import os
 import time
 from canvas import canvas
 
 import randomcolor
-from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 from data import NOAA_Current_Observation
-
-FONTFILE = os.path.join(os.path.dirname(__file__), "../../fonts/RPGSystem.ttf")
-FONTSIZE = 16
-
-SMALLFONT = os.path.join(os.path.dirname(
-    __file__), "../../fonts/small_pixel.ttf")
-SMALLFONTSIZE = 8
+from drawable import Drawable
 
 
-class Clock(object):
-  """ Show the time and date """
+class Clock(Drawable):
+  """
+  The Clock will show the time, date, and temperature.
 
-  def __init__(self, device):
-    """ Initialize the player """
+  :param Device device:
+    The device to write to.
+
+  :param string station:
+    NOAA weather station to obtain temperature from.
+  """
+
+  def __init__(self, device, station=None):
 
     self.device = device
+    self.station = station
+    self._cc = None         # Hold the current conditions
 
-    self.font = ImageFont.truetype(FONTFILE, FONTSIZE)
-    self.small_font = ImageFont.truetype(SMALLFONT, SMALLFONTSIZE)
+    self._col = []
 
-    self.time_color = None
-    self.date_color = None
-    self.old_time = None
+    self.prev_time = None
 
-    self.is_finished = False
+    if self.station is not None:
+      self._cc = NOAA_Current_Observation(station)
 
-    self.cc = NOAA_Current_Observation("KLGA")
+  @property
+  def time(self):
+    """ Return the time in HH:MM format """
 
-  def randomize_colors(self, new_time=None, force=False):
+    return time.strftime("%I:%M", time.localtime()).lstrip("0")
+
+  @property
+  def day(self):
+    """ Return the date in DDD format """
+
+    return time.strftime("%a", time.localtime())
+
+  @property
+  def date(self):
+    """ Return the date in MMM DD format """
+
+    return time.strftime("%b %d", time.localtime())
+
+  @property
+  def temp(self):
+    """ Return the temperature if available """
+
+    # Are we checking temperature?
+    if self._cc is None:
+      return ""
+
+    temp = self._cc["temp_f"]
+
+    if temp is not None:
+      temp = "%iF" % int(float(temp))  # Drop the decimal point
+    else:
+      temp = ""
+
+    return temp
+
+  def randomize_colors(self, time=None, force=False):
     """ Pick some random colors """
 
-    if new_time != self.old_time or force:
+    # Only change the colors if time has changed, otherwise
+    # its distracting
+    if time != self.prev_time or force:
 
       rand_color = randomcolor.RandomColor()
+      self._col = rand_color.generate(count=3)
 
-      self.time_color = rand_color.generate()[0]
-      self.date_color = rand_color.generate()[0]
-
-      self.old_time = new_time
+      self.prev_time = time
 
   def handle_input(self, command):
 
@@ -56,20 +88,25 @@ class Clock(object):
 
     with canvas(self.device) as draw:
 
-      time_str = time.strftime("%I:%M", time.localtime()).lstrip("0")
-      self.randomize_colors(time_str)
+      # Get new colors if the time has changed
+      self.randomize_colors(self.time)
 
-      w, h = self.small_font.getsize(time_str)
+      # Center the time
+      w, h = self.small_font.getsize(self.time)
       xloc = (self.device.width - w) / 2
 
-      draw.text((xloc, 2), time_str, font=self.small_font,
-                fill=self.time_color)
+      # Draw the time
+      draw.text((xloc, 2), self.time, font=self.small_font, fill=self._col[0])
 
-      day_str = "%s  %iF" % (time.strftime(
-          "%a", time.localtime()), int(float(self.cc["temp_f"])))
-      draw.text((1, 12), day_str, font=self.small_font, fill=self.date_color)
+      # Draw the day
+      w, h = self.small_font.getsize(self.day)
+      draw.text((1, 12), self.day, font=self.small_font, fill=self._col[1])
 
-      date_str = time.strftime("%b %d", time.localtime())
-      draw.text((1, 20), date_str, font=self.small_font, fill=self.date_color)
+      # Draw the temperature on the same line
+      draw.text((w + 5, 12), self.temp,
+                font=self.small_font, fill=self._col[2])
+
+      # Draw the date
+      draw.text((1, 20), self.date, font=self.small_font, fill=self._col[1])
 
     return 1000
