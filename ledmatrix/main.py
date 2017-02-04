@@ -37,12 +37,13 @@ if __name__ == "__main__":
 
   dev = controller.matrix
 
+  controller.items.append("Snake", Game_Snake(dev))
+
   controller.items.append("Munch", Pattern_Munch(dev))
   controller.items.append("Fire", Pattern_Fire(dev))
   controller.items.append("GIF", Gif_Playlist(
       dev, GENGIFS_FOLDER, timeout_ms=10000))
   controller.items.append("Clock", Clock(dev, station="KLGA"))
   controller.items.append("Countdown", Countdown(dev))
-  controller.items.append("Snake", Game_Snake(dev))
 
   ui.mainloop()

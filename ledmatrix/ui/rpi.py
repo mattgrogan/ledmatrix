@@ -13,8 +13,9 @@ class Rpi_UI(object):
     self.controller = controller
 
     # TODO: Use the new device types
-    from matrix_adapter import Adafruit_Matrix_Adapter
-    self.controller.matrix = Adafruit_Matrix_Adapter()
+    #from matrix_adapter import Adafruit_Matrix_Adapter
+    from device import RGB_Matrix
+    self.controller.matrix = RGB_Matrix()
 
     #from remote_control import Remote_Control
     #self.rc = Remote_Control()
