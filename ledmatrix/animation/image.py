@@ -28,9 +28,6 @@ class Photo_Image(Drawable):
     self.x_speed = 1.00
     self.y_speed = 1.60
 
-    self._mode = "AUTOMATIC"
-    self._mode_ticks = 0
-
   def update_position(self):
 
     x, y = self._position
@@ -51,9 +48,6 @@ class Photo_Image(Drawable):
 
   def handle_input(self, command):
 
-    self._mode = "MANUAL"
-    self._mode_ticks = 0
-
     x, y = self._position
 
     if command == "UP":
@@ -69,13 +63,7 @@ class Photo_Image(Drawable):
 
   def draw_frame(self):
 
-    self._mode_ticks += 1
-
-    if self._mode_ticks > MODE_LIMIT:
-      self._mode = "AUTOMATIC"
-
-    if self._mode == "AUTOMATIC":
-      self.update_position()
+    self.update_position()
 
     self.device.set_position(self._position)
     self.device.display()

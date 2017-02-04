@@ -44,7 +44,7 @@ class LEDMatrix_Controller(object):
 
     if self.is_running:
       # self.matrix.clear()
-      pass
+      self.item.current_item.device.clear()
       # TODO: This is a bug. Make sure the controller
       # can tell the ui to clear the matrix.
 
