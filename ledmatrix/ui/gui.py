@@ -17,7 +17,7 @@ class Gui(tk.Tk):
 
     self.controller = controller
 
-    from remote_control import Mock_Remote_Control
+    #from remote_control import Mock_Remote_Control
     from zmq_control import ZeroMQ_Control
     self.rc = ZeroMQ_Control()
     self.rc.register(u"KEY_STOP", controller, controller.handle_mode)

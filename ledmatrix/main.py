@@ -2,7 +2,7 @@ import argparse
 import os
 import time
 
-from animation import Gif_Playlist
+from animation import Gif_Playlist, Photo_Image
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from info import Clock, Countdown
@@ -30,6 +30,8 @@ def main():
     ui = Gui(controller)
 
   dev = ui.matrix
+
+  controller.items.append("Image", Photo_Image(dev))
 
   controller.items.append("Snake", Game_Snake(dev))
 

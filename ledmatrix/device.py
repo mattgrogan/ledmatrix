@@ -27,6 +27,44 @@ class Device(object):
     self.image = Image.new(self.mode, self.size)
 
 
+class Viewport(Device):
+  """
+  Virtual device which can handle any size image
+  """
+
+  def __init__(self, device, width, height, image=None):
+
+    self.capabilities(width, height, device.mode)
+    self._device = device
+    self._position = (0, 0)
+
+    if image is not None:
+      self.image = image.resize((width, height), Image.ANTIALIAS)
+      assert self.image.mode == self._device.mode
+
+  def set_position(self, xy):
+    self._position = xy
+    self.display()
+
+  def display(self):
+
+    im = self.image.crop(box=self._crop_box())
+    self._device.image = im
+    self._device.display()
+    del im
+
+  def _crop_box(self):
+
+    (left, top) = self._position
+    right = left + self._device.width
+    bottom = top + self._device.height
+
+    assert(0 <= left <= right <= self.width)
+    assert(0 <= top <= bottom <= self.height)
+
+    return (left, top, right, bottom)
+
+
 class RGB_Matrix(Device):
   """
   Handles output to the Adafruit RGB Matrix
@@ -86,3 +124,5 @@ class Tk_Image(Device):
 
     self._label.image = im
     self._label.configure(image=im)
+
+    del im
