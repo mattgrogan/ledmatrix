@@ -43,7 +43,10 @@ class LEDMatrix_Controller(object):
     """ toggle self.is_running """
 
     if self.is_running:
-      self.matrix.clear()
+      # self.matrix.clear()
+      pass
+      # TODO: This is a bug. Make sure the controller
+      # can tell the ui to clear the matrix.
 
     self.is_running = not self.is_running
 
