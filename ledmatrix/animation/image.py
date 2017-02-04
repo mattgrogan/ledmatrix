@@ -14,7 +14,7 @@ class Photo_Image(Drawable):
 
   def __init__(self, device):
 
-    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Virmalised_18.03.15_%284%29.jpg/493px-Virmalised_18.03.15_%284%29.jpg"
+    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Portrait_of_young_man_by_Sandro_Botticelli_-_Louvre.jpg/439px-Portrait_of_young_man_by_Sandro_Botticelli_-_Louvre.jpg"
     im = Image.open(StringIO(urllib2.urlopen(url).read()))
 
     # im = Image.open("C:\Users\Matt\Documents\docs\photos\unnamed.jpg")
