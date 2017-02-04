@@ -42,7 +42,7 @@ class LEDMatrix_Controller(object):
   def toggle_running(self):
     """ toggle self.is_running """
 
-    if self.is_running():
+    if self.is_running:
       self.matrix.clear()
 
     self.is_running = not self.is_running
