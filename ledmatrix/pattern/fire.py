@@ -30,7 +30,7 @@ class Pattern_Fire(object):
     # COOLING: How much does the air cool as it rises?
     # Less cooling = taller flames.  More cooling = shorter flames.
     # Default 55, suggested range 20-100
-    self.cooling = 70
+    self.cooling = 100
 
     # SPARKING: What chance (out of 255) is there that a new spark will be lit?
     # Higher chance = more roaring fire.  Lower chance = more flickery fire.

@@ -1,8 +1,10 @@
 from colour import Color
 from PIL import Image, ImageColor
+from canvas import canvas
+from drawable import Drawable
 
 
-class Pattern_Munch(object):
+class Pattern_Munch(Drawable):
 
   def __init__(self, device):
 
@@ -29,38 +31,32 @@ class Pattern_Munch(object):
 
     self.maxc = 0
 
-  def handle_input(self, command):
-    pass
-
   def draw_frame(self):
 
-    self.device.clear()
-    pix = self.device.image.load()
+    with canvas(self.device) as draw:
 
-    for x in range(self.width):
-      for y in range(self.height):
-        if (x ^ y ^ self.flip) < self.count:
-          color_index = (self.generation % len(self.colors)) - 1
-          color_index = (((x ^ y) << 3) + self.generation) % len(self.colors)
-          c = self.colors[color_index]
-          pix[x, y] = (
-              int(c.red * 255), int(c.green * 255), int(c.blue * 255))
+      for x in range(self.width):
+        for y in range(self.height):
+          if (x ^ y ^ self.flip) < self.count:
+            color_index = (self.generation % len(self.colors)) - 1
+            color_index = (((x ^ y) << 3) + self.generation) % len(self.colors)
+            c = self.colors[color_index]
+            c = int(c.red * 255), int(c.green * 255), int(c.blue * 255)
+            draw.point((x,y), fill=c)
+          else:
+            draw.point((x,y), fill=(0, 0, 0))
+
+      self.count += self.dir
+
+      if self.count <= 0 or self.count >= self.width:
+        self.dir = -self.dir
+
+      if self.count <= 0:
+        if self.flip == 0:
+          self.flip = 31
         else:
-          pix[x, y] = (0, 0, 0)
+          self.flip = 0
 
-    self.count += self.dir
-
-    if self.count <= 0 or self.count >= self.width:
-      self.dir = -self.dir
-
-    if self.count <= 0:
-      if self.flip == 0:
-        self.flip = 31
-      else:
-        self.flip = 0
-
-    self.generation += 1
-
-    self.device.display()
+      self.generation += 1
 
     return 10
