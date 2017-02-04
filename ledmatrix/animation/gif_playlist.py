@@ -3,7 +3,7 @@ import os
 import random
 
 from gif_player import Gif_Player
-from main_controller import Menu
+from menu import Menu
 
 TIMEOUT_MS = 1000
 
