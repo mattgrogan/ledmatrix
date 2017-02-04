@@ -22,7 +22,7 @@ class Photo_Image(Drawable):
 
     x, y = im.size
 
-    self.device = Viewport(device, x, x, im)
+    self.device = Viewport(device, x, y, im)
 
     self._position = (0, 0)
     self.x_speed = 1.00
