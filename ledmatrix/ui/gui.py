@@ -16,7 +16,6 @@ class Gui(tk.Tk):
     tk.Tk.__init__(self, None, None)
 
     self.controller = controller
-    #self.controller.matrix = self
 
     from remote_control import Mock_Remote_Control
     from zmq_control import ZeroMQ_Control
@@ -81,9 +80,7 @@ class Gui(tk.Tk):
     self.img_label.image = self.blank_image
     self.img_label.grid(row=0, column=1, sticky=tk.E)
 
-    #self.image = Tk_Image(self.img_label, zoom=10)
-
-    self.controller.matrix = Tk_Image(label=self.img_label, zoom=16)
+    self.matrix = Tk_Image(label=self.img_label, zoom=16)
 
     self.after(0, self.start)
 

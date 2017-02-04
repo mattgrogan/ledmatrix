@@ -17,7 +17,7 @@ class Rpi_UI(object):
 
     # Set up the matrix
     from device import RGB_Matrix
-    self.controller.matrix = RGB_Matrix()
+    self.matrix = RGB_Matrix()
 
     # Handle control messages
     from zmq_control import ZeroMQ_Control

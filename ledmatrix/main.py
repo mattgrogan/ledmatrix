@@ -3,18 +3,16 @@ import os
 import time
 
 from animation import Gif_Playlist
+from controller import LEDMatrix_Controller
 from games import Game_Snake
 from info import Clock, Countdown
-from main_controller import Main_Controller
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
 
-MATRIX_WIDTH = 32
-MATRIX_HEIGHT = 32
 current_dir = os.path.dirname(os.path.abspath(__file__))
 GENGIFS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gifs/"))
-XMAS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/xmasgifs/"))
 
-if __name__ == "__main__":
+
+def main():
 
   parser = argparse.ArgumentParser(description="LED Matrix Animation")
   parser.add_argument("-output", required=False, choices=[
@@ -22,12 +20,8 @@ if __name__ == "__main__":
 
   args = parser.parse_args()
 
-  controller = Main_Controller()
+  controller = LEDMatrix_Controller()
 
-  # controller.add_menu_item(Pattern_Sine(MATRIX_WIDTH, MATRIX_HEIGHT))
-  # controller.add_menu_item(Pattern_Munch(MATRIX_WIDTH, MATRIX_HEIGHT))
-
-  # Running on the Raspberry Pi
   if args.output == "rpi":
     from ui.rpi import Rpi_UI
     ui = Rpi_UI(controller)
@@ -35,7 +29,7 @@ if __name__ == "__main__":
     from ui.gui import Gui
     ui = Gui(controller)
 
-  dev = controller.matrix
+  dev = ui.matrix
 
   controller.items.append("Snake", Game_Snake(dev))
 
@@ -47,3 +41,9 @@ if __name__ == "__main__":
   controller.items.append("Countdown", Countdown(dev))
 
   ui.mainloop()
+
+if __name__ == "__main__":
+  try:
+    main()
+  except KeyboardInterrupt:
+    pass
