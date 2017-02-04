@@ -10,8 +10,8 @@ class Device(object):
 
     assert mode in ["1", "RGB", "RGBA"]
 
-    self.height = width
-    self.width = height
+    self.width = width
+    self.height = height
     self.size = (self.width, self.height)
     self.bounding_box = (0, 0, self.width - 1, self.height - 1)
     self.mode = mode
@@ -39,7 +39,8 @@ class Viewport(Device):
     self._position = (0, 0)
 
     if image is not None:
-      self.image = image.resize((width, height), Image.ANTIALIAS)
+      #self.image = image.resize((width, height), Image.ANTIALIAS)
+      self.image = image
       assert self.image.mode == self._device.mode
 
   def set_position(self, xy):
@@ -59,6 +60,7 @@ class Viewport(Device):
   def display(self):
 
     im = self.image.crop(box=self.crop_box())
+    im.load() # Forces the crop
     self._device.image = im
     self._device.display()
     del im

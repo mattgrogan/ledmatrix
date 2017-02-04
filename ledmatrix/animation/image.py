@@ -14,7 +14,9 @@ class Photo_Image(Drawable):
 
   def __init__(self, device):
 
-    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Portrait_of_young_man_by_Sandro_Botticelli_-_Louvre.jpg/439px-Portrait_of_young_man_by_Sandro_Botticelli_-_Louvre.jpg"
+    #url = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Portrait_of_young_man_by_Sandro_Botticelli_-_Louvre.jpg/176px-Portrait_of_young_man_by_Sandro_Botticelli_-_Louvre.jpg"
+    #url = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/St_Vitus_Cathedral_-_Stained_glass_%28retouch%29.jpg/320px-St_Vitus_Cathedral_-_Stained_glass_%28retouch%29.jpg"
+    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Monumentvalley.jpg/320px-Monumentvalley.jpg"
     im = Image.open(StringIO(urllib2.urlopen(url).read()))
 
     # im = Image.open("C:\Users\Matt\Documents\docs\photos\unnamed.jpg")
@@ -24,9 +26,11 @@ class Photo_Image(Drawable):
 
     self.device = Viewport(device, x, y, im)
 
-    self._position = (0, 0)
-    self.x_speed = 1.00
-    self.y_speed = 1.60
+    self._position = (50, 50)
+    self.x_speed = 0.75
+    self.y_speed = 1.25
+
+    self.device.set_position(self._position)
 
   def update_position(self):
 
@@ -68,4 +72,4 @@ class Photo_Image(Drawable):
     self.device.set_position(self._position)
     self.device.display()
 
-    return 25
+    return 250
