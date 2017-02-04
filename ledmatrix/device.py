@@ -43,24 +43,34 @@ class Viewport(Device):
       assert self.image.mode == self._device.mode
 
   def set_position(self, xy):
-    self._position = xy
-    self.display()
+
+    x, y = self._position
+
+    # Do not set the position if it would force us off the screen.
+    (left, top, right, bottom) = self.crop_box(xy)
+
+    if 0 <= left <= right <= self.width:
+      x = xy[0]  # Allow x
+    if 0 <= top <= bottom <= self.height:
+      y = xy[1]
+
+    self._position = (x, y)
 
   def display(self):
 
-    im = self.image.crop(box=self._crop_box())
+    im = self.image.crop(box=self.crop_box())
     self._device.image = im
     self._device.display()
     del im
 
-  def _crop_box(self):
+  def crop_box(self, xy=None):
 
-    (left, top) = self._position
+    if xy is None:
+      xy = self._position
+
+    (left, top) = xy
     right = left + self._device.width
     bottom = top + self._device.height
-
-    assert(0 <= left <= right <= self.width)
-    assert(0 <= top <= bottom <= self.height)
 
     return (left, top, right, bottom)
 

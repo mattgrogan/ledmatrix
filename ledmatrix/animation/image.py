@@ -1,21 +1,58 @@
+import random
+import urllib2
+from StringIO import StringIO
+
 from PIL import Image
 
 from device import Viewport
 from drawable import Drawable
+
+MODE_LIMIT = 100
 
 
 class Photo_Image(Drawable):
 
   def __init__(self, device):
 
-    im = Image.open("C:\Users\Matt\Documents\docs\photos\unnamed.jpg")
+    url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Virmalised_18.03.15_%284%29.jpg/493px-Virmalised_18.03.15_%284%29.jpg"
+    im = Image.open(StringIO(urllib2.urlopen(url).read()))
+
+    # im = Image.open("C:\Users\Matt\Documents\docs\photos\unnamed.jpg")
     im = im.convert(device.mode)
 
-    self.device = Viewport(device, 128, 128, im)
+    x, y = im.size
+
+    self.device = Viewport(device, x, x, im)
 
     self._position = (0, 0)
+    self.x_speed = 1.00
+    self.y_speed = 1.60
+
+    self._mode = "AUTOMATIC"
+    self._mode_ticks = 0
+
+  def update_position(self):
+
+    x, y = self._position
+
+    # Move according to the speed
+    x = int(round(x + self.x_speed))
+    y = int(round(y + self.y_speed))
+
+    left, top, right, bottom = self.device.crop_box((x, y))
+
+    # Check for bouncing
+    if not 0 <= left <= right <= self.device.width:
+      self.x_speed *= -1
+    if not 0 <= top <= bottom <= self.device.height:
+      self.y_speed *= -1
+
+    self._position = (x, y)
 
   def handle_input(self, command):
+
+    self._mode = "MANUAL"
+    self._mode_ticks = 0
 
     x, y = self._position
 
@@ -31,6 +68,14 @@ class Photo_Image(Drawable):
     self._position = (x, y)
 
   def draw_frame(self):
+
+    self._mode_ticks += 1
+
+    if self._mode_ticks > MODE_LIMIT:
+      self._mode = "AUTOMATIC"
+
+    if self._mode == "AUTOMATIC":
+      self.update_position()
 
     self.device.set_position(self._position)
     self.device.display()
