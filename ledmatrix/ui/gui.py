@@ -3,6 +3,8 @@ import Tkinter as tk
 import PIL.Image as Image
 import PIL.ImageTk as ImageTk
 
+from device import Tk_Image
+
 GUI_WIDTH = 512
 GUI_HEIGHT = 512
 
@@ -14,9 +16,8 @@ class Gui(tk.Tk):
     tk.Tk.__init__(self, None, None)
 
     self.controller = controller
-    self.controller.matrix = self
 
-    from remote_control import Mock_Remote_Control
+    #from remote_control import Mock_Remote_Control
     from zmq_control import ZeroMQ_Control
     self.rc = ZeroMQ_Control()
     self.rc.register(u"KEY_STOP", controller, controller.handle_mode)
@@ -79,21 +80,9 @@ class Gui(tk.Tk):
     self.img_label.image = self.blank_image
     self.img_label.grid(row=0, column=1, sticky=tk.E)
 
+    self.matrix = Tk_Image(label=self.img_label, zoom=16)
+
     self.after(0, self.start)
-
-  def set_image(self, image):
-
-    image = image.resize((GUI_WIDTH, GUI_HEIGHT))
-    image = ImageTk.PhotoImage(image)
-
-    self.img_label.image = image
-    self.img_label.configure(image=image)
-    self.update()
-
-  def clear(self):
-    self.img_label.image = self.blank_image
-    self.img_label.configure(image=self.blank_image)
-    self.update()
 
   def start(self):
 

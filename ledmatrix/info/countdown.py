@@ -3,84 +3,82 @@ from __future__ import division
 import math
 import os
 import time
+from canvas import canvas
 
 import randomcolor
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
-FONTFILE = os.path.join(os.path.dirname(__file__), "../../fonts/RPGSystem.ttf")
-FONTSIZE = 16
-
-SMALLFONT = os.path.join(os.path.dirname(
-    __file__), "../../fonts/small_pixel.ttf")
-SMALLFONTSIZE = 8
+from drawable import Drawable
 
 
-class Countdown(object):
+class Countdown(Drawable):
   """ Show the time until NYE """
 
-  def __init__(self, width, height):
-    """ Initialize the player """
+  def __init__(self, device, until=time.time() + 600, msg=None):
+    """
+    Display a countdown. Fun for New Year's Eve!
 
-    self.width = width
-    self.height = height
+    :param Device device:
+      The device to write to.
 
-    self.font = ImageFont.truetype(FONTFILE, FONTSIZE)
-    self.small_font = ImageFont.truetype(SMALLFONT, SMALLFONTSIZE)
+    :param datetime/int/float until:
+      How long to count down. Should be struct_time in local time or seconds
+      since the epoch.
 
-    self.time_color = None
-    self.date_color = None
-    self.old_time = None
+      Example:
+        time.strptime("01 Jan 18", "%d %b %y")
+        time.time() + 600
 
-    self.is_finished = False
 
-  def randomize_colors(self, new_time=None, force=False):
-    """ Pick some random colors """
+    :param string msg:
+      Message to display afterwards
+    """
 
-    if new_time != self.old_time or force:
+    # TODO: Add the message!!!
 
-      rand_color = randomcolor.RandomColor()
+    self.device = device
+    self.until = None
+    self.msg = msg
 
-      self.time_color = rand_color.generate()[0]
-      self.date_color = rand_color.generate()[0]
+    if type(until) is time.struct_time:
+      # Convert to seconds from the epoch
+      self.until = time.mktime(until)
+    elif type(until) is int or type(until is float):
+      # Hopefully this is seconds since the epoch
+      self.until = until
+    else:
+      raise ValueError("Invalid value")
 
-      self.old_time = new_time
+    self._col = []
+    self.prev_time = None
 
-  def handle_input(self, command):
+    self.width = device.width
+    self.height = device.height
 
-    if command == "ENTER":
-      self.randomize_colors(force=True)
+  @property
+  def seconds_remaining(self):
+    """
+    Returns the number of seconds remaing in the countdown
+    """
 
-  def draw_frame(self):
-    """ Draw the time on the screen """
+    #nye = time.mktime(time.strptime("04 Feb 17", "%d %b %y"))
+    return self.until - time.mktime(time.localtime())
 
-    image = Image.new("RGB", (self.width, self.height))
-    draw = ImageDraw.Draw(image)
+  def draw_countdown(self):
+    """ Countdown has not expired yet """
 
-    nye = time.mktime(time.strptime("01 Jan 17", "%d %b %y"))
-    now = time.mktime(time.localtime())
-    countdown_secs = nye - now
+    with canvas(self.device) as draw:
 
-    green = "#88fc95"
-    red = "#f41f3c"
-    yellow = "#fce40f"
-    blue = "#709fea"
+      color1 = "#709fea"
+      color2 = "#88fc95"
 
-    color1 = blue
-    color2 = green
-
-    if countdown_secs > 0:
-
-      # rand_color = randomcolor.RandomColor()
-
-      hours = math.floor(countdown_secs / 60 / 60)
-      mins = math.floor(countdown_secs / 60)
-      secs = round(countdown_secs, 0)
+      hours = math.floor(self.seconds_remaining / 60 / 60)
+      mins = math.floor(self.seconds_remaining / 60)
+      secs = round(self.seconds_remaining, 0)
 
       hour_str = "%i hrs" % hours
       min_str = "%i min" % mins
       sec_str = "%i" % secs
-
-      # self.randomize_colors(min_str) # Change colors once per min
 
       draw.text((self.x(hour_str), 0), hour_str,
                 font=self.small_font, fill=color1)
@@ -91,14 +89,29 @@ class Countdown(object):
       draw.text((self.x("SECS"), 24), "SECS",
                 font=self.small_font, fill=color2)
 
-    else:
+  def draw_finale(self):
+
+    with canvas(self.device) as draw:
+
+      color1 = "#709fea"
+      color2 = "#88fc95"
+
       draw.text((self.x("HAPPY"), 0), "HAPPY",
                 font=self.small_font, fill=color2)
-      draw.text((self.x("NEW"), 8), "NEW", font=self.small_font, fill=color2)
+      draw.text((self.x("NEW"), 8), "NEW",
+                font=self.small_font, fill=color2)
       draw.text((self.x("YEAR!"), 16), "YEAR!",
                 font=self.small_font, fill=color2)
 
-    return image, 10
+  def draw_frame(self):
+    """ Draw the time on the screen """
+
+    if self.seconds_remaining > 0:
+      self.draw_countdown()
+    else:
+      self.draw_finale()
+
+    return 10
 
   def x(self, text):
 
