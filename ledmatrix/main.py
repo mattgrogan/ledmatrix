@@ -7,6 +7,7 @@ from controller import LEDMatrix_Controller
 from games import Game_Snake
 from info import Clock, Countdown
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
+from noc import Bouncing_Ball
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 GENGIFS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gifs/"))
@@ -31,7 +32,8 @@ def main():
 
   dev = ui.matrix
 
-  controller.items.append("Image", Photo_Image(dev))
+  #controller.items.append("Image", Photo_Image(dev))
+  controller.items.append("Bouncing Ball", Bouncing_Ball(dev))
 
   controller.items.append("Snake", Game_Snake(dev))
 
