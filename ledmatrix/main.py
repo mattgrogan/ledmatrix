@@ -33,7 +33,7 @@ def main():
   dev = ui.matrix
 
   #controller.items.append("Image", Photo_Image(dev))
-  controller.items.append("Bouncing Ball", Bouncing_Ball(dev))
+  #controller.items.append("Bouncing Ball", Bouncing_Ball(dev))
 
   controller.items.append("Snake", Game_Snake(dev))
 
