@@ -19,7 +19,7 @@ class SI7201(object):
 
     self.i2c_addr = i2c_addr
     self.bus = smbus.SMBus(1)
-    self.dbclient = influxdb.InfluxDBClient(dbhost, dbport, database=dbname)
+    self.dbclient = influxdb.InfluxDBClient(dbhost, dbport, database=dbname, timeout=10)
     self.last_check = None
 
   def write_byte(self, byte):
@@ -59,7 +59,9 @@ class SI7201(object):
     temp_f = None
     point = None
 
+    log.info("Taking humidity reading")
     h_data0, h_data1 = self.read_sensor_value(HUMIDITY_ADDR)
+    log.info("Finished humidity reading")
 
     # Convert the data
     if h_data0 is not None and h_data1 is not None:
@@ -67,7 +69,9 @@ class SI7201(object):
 
     time.sleep(0.3)
 
+    log.info("Taking temp reading")
     t_data0, t_data1 = self.read_sensor_value(TEMP_ADDR)
+    log.info("Finished temp reading")
 
     # Convert data
     if t_data0 is not None and t_data1 is not None:
@@ -85,17 +89,24 @@ class SI7201(object):
 
     if point is not None:
       try:
+	log.info("Trying to write to influxdb")
         self.dbclient.write_points([point])
       except requests.exceptions.ConnectionError:
         log.critical("Unable to connect to InfluxDB")
 
+    log.info("Finished with temp and humidity readings")
+
   def execute(self):
 
     if self.last_check is None:
+      log.info("Taking first temperature reading")
       delay_expired = True # This is the first run
     else:
       delay_expired = time.time() > (self.last_check + DELAY_SECS)
 
     if delay_expired:
+      log.info("Taking reading...")
       self.get_readings()
       self.last_check = time.time()
+    else:
+      log.info("Skipping reading")

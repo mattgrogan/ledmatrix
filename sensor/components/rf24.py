@@ -74,7 +74,11 @@ class RF24_Sensor(object):
 
   def execute(self):
 
+    log.info("Executing rf24")
+
     msg = self.get_msg()
 
     if len(msg) > 0:
       self.save_value(int(msg))
+
+    log.info("Exiting rf24")
