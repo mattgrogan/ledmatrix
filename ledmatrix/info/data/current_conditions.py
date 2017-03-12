@@ -112,7 +112,7 @@ class NOAA_Current_Observation(object):
       self._fetch_data()
       return True
     else:
-      #print "Skipping weather update."
+      # print "Skipping weather update."
       return False
 
   def convert_rfc822(self, date_string):
