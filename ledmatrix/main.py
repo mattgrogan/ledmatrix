@@ -31,7 +31,9 @@ def main():
 
   dev = ui.matrix
 
-  controller.items.append("Image", Photo_Image(dev))
+  #controller.items.append("Image", Photo_Image(dev))
+
+  controller.items.append("Clock", Clock(dev, station="KLGA"))
 
   controller.items.append("Snake", Game_Snake(dev))
 
@@ -39,7 +41,7 @@ def main():
   controller.items.append("Fire", Pattern_Fire(dev))
   controller.items.append("GIF", Gif_Playlist(
       dev, GENGIFS_FOLDER, timeout_ms=10000))
-  controller.items.append("Clock", Clock(dev, station="KLGA"))
+
   controller.items.append("Countdown", Countdown(dev))
 
   ui.mainloop()
