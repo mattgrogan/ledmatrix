@@ -2,7 +2,7 @@ import os
 
 from PIL import ImageFont
 
-FONT_FOLDER = os.path.join(os.path.dirname(__file__), "../fonts/%s.ttf")
+FONT_FOLDER = os.path.join(os.path.dirname(__file__), "../fonts/%s.otf")
 
 
 class Drawable(object):
@@ -16,7 +16,7 @@ class Drawable(object):
     Return a small font for use.
     """
 
-    return self.get_font("small_pixel", 8)
+    return self.get_font("Unibody8Pro-Regular", 8)
 
   def get_font(self, name, size):
     """
