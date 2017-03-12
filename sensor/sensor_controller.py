@@ -22,7 +22,7 @@ class Sensor_Controller(object):
 
       for sensor in self.sensors:
         try:
-	  log.info("Executing %s" % type(sensor))
+	  #log.info("Executing %s" % type(sensor))
           sensor.execute()
         except KeyboardInterrupt:
           sys.exit("Exiting...")

@@ -15,11 +15,11 @@ TEMP_ADDR = 0xF3
 class SI7201(object):
   """ SI7201 Temperature and humidity sensor """
 
-  def __init__(self, i2c_addr=0x40, dbhost="localhost", dbport=8086, dbname=None):
+  def __init__(self, i2c_addr=0x40, dbclient=None):
 
     self.i2c_addr = i2c_addr
     self.bus = smbus.SMBus(1)
-    self.dbclient = influxdb.InfluxDBClient(dbhost, dbport, database=dbname, timeout=10)
+    self.dbclient = dbclient
     self.last_check = None
 
   def write_byte(self, byte):
@@ -109,4 +109,5 @@ class SI7201(object):
       self.get_readings()
       self.last_check = time.time()
     else:
-      log.info("Skipping reading")
+      #log.info("Skipping reading")
+      pass
