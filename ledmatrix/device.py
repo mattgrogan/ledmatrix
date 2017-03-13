@@ -53,10 +53,9 @@ class Viewport(Device):
     new_x, new_y = self._position
 
     if prev_x == new_x:
-      return False # We reached the end
+      return False  # We reached the end
     else:
       return True
-
 
   def set_position(self, xy):
 
@@ -75,7 +74,7 @@ class Viewport(Device):
   def display(self):
 
     im = self.image.crop(box=self.crop_box())
-    im.load() # Forces the crop
+    im.load()  # Forces the crop
     self._device.image = im
     self._device.display()
     del im
