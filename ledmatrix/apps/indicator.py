@@ -122,7 +122,7 @@ class Icon(object):
     return self.image.size
 
 
-class Indicator_Frame(object):
+class Indicator_Frame(Viewport_Mixin):
 
   def __init__(self, device, text):
 
@@ -132,9 +132,12 @@ class Indicator_Frame(object):
     self.icon_img = Icon()
     self.text_img = Text("Hello world xxxxx !!!")
 
-    self.next()
+    self.image = Image.new(self.device.mode, device.size)
 
-  def next(self):
+  def reset(self):
+    self.text_img.reset()
+
+  def build_image(self):
 
     # Determine the size of the text
     w, h = self.text_img.size
@@ -152,14 +155,24 @@ class Indicator_Frame(object):
     self.image.paste(self.icon_img.image, (0, 0))
 
     # Add the text
-    self.text_img.move_left()
+
     im = self.text_img.crop(self.device.size)
     im.load()
     self.image.paste(im, (0, self.icon_img.size[1]))
 
+  @property
+  def is_finished2(self):
+    return self.text_img.is_finished
+
+  def next(self):
+
+    # Add the text
+    self.text_img.move_left()
+
+    self.build_image()
+
     if self.text_img.is_finished:
-      self.text_img.reset()
-    # self.text_img.move_left()
+      raise StopIteration
 
 
 class Indicator_Item(Drawable):
@@ -175,11 +188,15 @@ class Indicator_Item(Drawable):
 
   def draw_frame(self):
 
-    # if self.current_hold >= self.frame_hold:
-    #   scrolled = self.device.move_left()
-    # else:
-    #   scrolled = True
-    self.indicator_frame.next()
+    if self.current_hold >= self.frame_hold:
+      try:
+        self.indicator_frame.next()
+      except StopIteration:
+        self.indicator_frame.reset()
+        self.current_hold = 0
+    else:
+      self.indicator_frame.build_image()
+
     # self.indicator_frame.image.load()
     self.device.image = self.indicator_frame.image
     self.device.display()
@@ -191,6 +208,6 @@ class Indicator_Item(Drawable):
     #
     # self.device.display()
     #
-    # self.current_hold += 1
+    self.current_hold += 1
 
     return 5
