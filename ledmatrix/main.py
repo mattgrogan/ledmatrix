@@ -3,6 +3,7 @@ import os
 import time
 
 from animation import Gif_Playlist, Photo_Image
+from apps import Indicator_Item
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from info import Clock, Countdown, Emoji
@@ -30,6 +31,8 @@ def main():
     ui = Gui(controller)
 
   dev = ui.matrix
+
+  controller.items.append("Indicator", Indicator_Item(dev))
 
   controller.items.append("Emoji", Emoji(dev))
 
