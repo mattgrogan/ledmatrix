@@ -15,9 +15,256 @@
 0000 0100 0000 = 0x040
 """
 
-sun = [0x020, 0x422, 0x204, 0x0F0,
-       0x1F8, 0xDF8, 0x1FB, 0x1F8,
-       0x0F0, 0x204, 0x442, 0x040]
+"""
+[ ] airplane
+[ ] alarm_clock
+[ ] anger
+[X] angry
+[ ] apple
+[ ] aquarius
+[ ] aries
+[ ] arrow_heading_down
+[ ] arrow_heading_up
+[ ] arrow_lower_left
+[ ] arrow_lower_right
+[ ] arrow_up_down
+[ ] arrow_upper_left
+[ ] arrow_upper_right
+[ ] art
+[ ] athletic_shoe
+[ ] atm
+[ ] baby_chick
+[ ] banana
+[ ] bangbang
+[ ] bank
+[ ] baseball
+[ ] basketball
+[ ] beer
+[ ] bell
+[ ] bike
+[ ] birthday
+[ ] black_nib
+[ ] blue_car
+[ ] bomb
+[ ] book
+[ ] boom
+[ ] bread
+[ ] broken_heart
+[ ] bulb
+[ ] bullettrain_side
+[ ] bus
+[ ] bust_in_silhouette
+[ ] cake
+[ ] calling
+[ ] camera
+[ ] cancer
+[ ] capricorn
+[ ] carousel_horse
+[X] cat
+[ ] cd
+[ ] checkered_flag
+[ ] cherries
+[ ] cherry_blossom
+[ ] christmas_tree
+[ ] circus_tent
+[ ] cl
+[ ] clapper
+[ ] closed_umbrella
+[X] cloud
+[ ] clubs
+[ ] cocktail
+[ ] coffee
+[ ] computer
+[ ] confounded
+[ ] convenience_store
+[ ] copyright
+[ ] crescent_moon
+[ ] crown
+[ ] cry
+[ ] curly_loop
+[ ] cyclone
+[ ] dash
+[ ] diamond_shape_with_a_dot_inside
+[ ] diamonds
+[ ] disappointed
+[ ] dizzy_face
+[X] dog
+[ ] door
+[ ] droplet
+[ ] ear
+[ ] eight
+[ ] end
+[ ] envelope
+[ ] envelope_with_arrow
+[ ] exclamation
+[ ] eyeglasses
+[ ] eyes
+[ ] fax
+[ ] first_quarter_moon
+[ ] fish
+[ ] fist
+[ ] five
+[ ] foggy
+[ ] footprints
+[ ] fork_and_knife
+[ ] four
+[ ] four_leaf_clover
+[ ] free
+[ ] fuelpump
+[ ] full_moon
+[ ] gemini
+[ ] gift
+[ ] golf
+[X] grin
+[ ] hamburger
+[ ] handbag
+[ ] hash
+[ ] headphones
+[ ] heart
+[ ] heart_eyes
+[ ] heartbeat
+[ ] hearts
+[ ] high_heel
+[ ] horse
+[ ] hospital
+[ ] hotel
+[ ] hotsprings
+[ ] hourglass_flowing_sand
+[ ] house
+[ ] id
+[ ] interrobang
+[ ] iphone
+[ ] jeans
+[ ] key
+[ ] kiss
+[X] laughing
+[ ] left_right_arrow
+[ ] leftwards_arrow_with_hook
+[ ] leo
+[ ] libra
+[ ] lipstick
+[ ] love_letter
+[ ] m
+[ ] mag
+[ ] maple_leaf
+[ ] microphone
+[ ] moneybag
+[ ] mount_fuji
+[ ] movie_camera
+[ ] musical_note
+[ ] new
+[ ] new_moon
+[ ] ng
+[ ] night_with_stars
+[ ] nine
+[ ] no_smoking
+[ ] notes
+[ ] ocean
+[ ] office
+[ ] ok
+[ ] on
+[ ] one
+[ ] pager
+[ ] paperclip
+[ ] parking
+[ ] pencil
+[ ] pencil2
+[ ] penguin
+[X] pensive
+[X] persevere
+[ ] pig
+[ ] pisces
+[ ] post_office
+[ ] pouch
+[ ] punch
+[ ] purse
+[ ] rage
+[ ] railway_car
+[ ] raised_hand
+[ ] ramen
+[ ] recycle
+[ ] red_car
+[ ] registered
+[ ] relieved
+[ ] restroom
+[ ] ribbon
+[ ] rice_ball
+[ ] ring
+[ ] runner
+[ ] running_shirt_with_sash
+[ ] sagittarius
+[ ] sailboat
+[ ] sake
+[ ] school
+[ ] scissors
+[ ] scorpius
+[ ] scream
+[ ] seat
+[ ] secret
+[ ] seedling
+[ ] seven
+[ ] ship
+[ ] shirt
+[ ] six
+[ ] ski
+[ ] smiley
+[ ] smirk
+[ ] smoking
+[ ] snail
+[ ] snowboarder
+[X] snowman
+[ ] sob
+[ ] soccer
+[ ] soon
+[ ] spades
+[ ] sparkles
+[ ] stuck_out_tongue_winking_eye
+[X] sunny
+[ ] sweat
+[ ] sweat_drops
+[ ] sweat_smile
+[ ] taurus
+[ ] tea
+[ ] telephone
+[ ] tennis
+[ ] three
+[ ] thumbsup
+[ ] ticket
+[ ] tm
+[ ] tophat
+[ ] traffic_light
+[ ] triangular_flag_on_post
+[ ] tulip
+[ ] tv
+[ ] two
+[ ] two_hearts
+[ ] u5408
+[ ] u6e80
+[ ] u7981
+[ ] u7a7a
+[X] umbrella
+[ ] unamused
+[ ] v
+[ ] video_game
+[ ] virgo
+[ ] warning
+[ ] watch
+[ ] wavy_dash
+[ ] waxing_gibbous_moon
+[ ] wheelchair
+[ ] wine_glass
+[ ] wink
+[ ] wrench
+[ ] yen
+[ ] yum
+[ ] zap
+[ ] zero
+[ ] zzz
+"""
+
+sunny = [0x020, 0x422, 0x204, 0x0F0,
+         0x1F8, 0xDF8, 0x1FB, 0x1F8,
+         0x0F0, 0x204, 0x442, 0x040]
 
 cloud = [0x000, 0x000, 0x000, 0x018,
          0x1A4, 0x242, 0x402, 0x402,
@@ -55,25 +302,25 @@ tree = [0x040, 0x1F0, 0x0E0, 0x1F0,
         0x378, 0x1F0, 0x3D8, 0xFFE,
         0x040, 0x1F0, 0x110, 0x0E0]
 
-smile_face = [0x000, 0x000, 0x108, 0x294,
-              0x000, 0x000, 0x1F8, 0x108,
-              0x1F8, 0x000, 0x000, 0x000]
+grin = [0x000, 0x000, 0x108, 0x294,
+        0x000, 0x000, 0x1F8, 0x108,
+        0x1F8, 0x000, 0x000, 0x000]
 
-mad_face = [0x000, 0x000, 0x204, 0x108,
-            0x090, 0x000, 0x000, 0x060,
-            0x090, 0x108, 0x000, 0x000]
+angry = [0x000, 0x000, 0x204, 0x108,
+         0x090, 0x000, 0x000, 0x060,
+         0x090, 0x108, 0x000, 0x000]
 
-sad_face = [0x000, 0x000, 0x110, 0x208,
-            0x404, 0x000, 0x000, 0x1F0,
-            0x208, 0x000, 0x000, 0x000]
+persevere = [0x000, 0x000, 0x110, 0x208,
+             0x404, 0x000, 0x000, 0x1F0,
+             0x208, 0x000, 0x000, 0x000]
 
-worry_face = [0x000, 0x000, 0x090, 0x108,
-              0x204, 0x000, 0x000, 0x168,
-              0x294, 0x000, 0x000, 0x000]
+pensive = [0x000, 0x000, 0x090, 0x108,
+           0x204, 0x000, 0x000, 0x168,
+           0x294, 0x000, 0x000, 0x000]
 
-surprise_face = [0x000, 0x000, 0x294, 0x108,
-                 0x294, 0x000, 0x060, 0x090,
-                 0x090, 0x060, 0x000, 0x000]
+laughing = [0x000, 0x000, 0x294, 0x108,
+            0x294, 0x000, 0x060, 0x090,
+            0x090, 0x060, 0x000, 0x000]
 
 from PIL import Image
 
