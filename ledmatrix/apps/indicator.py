@@ -20,6 +20,14 @@ class Text_Mixin(object):
 
     return self.get_font("small_pixel", 8)
 
+  @property
+  def medium_font(self):
+    """
+    Return a small font for drawing
+    """
+
+    return self.get_font("Moder DOS 437", 16)
+
   def get_font(self, name, size):
     """
     Obtain a font from the font folder
@@ -122,7 +130,7 @@ class Icon(object):
     return self.image.size
 
 
-class Indicator_Frame(Viewport_Mixin):
+class Indicator_Frame(object):
 
   def __init__(self, device, text):
 
@@ -159,10 +167,6 @@ class Indicator_Frame(Viewport_Mixin):
     im = self.text_img.crop(self.device.size)
     im.load()
     self.image.paste(im, (0, self.icon_img.size[1]))
-
-  @property
-  def is_finished2(self):
-    return self.text_img.is_finished
 
   def next(self):
 
@@ -210,4 +214,4 @@ class Indicator_Item(Drawable):
     #
     self.current_hold += 1
 
-    return 5
+    return 15
