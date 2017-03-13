@@ -5,7 +5,7 @@ import time
 from animation import Gif_Playlist, Photo_Image
 from controller import LEDMatrix_Controller
 from games import Game_Snake
-from info import Clock, Countdown
+from info import Clock, Countdown, Emoji
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -30,6 +30,8 @@ def main():
     ui = Gui(controller)
 
   dev = ui.matrix
+
+  controller.items.append("Emoji", Emoji(dev))
 
   controller.items.append("Image", Photo_Image(dev))
 
