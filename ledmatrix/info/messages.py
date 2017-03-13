@@ -44,6 +44,7 @@ class Messages(Drawable):
     w, h = self.small_font.getsize(line1)
 
     with canvas(self.device) as draw:
+<<<<<<< HEAD
       draw.text((self.devwidth, 20), line1, font=self.small_font)
       #draw.text((self.devwidth, h), line2, font=self.small_font)
       #draw.text((self.devwidth, h * 2), line3, font=self.small_font)
@@ -63,10 +64,25 @@ class Messages(Drawable):
         row = surprise_face[y]
         cell = row & (1 << (12 - x - 1))
         pix[x, y] = cell
+=======
+      draw.text((self.devwidth, 0), line1, font=self.small_font)
+      draw.text((self.devwidth, h), line2, font=self.small_font)
+      draw.text((self.devwidth, h * 2), line3, font=self.small_font)
+
+  def draw_frame(self):
+
+    scrolled = self.device.move_left()
+>>>>>>> master
 
     if not scrolled:
       self.device.set_position((0, 0))
 
+<<<<<<< HEAD
     self.device.display()
+=======
+    self.build_image()
+
+    # self.device.display()
+>>>>>>> master
 
     return 5

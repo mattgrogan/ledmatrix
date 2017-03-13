@@ -72,4 +72,4 @@ class Photo_Image(Drawable):
     self.device.set_position(self._position)
     self.device.display()
 
-    return 250
+    return 150

@@ -3,6 +3,8 @@ import logging.handlers
 import os
 import sys
 
+import influxdb
+
 #from components.ambient_light import Ambient_Light_Sensor
 from components.ir_remote import IR_Remote
 from components.pir import PIR
@@ -38,10 +40,12 @@ if __name__ == "__main__":
 
   controller = Sensor_Controller()
 
+  influx = influxdb.InfluxDBClient(INFLUX_HOST, 8086, database=INFLUX_DB, timeout=10)
+
   ir_remote = IR_Remote(host=ZMQ_HOST)
-  temp_humidity = SI7201(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
-  pir = PIR(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
-  rf24 = RF24_Sensor(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
+  temp_humidity = SI7201(dbclient=influx)
+  pir = PIR(dbclient=influx)
+  rf24 = RF24_Sensor(dbclient=influx)
 
   #vcnl4010 = Ambient_Light_Sensor(dbhost=INFLUX_HOST, dbname=INFLUX_DB)
   #phototransistor = Phototransistor(dbhost=INFLUX_HOST, dbname=INFLUX_DB)

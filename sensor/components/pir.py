@@ -14,11 +14,11 @@ log = logging.getLogger("ledmatrix")
 
 class PIR(object):
 
-  def __init__(self, dbhost="localhost", dbport=8086, dbname=None):
+  def __init__(self, dbclient):
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    self.dbclient = influxdb.InfluxDBClient(dbhost, dbport, database=dbname)
+    self.dbclient = dbclient
 
     self.last_state = GPIO.input(PIR_PIN)
     self.last_check = None

@@ -43,6 +43,21 @@ class Viewport(Device):
       self.image = image
       assert self.image.mode == self._device.mode
 
+  def move_left(self):
+    """ Scroll to the left """
+
+    prev_x, prev_y = self._position
+
+    self.set_position((prev_x + 1, prev_y))
+
+    new_x, new_y = self._position
+
+    if prev_x == new_x:
+      return False # We reached the end
+    else:
+      return True
+
+
   def set_position(self, xy):
 
     x, y = self._position

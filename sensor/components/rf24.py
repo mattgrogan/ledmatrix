@@ -11,7 +11,7 @@ log = logging.getLogger("ledmatrix")
 
 class RF24_Sensor(object):
 
-  def __init__(self, dbhost="localhost", dbport=8086, dbname=None):
+  def __init__(self, dbclient):
 
     # Set up the RF24
     pipes = [[0xe7, 0xe7, 0xe7, 0xe7, 0xe7],
@@ -35,7 +35,7 @@ class RF24_Sensor(object):
     self.radio.startListening()
 
     # Set up influxdb
-    self.dbclient = influxdb.InfluxDBClient(dbhost, dbport, database=dbname)
+    self.dbclient = dbclient
     log.info("Started NF24")
 
   def get_msg(self):
@@ -74,7 +74,12 @@ class RF24_Sensor(object):
 
   def execute(self):
 
+    #log.info("Executing rf24")
+
     msg = self.get_msg()
 
     if len(msg) > 0:
+      log.info("Received RF24 message")
       self.save_value(int(msg))
+
+    #log.info("Exiting rf24")
