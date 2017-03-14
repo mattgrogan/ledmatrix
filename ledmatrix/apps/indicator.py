@@ -126,6 +126,7 @@ class Indicator_Frame(object):
 
       self.y_loc -= 1
 
+      # Check have we scrolled all the way?
       if self.y_loc < 0:
         self.y_loc = h
         self.state = PAUSE
@@ -231,16 +232,28 @@ class Weather_App(Indicator_App):
 
     # Build frames
     sunny = Icon.Icon("sunny")
+    temp_text = NoScroll_Text(self.temp)
+    time_text = NoScroll_Text(self.time)
+    weather_text = Text(self.cc["weather"])
+    date_text = Text(time.strftime("%a %b %d", time.localtime()))
 
     # Weather Frame
     w_frame = Indicator_Frame(device)
     w_frame.add_item(sunny, (1, 1))
-    w_frame.add_item(NoScroll_Text(self.temp), (sunny.size[0] + 2, 4))
-    w_frame.add_item(Text(self.cc["weather"]), (0, sunny.size[1] + 1))
-    w_frame.add_item(NoScroll_Text(self.time),
-                     (5, sunny.size[1] + Text("hi").size[1] + 2))
+    w_frame.add_item(temp_text, (sunny.size[0] + 2, 4))
+    w_frame.add_item(weather_text, (0, sunny.size[1] + 1))
+    w_frame.add_item(time_text, (5, sunny.size[1] + weather_text.size[1] + 2))
+
+    # Date frame
+    d_frame = Indicator_Frame(device)
+    d_frame.add_item(sunny, (1, 1))
+    d_frame.add_item(temp_text, (sunny.size[0] + 2, 4))
+    d_frame.add_item(date_text, (0, sunny.size[1] + 1))
+    d_frame.add_item(time_text, (5, sunny.size[1] + date_text.size[1] + 2))
 
     self.add_frame(w_frame)
+    self.add_frame(Indicator_Frame(device))  # Add a blank frame
+    self.add_frame(d_frame)
     self.add_frame(Indicator_Frame(device))  # Add a blank frame
 
   @property
