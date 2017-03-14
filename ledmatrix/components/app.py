@@ -29,6 +29,7 @@ class Indicator_App(App):
     self.device = device
     self._current_frame = 0
     self._frames = []
+    self.is_playlist = True
     self.is_finished = False
 
   def add_frame(self, frame):
@@ -68,7 +69,7 @@ class Indicator_App(App):
     requested_delay = self.current_frame.draw_frame()
 
     if self.current_frame.is_finished:
-      self.next()
       self.current_frame.reset()
+      self.next()
 
     return requested_delay

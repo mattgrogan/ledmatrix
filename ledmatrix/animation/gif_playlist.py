@@ -22,6 +22,8 @@ class Gif_Playlist(object):
 
     self.load_items()
 
+    self.is_playlist = True
+
   @property
   def is_finished(self):
     """ Is the current item finished playing? """

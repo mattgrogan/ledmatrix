@@ -40,9 +40,10 @@ class Menu(object):
 
   def move_random(self):
 
-    # TODO: What if its not a good item to randomize?
-
-    self._current_index = random.choice(range(len(self._keys)))
+    # What if its not a good item to randomize?
+    while self.current_item.is_playlist == False:
+      print self.current_item_name
+      self._current_index = random.choice(range(len(self._keys)))
 
   def next(self):
 

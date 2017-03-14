@@ -33,7 +33,7 @@ class Indicator_Frame(object):
 
     # How many cycles to scroll
     self.cycles = 1
-    self.current_cycle = 0
+    self.current_cycle = 1
 
     # What's the bottom?
     self.y_loc = self.device.height - 1
@@ -91,7 +91,7 @@ class Indicator_Frame(object):
         self.device.display()
       except StopIteration:
         self.current_hold = 0
-        if self.current_cycle <= self.cycles:
+        if self.current_cycle < self.cycles:
           self.current_cycle += 1
           self.indicator_image.reset()
           self.state = PAUSE
