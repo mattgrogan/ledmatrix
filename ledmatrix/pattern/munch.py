@@ -1,10 +1,10 @@
 from colour import Color
 from PIL import Image, ImageColor
 from canvas import canvas
-from drawable import Drawable
+from components import App
 
 
-class Pattern_Munch(Drawable):
+class Pattern_Munch(App):
 
   def __init__(self, device):
 
@@ -42,9 +42,9 @@ class Pattern_Munch(Drawable):
             color_index = (((x ^ y) << 3) + self.generation) % len(self.colors)
             c = self.colors[color_index]
             c = int(c.red * 255), int(c.green * 255), int(c.blue * 255)
-            draw.point((x,y), fill=c)
+            draw.point((x, y), fill=c)
           else:
-            draw.point((x,y), fill=(0, 0, 0))
+            draw.point((x, y), fill=(0, 0, 0))
 
       self.count += self.dir
 

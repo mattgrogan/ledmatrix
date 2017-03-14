@@ -4,10 +4,10 @@ from canvas import canvas
 from collections import deque
 from PIL import ImageColor
 
-from drawable import Drawable
+from components import App
 
 
-class Game_Snake(Drawable):
+class Game_Snake(App):
 
   def __init__(self, device):
 
