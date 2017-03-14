@@ -14,7 +14,7 @@ class Weather_App(Indicator_App):
     self.cc = NOAA_Current_Observation(station)
 
     # Build frames
-    sunny = Icon.Icon("sunny")
+    sunny = Icon.Icon("sunny", color="#FFFF00")
     temp_text = NoScroll_Text(self.temp)
     time_text = NoScroll_Text(self.time)
     long_text = Text(self.long_text)

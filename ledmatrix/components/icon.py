@@ -1,4 +1,4 @@
-import PIL.Image as Image
+from PIL import Image, ImageColor
 
 from components import Viewport_NoScroll_Mixin
 
@@ -10,12 +10,12 @@ class Icon(Viewport_NoScroll_Mixin):
   """ Create an icon image """
 
   @staticmethod
-  def Icon(icon_name):
+  def Icon(icon_name, color="#FFFFFF"):
 
-    return Icon.Build(BMP[icon_name])
+    return Icon.Build(BMP[icon_name], color)
 
   @staticmethod
-  def Build(bitmap):
+  def Build(bitmap, color="#FFFFFF"):
 
     im = Image.new("RGB", (12, 12))
     pix = im.load()
@@ -24,7 +24,7 @@ class Icon(Viewport_NoScroll_Mixin):
       for y in range(12):
         row = bitmap[y]
         cell = row & (1 << (12 - x - 1))
-        pix[x, y] = (255, 255, 0) if cell else (0, 0, 0)
+        pix[x, y] = ImageColor.getrgb(color) if cell else (0, 0, 0)
 
     return Icon(im)
 
