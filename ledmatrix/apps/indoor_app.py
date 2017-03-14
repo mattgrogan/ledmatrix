@@ -23,12 +23,14 @@ class Indoor_App(Indicator_App):
 
     # Build frame
     icon = Icon.Icon("lightning")
-    text = Text(self.text)
+    text1 = NoScroll_Text(self.temp)
+    text2 = NoScroll_Text(self.rh)
 
     # Frame
     f = Indicator_Frame(device)
     f.add_item(icon, (1, 1))
-    f.add_item(text, (0, icon.size[1] + 1))
+    f.add_item(text1, (0, icon.size[1] + 1))
+    f.add_item(text2, (0, icon.size[1] + 2 + text1.size[1]))
 
     self.add_frame(f)
     self.add_frame(Indicator_Frame(device))
@@ -81,15 +83,24 @@ class Indoor_App(Indicator_App):
     self.temp_f = round(d["temp_f"])
     self.humidity = round(d["humidity"])
 
-  def text(self):
+  def temp(self):
+
     if self._timeout_expired():
       self.update_data()
 
-    text = "Indoor temp: "
-    text += str(self.temp_f)
-    text += "  RH: "
-    text += str(self.humidity)
-    text += "%  "
-    text += self.last_update_str
+    temp = self.temp_f
+
+    if temp is not None:
+      temp = "%iF" % int(float(temp))  # Drop the decimal point
+    else:
+      temp = ""
+
+    return temp
+
+  def rh(self):
+    if self._timeout_expired():
+      self.update_data()
+
+    text = str(self.humidity) + "%"
 
     return text
