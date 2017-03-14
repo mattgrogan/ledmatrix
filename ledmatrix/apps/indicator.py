@@ -1,31 +1,11 @@
 
 from PIL import Image, ImageDraw, ImageFont
 
-from components import Font_Mixin, Viewport_Mixin
+
 from info.data import NOAA_Current_Observation
 
 
-class Text(Font_Mixin, Viewport_Mixin):
-  """ Write text to an image """
 
-  def __init__(self, text):
-
-    self.text = text
-    w, h = self.small_font.getsize(text)
-
-    # Create the blank image for this frame
-    self.image = Image.new("RGB", (w, h))
-
-    # Add the text
-    draw = ImageDraw.Draw(self.image)
-    draw.text((0, 0), self.text, font=self.small_font)
-
-    self.reset()
-
-  @property
-  def size(self):
-
-    return self.image.size
 
 
 class Icon(object):
@@ -51,7 +31,7 @@ class Icon(object):
     return self.image.size
 
 
-class Indicator_Frame(object):
+class Indicator_Image(object):
 
   def __init__(self, device, text):
 
@@ -106,11 +86,11 @@ SCROLL_LEFT = 2
 FINISHED = 3
 
 
-class Indicator_Item(object):
+class Indicator_Frame(object):
 
   def __init__(self, device, text):
 
-    self.indicator_frame = Indicator_Frame(device, text)
+    self.indicator_frame = Indicator_Image(device, text)
     w, h = self.indicator_frame.image.size
     self.device = device
 
@@ -236,7 +216,8 @@ class Weather_App(Indicator_App):
     self.cc = NOAA_Current_Observation(station)
 
     # Build frames
-    temp_frame = Indicator_Item(device, self.cc["temperature_string"])
-    weather_frame = Indicator_Item(device, self.cc["weather"])
+    temp_frame = Indicator_Frame(device, self.cc["temperature_string"])
+    weather_frame = Indicator_Frame(device, self.cc["weather"])
+
     self.add_frame(temp_frame)
     self.add_frame(weather_frame)
