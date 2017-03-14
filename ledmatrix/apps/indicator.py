@@ -150,14 +150,13 @@ class Indicator_Frame(object):
         self.device.image = self.indicator_image.image
         self.device.display()
       except StopIteration:
-        self.indicator_image.reset()
         self.current_hold = 0
         self.state = FADE_OUT
 
     elif self.state == FADE_OUT:
       self.indicator_image.build_image()
       enhancer = ImageEnhance.Brightness(self.indicator_image.image)
-      self.brightness -= 0.05
+      self.brightness -= 0.01
 
       if self.brightness >= 0:
         im = enhancer.enhance(self.brightness)
