@@ -1,6 +1,7 @@
 import PIL.Image as Image
+from components import Viewport_Mixin
 
-class Icon(object):
+class Icon(Viewport_Mixin):
   """ Create an icon image """
 
   @staticmethod
@@ -31,3 +32,9 @@ class Icon(object):
   def __init__(self, icon):
 
     self.image = icon
+    self.reset()
+
+  @property
+  def size(self):
+
+    return self.image.size

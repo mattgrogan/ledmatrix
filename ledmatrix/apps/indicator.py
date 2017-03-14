@@ -5,53 +5,64 @@ from info.data import NOAA_Current_Observation
 from components import Text, Icon
 
 class Indicator_Image(object):
+  """
+  This object is responsible for composing an image given a list of
+  components. As the image is animated, it will delegate the scrolling
+  to each component.
+  """
 
-  def __init__(self, device, icon_name, text):
+  def __init__(self, device):
+    """
+    The device is needed for its dimensions. The items will be cropped to
+    fit within the screen.
+    """
 
     self.device = device
-    self.text = text
+    self._items = []
 
-    self.icon_img = Icon.Icon(icon_name)
-    self.text_img = Text(text)
+  def add_item(self, item, xy):
+    """
+    Store the item and its location as a tuple
+    """
 
-    self.image = Image.new(self.device.mode, device.size)
-
-  def reset(self):
-    self.text_img.reset()
+    self._items.append((item, xy))
 
   def build_image(self):
-
-    # Determine the size of the text
-    w, h = self.text_img.size
-
-    # The height is always the device height
-    h = self.device.height
-
-    # Pad width by device width for scrolling
-    w = self.device.width
+    """
+    Build an image and paste each item into its appropriate location
+    """
 
     # Create the blank image for this frame
-    self.image = Image.new(self.device.mode, (w, h))
+    self.image = Image.new(self.device.mode, self.device.size)
 
-    # Add the icon
-    self.image.paste(self.icon_img.image, (0, 0))
-
-    # Add the text
-
-    im = self.text_img.crop(self.device.size)
-    im.load()
-    self.image.paste(im, (0, self.icon_img.image.size[1]))
+    for item, xy in self._items:
+      im = item.crop(self.device.size)
+      im.load() # Force the crop
+      self.image.paste(im, xy)
 
   def next(self):
+    """
+    Call move_left on each item in order to scroll the image. If all items
+    are finished, then raise a StopIteration.
+    """
 
-    # Add the text
-    self.text_img.move_left()
+    is_finished = True
 
-    self.build_image()
+    for item, xy in self._items:
+      item.move_left()
+      if not item.is_finished:
+        is_finished = False # If any item is not finished, we're not finished
 
-    if self.text_img.is_finished:
+    if is_finished:
       raise StopIteration
 
+  def reset(self):
+    """
+    Reset the positions of each child item.
+    """
+
+    for item, xy in self._items:
+      item.reset()
 
 SCROLL_IN = 0
 PAUSE = 1
@@ -63,7 +74,12 @@ class Indicator_Frame(object):
 
   def __init__(self, device, text):
 
-    self.indicator_frame = Indicator_Image(device, "sunny", text)
+    self.indicator_frame = Indicator_Image(device) #, "sunny", text)
+    sunny = Icon.Icon("sunny")
+    self.indicator_frame.add_item(sunny, (0,0))
+    self.indicator_frame.add_item(Text(text), (0, sunny.size[1]))
+    self.indicator_frame.build_image()
+
     w, h = self.indicator_frame.image.size
     self.device = device
 
@@ -116,6 +132,7 @@ class Indicator_Frame(object):
     elif self.state == SCROLL_LEFT:
       try:
         self.indicator_frame.next()
+        self.indicator_frame.build_image()
         # self.indicator_frame.image.load()
         self.device.image = self.indicator_frame.image
         self.device.display()
