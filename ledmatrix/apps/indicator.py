@@ -179,6 +179,11 @@ class Indicator_Frame(object):
       raise StopIteration
 
 
+SCROLL_IN = 0
+PAUSE = 1
+SCROLL_LEFT = 2
+
+
 class Indicator_Item(Drawable):
 
   def __init__(self, device):
@@ -190,28 +195,47 @@ class Indicator_Item(Drawable):
     self.frame_hold = 20  # Hold for first # frames
     self.current_hold = 0
 
+    self.y_loc = h - 1
+
+    self.state = SCROLL_IN
+
   def draw_frame(self):
 
-    if self.current_hold >= self.frame_hold:
+    if self.state == SCROLL_IN:
+      self.indicator_frame.build_image()
+      self.device.clear()
+      w, h = self.indicator_frame.image.size
+      self.indicator_frame.image = self.indicator_frame.image.crop(
+          (0, self.y_loc, w - 1, h - 1))
+      self.indicator_frame.image.load()
+      self.device.image.paste(self.indicator_frame.image, (0, 0))
+
+      self.device.display()
+
+      self.y_loc -= 1
+
+      if self.y_loc < 0:
+        self.y_loc = h
+        self.state = PAUSE
+
+    elif self.state == PAUSE:
+      self.indicator_frame.build_image()
+      self.current_hold += 1
+      self.device.image = self.indicator_frame.image
+      self.device.display()
+      if self.current_hold > self.frame_hold:
+        self.state = SCROLL_LEFT
+
+    elif self.state == SCROLL_LEFT:
       try:
         self.indicator_frame.next()
       except StopIteration:
         self.indicator_frame.reset()
         self.current_hold = 0
-    else:
-      self.indicator_frame.build_image()
+        self.state = SCROLL_IN
 
-    # self.indicator_frame.image.load()
-    self.device.image = self.indicator_frame.image
-    self.device.display()
-
-    #
-    # if not scrolled:
-    #   self.device.set_position((0, 0))
-    #   self.current_hold = 0
-    #
-    # self.device.display()
-    #
-    self.current_hold += 1
+      # self.indicator_frame.image.load()
+      self.device.image = self.indicator_frame.image
+      self.device.display()
 
     return 15
