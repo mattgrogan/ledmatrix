@@ -11,14 +11,14 @@ class Text(Font_Mixin, Viewport_Mixin):
   def __init__(self, text):
 
     self.text = text
-    w, h = self.small_font.getsize(text)
+    w, h = self.medium_font.getsize(text)
 
     # Create the blank image for this frame
     self.image = Image.new("RGB", (w, h))
 
     # Add the text
     draw = ImageDraw.Draw(self.image)
-    draw.text((0, 0), self.text, font=self.small_font)
+    draw.text((0, 0), self.text, font=self.medium_font)
 
     self.reset()
 
@@ -171,7 +171,7 @@ class Indicator_Item(object):
         self.current_hold = 0
         self.state = FINISHED
 
-    return 15
+    return 50
 
 
 class App(object):
