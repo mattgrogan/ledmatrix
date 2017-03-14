@@ -1,8 +1,10 @@
 
 from PIL import Image, ImageDraw, ImageFont
+import time
 
+from components import Icon, Text, NoScroll_Text
 from info.data import NOAA_Current_Observation
-from components import Text, Icon
+
 
 class Indicator_Image(object):
   """
@@ -37,7 +39,7 @@ class Indicator_Image(object):
 
     for item, xy in self._items:
       im = item.crop(self.device.size)
-      im.load() # Force the crop
+      im.load()  # Force the crop
       self.image.paste(im, xy)
 
   def next(self):
@@ -51,7 +53,7 @@ class Indicator_Image(object):
     for item, xy in self._items:
       item.move_left()
       if not item.is_finished:
-        is_finished = False # If any item is not finished, we're not finished
+        is_finished = False  # If any item is not finished, we're not finished
 
     if is_finished:
       raise StopIteration
@@ -72,27 +74,22 @@ FINISHED = 3
 
 class Indicator_Frame(object):
 
-  def __init__(self, device, text):
+  def __init__(self, device):
 
-    self.indicator_frame = Indicator_Image(device) #, "sunny", text)
-    sunny = Icon.Icon("sunny")
-    self.indicator_frame.add_item(sunny, (0,0))
-    self.indicator_frame.add_item(Text(text), (0, sunny.size[1]))
-    self.indicator_frame.build_image()
-
-    w, h = self.indicator_frame.image.size
     self.device = device
+    self.indicator_image = Indicator_Image(device)
 
-    self.frame_hold = 20  # Hold for first # frames
+    # How long to pause?
+    self.frame_hold = 20
     self.current_hold = 0
 
-    self.y_loc = h - 1
+    # What's the bottom?
+    self.y_loc = self.device.height - 1
 
     self.state = SCROLL_IN
 
-  def handle_input(self, command):
-
-    pass
+  def add_item(self, item, xy):
+    self.indicator_image.add_item(item, xy)
 
   @property
   def is_finished(self):
@@ -105,13 +102,13 @@ class Indicator_Frame(object):
   def draw_frame(self):
 
     if self.state == SCROLL_IN:
-      self.indicator_frame.build_image()
+      self.indicator_image.build_image()
       self.device.clear()
-      w, h = self.indicator_frame.image.size
-      self.indicator_frame.image = self.indicator_frame.image.crop(
+      w, h = self.indicator_image.image.size
+      self.indicator_image.image = self.indicator_image.image.crop(
           (0, self.y_loc, w - 1, h - 1))
-      self.indicator_frame.image.load()
-      self.device.image.paste(self.indicator_frame.image, (0, 0))
+      self.indicator_image.image.load()
+      self.device.image.paste(self.indicator_image.image, (0, 0))
 
       self.device.display()
 
@@ -122,22 +119,22 @@ class Indicator_Frame(object):
         self.state = PAUSE
 
     elif self.state == PAUSE:
-      self.indicator_frame.build_image()
+      self.indicator_image.build_image()
       self.current_hold += 1
-      self.device.image = self.indicator_frame.image
+      self.device.image = self.indicator_image.image
       self.device.display()
       if self.current_hold > self.frame_hold:
         self.state = SCROLL_LEFT
 
     elif self.state == SCROLL_LEFT:
       try:
-        self.indicator_frame.next()
-        self.indicator_frame.build_image()
-        # self.indicator_frame.image.load()
-        self.device.image = self.indicator_frame.image
+        self.indicator_image.next()
+        self.indicator_image.build_image()
+        # self.indicator_image.image.load()
+        self.device.image = self.indicator_image.image
         self.device.display()
       except StopIteration:
-        self.indicator_frame.reset()
+        self.indicator_image.reset()
         self.current_hold = 0
         self.state = FINISHED
 
@@ -206,8 +203,32 @@ class Weather_App(Indicator_App):
     self.cc = NOAA_Current_Observation(station)
 
     # Build frames
-    temp_frame = Indicator_Frame(device, self.cc["temperature_string"])
-    weather_frame = Indicator_Frame(device, self.cc["weather"])
+    sunny = Icon.Icon("sunny")
 
-    self.add_frame(temp_frame)
-    self.add_frame(weather_frame)
+    # Weather Frame
+    w_frame = Indicator_Frame(device)
+    w_frame.add_item(sunny, (1, 1))
+    w_frame.add_item(NoScroll_Text(self.temp), (sunny.size[0] + 2, 4))
+    w_frame.add_item(Text(self.cc["weather"]), (0, sunny.size[1] + 1))
+    w_frame.add_item(NoScroll_Text(self.time),
+                     (5, sunny.size[1] + Text("hi").size[1] + 2))
+
+    self.add_frame(w_frame)
+
+  @property
+  def temp(self):
+
+    temp = self.cc["temp_f"]
+
+    if temp is not None:
+      temp = "%iF" % int(float(temp))  # Drop the decimal point
+    else:
+      temp = ""
+
+    return temp
+
+  @property
+  def time(self):
+    """ Return the time in HH:MM format """
+
+    return time.strftime("%I:%M", time.localtime()).lstrip("0")

@@ -1,5 +1,10 @@
 import PIL.Image as Image
+
 from components import Viewport_NoScroll_Mixin
+
+
+# TODO: Allow for different types of icons (scroll, noscroll, animated, etc.)
+
 
 class Icon(Viewport_NoScroll_Mixin):
   """ Create an icon image """
