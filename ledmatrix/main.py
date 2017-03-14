@@ -3,7 +3,7 @@ import os
 import time
 
 from animation import Gif_Playlist, Photo_Image
-from apps import Indicator_Item
+from apps import Indicator_Item, Weather_App
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from info import Clock, Countdown, Emoji, Messages
@@ -32,7 +32,7 @@ def main():
 
   dev = ui.matrix
 
-  controller.items.append("Indicator", Indicator_Item(dev))
+  controller.items.append("Indicator", Weather_App(dev, "KLGA"))
 
   controller.items.append("Emoji", Emoji(dev))
 

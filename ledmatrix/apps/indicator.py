@@ -2,6 +2,7 @@
 from PIL import Image, ImageDraw, ImageFont
 
 from components import Font_Mixin, Viewport_Mixin
+from info.data import NOAA_Current_Observation
 
 
 class Text(Font_Mixin, Viewport_Mixin):
@@ -102,13 +103,14 @@ class Indicator_Frame(object):
 SCROLL_IN = 0
 PAUSE = 1
 SCROLL_LEFT = 2
+FINISHED = 3
 
 
 class Indicator_Item(object):
 
-  def __init__(self, device):
+  def __init__(self, device, text):
 
-    self.indicator_frame = Indicator_Frame(device, "Hello, world!")
+    self.indicator_frame = Indicator_Frame(device, text)
     w, h = self.indicator_frame.image.size
     self.device = device
 
@@ -122,6 +124,14 @@ class Indicator_Item(object):
   def handle_input(self, command):
 
     pass
+
+  @property
+  def is_finished(self):
+
+    return self.state == FINISHED
+
+  def reset(self):
+    self.state = SCROLL_IN
 
   def draw_frame(self):
 
@@ -153,13 +163,80 @@ class Indicator_Item(object):
     elif self.state == SCROLL_LEFT:
       try:
         self.indicator_frame.next()
+        # self.indicator_frame.image.load()
+        self.device.image = self.indicator_frame.image
+        self.device.display()
       except StopIteration:
         self.indicator_frame.reset()
         self.current_hold = 0
-        self.state = SCROLL_IN
-
-      # self.indicator_frame.image.load()
-      self.device.image = self.indicator_frame.image
-      self.device.display()
+        self.state = FINISHED
 
     return 15
+
+
+class App(object):
+  """
+  Application to show animations or information on the screen
+  """
+
+  def handle_input(self, command):
+
+    pass
+
+  def draw_frame(self):
+
+    raise NotImplementedError
+
+
+class Indicator_App(App):
+  """
+  Application to show information on the screen.
+  """
+
+  def __init__(self, device):
+
+    self.device = device
+    self._current_frame = 0
+    self._frames = []
+
+  def add_frame(self, frame):
+
+    self._frames.append(frame)
+
+  @property
+  def current_frame(self):
+
+    if len(self._frames) > self._current_frame:
+      return self._frames[self._current_frame]
+
+  def next(self):
+    self._current_frame += 1
+
+    if self._current_frame >= len(self._frames):
+      self._current_frame = 0
+
+  def draw_frame(self):
+
+    # TODO: Check if current frame is finished
+    if self.current_frame.is_finished:
+      self.next()
+      self.current_frame.reset()
+
+    return self.current_frame.draw_frame()
+
+
+class Weather_App(Indicator_App):
+
+  def __init__(self, device, station):
+
+    super(Weather_App, self).__init__(device)
+
+    self.device = device
+    self.station = station
+    self.cc = NOAA_Current_Observation(station)
+
+    # Build frames
+    temp_frame = Indicator_Item(device, self.cc["temperature_string"])
+    weather_frame = Indicator_Item(device, self.cc["weather"])
+    self.add_frame(temp_frame)
+    self.add_frame(weather_frame)
