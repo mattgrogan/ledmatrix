@@ -261,27 +261,29 @@ class Weather_App(Indicator_App):
     sunny = Icon.Icon("sunny")
     temp_text = NoScroll_Text(self.temp)
     time_text = NoScroll_Text(self.time)
-    weather_text = Text(self.weather)
-    date_text = Text(self.date)
+    long_text = Text(self.long_text)
 
     # Weather Frame
     w_frame = Indicator_Frame(device)
     w_frame.add_item(sunny, (1, 1))
     w_frame.add_item(temp_text, (sunny.size[0] + 2, 4))
-    w_frame.add_item(weather_text, (0, sunny.size[1] + 1))
-    w_frame.add_item(time_text, (5, sunny.size[1] + weather_text.size[1] + 2))
-
-    # Date frame
-    d_frame = Indicator_Frame(device)
-    d_frame.add_item(sunny, (1, 1))
-    d_frame.add_item(temp_text, (sunny.size[0] + 2, 4))
-    d_frame.add_item(date_text, (0, sunny.size[1] + 1))
-    d_frame.add_item(time_text, (5, sunny.size[1] + date_text.size[1] + 2))
+    w_frame.add_item(long_text, (0, sunny.size[1] + 1))
+    w_frame.add_item(time_text, (5, sunny.size[1] + long_text.size[1] + 2))
 
     self.add_frame(w_frame)
     self.add_frame(Indicator_Frame(device))  # Add a blank frame
-    self.add_frame(d_frame)
-    self.add_frame(Indicator_Frame(device))  # Add a blank frame
+
+  def long_text(self):
+    text = self.cc["weather"]
+    text += "   "
+    text += self.date()
+    text += "  Winds "
+    text += self.cc["wind_string"]
+    text += "  RH: "
+    text += self.cc["relative_humidity"]
+    text += "%  "
+    text += self.cc["observation_time"]
+    return text
 
   def weather(self):
     return self.cc["weather"]
