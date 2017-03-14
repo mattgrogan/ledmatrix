@@ -38,6 +38,7 @@ class Indicator_Image(object):
     self.image = Image.new(self.device.mode, self.device.size)
 
     for item, xy in self._items:
+      item.update()
       im = item.crop(self.device.size)
       im.load()  # Force the crop
       self.image.paste(im, xy)
@@ -96,7 +97,7 @@ class Indicator_Frame(object):
     self.brightness = 1.0
 
     # How many cycles to scroll
-    self.cycles = 3
+    self.cycles = 1
     self.current_cycle = 0
 
     # What's the bottom?
@@ -260,8 +261,8 @@ class Weather_App(Indicator_App):
     sunny = Icon.Icon("sunny")
     temp_text = NoScroll_Text(self.temp)
     time_text = NoScroll_Text(self.time)
-    weather_text = Text(self.cc["weather"])
-    date_text = Text(time.strftime("%a %b %d", time.localtime()))
+    weather_text = Text(self.weather)
+    date_text = Text(self.date)
 
     # Weather Frame
     w_frame = Indicator_Frame(device)
@@ -282,7 +283,9 @@ class Weather_App(Indicator_App):
     self.add_frame(d_frame)
     self.add_frame(Indicator_Frame(device))  # Add a blank frame
 
-  @property
+  def weather(self):
+    return self.cc["weather"]
+
   def temp(self):
 
     temp = self.cc["temp_f"]
@@ -294,7 +297,11 @@ class Weather_App(Indicator_App):
 
     return temp
 
-  @property
+  def date(self):
+    """ Return date in proper format """
+
+    return time.strftime("%a %b %d", time.localtime())
+
   def time(self):
     """ Return the time in HH:MM format """
 

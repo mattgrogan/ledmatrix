@@ -9,6 +9,14 @@ class Text(Font_Mixin, Viewport_Mixin):
   def __init__(self, text):
 
     self.text = text
+
+    self.update()
+
+    self.reset()
+
+  def update(self):
+
+    text = self.text()
     w, h = self.medium_font.getsize(text)
 
     # Create the blank image for this frame
@@ -16,9 +24,7 @@ class Text(Font_Mixin, Viewport_Mixin):
 
     # Add the text
     draw = ImageDraw.Draw(self.image)
-    draw.text((0, 0), self.text, font=self.medium_font)
-
-    self.reset()
+    draw.text((0, 0), text, font=self.medium_font)
 
   @property
   def size(self):
