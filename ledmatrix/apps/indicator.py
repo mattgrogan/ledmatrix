@@ -1,11 +1,7 @@
 
 from PIL import Image, ImageDraw, ImageFont
 
-
 from info.data import NOAA_Current_Observation
-
-
-
 
 
 class Icon(object):
@@ -151,7 +147,7 @@ class Indicator_Frame(object):
         self.current_hold = 0
         self.state = FINISHED
 
-    return 15
+    return 50
 
 
 class App(object):

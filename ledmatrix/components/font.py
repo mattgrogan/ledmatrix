@@ -9,21 +9,22 @@ class Font_Mixin(object):
   """
   Mixin provides font functionality
   """
+
   @property
   def small_font(self):
-    """
-    Return a small font for drawing
-    """
+
+    return self.get_font("visitor1", 10)
+
+  @property
+  def medium_font(self):
 
     return self.get_font("small_pixel", 8)
 
   @property
-  def medium_font(self):
-    """
-    Return a small font for drawing
-    """
+  def large_font(self):
 
-    return self.get_font("Moder DOS 437", 16)
+    # M12 should be 32px
+    return self.get_font("m12", 16)
 
   def get_font(self, name, size):
     """
