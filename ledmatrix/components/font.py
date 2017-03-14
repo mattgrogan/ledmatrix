@@ -11,6 +11,19 @@ class Font_Mixin(object):
   """
 
   @property
+  def font(self):
+      return self._font
+
+  @font.setter
+  def font(self, font_name):
+      if font_name == "SMALL":
+          self._font = self.small_font
+      elif font_name == "MEDIUM":
+          self._font = self.medium_font
+      elif font_name == "LARGE":
+          self._font = self.large_font
+
+  @property
   def small_font(self):
 
     return self.get_font("visitor1", 10)

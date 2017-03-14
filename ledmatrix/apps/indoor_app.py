@@ -23,14 +23,16 @@ class Indoor_App(Indicator_App):
 
     # Build frame
     icon = Icon.Icon("lightning")
-    text1 = NoScroll_Text(self.temp)
-    text2 = NoScroll_Text(self.rh)
+    text1 = NoScroll_Text(self.temp, font="MEDIUM")
+    text2 = NoScroll_Text(self.rh, font="MEDIUM")
+    text3 = NoScroll_Text(self.last_update, font="MEDIUM")
 
     # Frame
     f = Indicator_Frame(device)
     f.add_item(icon, (1, 1))
-    f.add_item(text1, (0, icon.size[1] + 1))
-    f.add_item(text2, (0, icon.size[1] + 2 + text1.size[1]))
+    f.add_item(text1, (icon.size[0] + 2, 4))
+    f.add_item(text2, (0, icon.size[1] + 1))
+    f.add_item(text3, (0, icon.size[1] + 2 + text1.size[1]))
 
     self.add_frame(f)
     self.add_frame(Indicator_Frame(device))
@@ -73,12 +75,7 @@ class Indoor_App(Indicator_App):
 
     then = then.replace(tzinfo=None)
 
-    last_update_secs = (now - then).total_seconds()
-
-    if last_update_secs < 120:
-      self.last_update_str = "NOW"
-    else:
-      self.last_update_str = "%im" % (last_update_secs / 60)
+    self.last_update_secs = (now - then).total_seconds()
 
     self.temp_f = round(d["temp_f"])
     self.humidity = round(d["humidity"])
@@ -88,19 +85,26 @@ class Indoor_App(Indicator_App):
     if self._timeout_expired():
       self.update_data()
 
-    temp = self.temp_f
-
-    if temp is not None:
-      temp = "%iF" % int(float(temp))  # Drop the decimal point
-    else:
-      temp = ""
+    # Drop the decimal point
+    temp = "%iF" % self.temp_f
 
     return temp
 
   def rh(self):
+
     if self._timeout_expired():
       self.update_data()
 
-    text = str(self.humidity) + "%"
+    # Drop the decimal point
+    rh = "%i%% RH" % self.humidity
 
-    return text
+    return rh
+
+  def last_update(self):
+
+    if self.last_update_secs < 120:
+      last_update_str = "NOW"
+    else:
+      last_update_str = "%iM AGO" % (last_update_secs / 60)
+
+    return last_update_str
