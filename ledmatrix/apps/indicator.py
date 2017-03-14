@@ -2,13 +2,13 @@ import os
 
 from PIL import Image, ImageDraw, ImageFont
 
-from device import Viewport
-from drawable import Drawable
+#from device import Viewport
+#from drawable import Drawable
 
 FONT_FOLDER = os.path.join(os.path.dirname(__file__), "../../fonts/%s.ttf")
 
 
-class Text_Mixin(object):
+class Font_Mixin(object):
   """
   Mixin provides font functionality
   """
@@ -84,7 +84,7 @@ class Viewport_Mixin(object):
     return x >= self.image.size[0]
 
 
-class Text(Text_Mixin, Viewport_Mixin):
+class Text(Font_Mixin, Viewport_Mixin):
   """ Write text to an image """
 
   def __init__(self, text):
@@ -138,7 +138,7 @@ class Indicator_Frame(object):
     self.text = text
 
     self.icon_img = Icon()
-    self.text_img = Text("Hello world xxxxx !!!")
+    self.text_img = Text(text)
 
     self.image = Image.new(self.device.mode, device.size)
 
@@ -184,13 +184,13 @@ PAUSE = 1
 SCROLL_LEFT = 2
 
 
-class Indicator_Item(Drawable):
+class Indicator_Item(object):
 
   def __init__(self, device):
 
     self.indicator_frame = Indicator_Frame(device, "Hello, world!")
     w, h = self.indicator_frame.image.size
-    self.device = device  # Viewport(device, 32, 32)
+    self.device = device
 
     self.frame_hold = 20  # Hold for first # frames
     self.current_hold = 0
@@ -198,6 +198,10 @@ class Indicator_Item(Drawable):
     self.y_loc = h - 1
 
     self.state = SCROLL_IN
+
+  def handle_input(self, command):
+
+    pass
 
   def draw_frame(self):
 
