@@ -95,6 +95,10 @@ class Indicator_Frame(object):
     # Brightness
     self.brightness = 1.0
 
+    # How many cycles to scroll
+    self.cycles = 3
+    self.current_cycle = 0
+
     # What's the bottom?
     self.y_loc = self.device.height - 1
 
@@ -151,7 +155,12 @@ class Indicator_Frame(object):
         self.device.display()
       except StopIteration:
         self.current_hold = 0
-        self.state = FADE_OUT
+        if self.current_cycle < self.cycles:
+          self.current_cycle += 1
+          self.indicator_image.reset()
+          self.state = PAUSE
+        else:
+          self.state = FADE_OUT
 
     elif self.state == FADE_OUT:
       self.indicator_image.build_image()
