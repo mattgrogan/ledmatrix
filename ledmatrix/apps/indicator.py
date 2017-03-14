@@ -2,6 +2,7 @@
 from PIL import Image, ImageDraw, ImageFont
 
 from info.data import NOAA_Current_Observation
+from components import Text
 
 
 class Icon(object):

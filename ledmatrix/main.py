@@ -3,7 +3,7 @@ import os
 import time
 
 from animation import Gif_Playlist, Photo_Image
-from apps import Indicator_Item, Weather_App
+from apps import Weather_App
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from info import Clock, Countdown, Emoji, Messages

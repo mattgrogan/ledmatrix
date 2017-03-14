@@ -1,1 +1,1 @@
-from indicator import Indicator_Item, Weather_App
+from indicator import Weather_App
