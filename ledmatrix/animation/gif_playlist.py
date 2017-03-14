@@ -26,7 +26,7 @@ class Gif_Playlist(object):
   def is_finished(self):
     """ Is the current item finished playing? """
 
-    return self.item.current_item.is_finished
+    return self.items.current_item.is_finished
 
   def load_items(self):
     """ Load all items from a folder """

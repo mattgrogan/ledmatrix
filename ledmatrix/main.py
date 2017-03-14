@@ -41,7 +41,6 @@ def main():
 
   controller.items.append("Indicator", Weather_App(dev, "KLGA"))
   controller.items.append("Indoor", Indoor_App(dev, influx))
-  #controller.items.append("Emoji", Emoji(dev))
 
   controller.items.append("Snake", Game_Snake(dev))
 

@@ -1,3 +1,6 @@
+import random
+
+
 class Menu(object):
   """
   Handles menu options
@@ -34,6 +37,12 @@ class Menu(object):
   def move(self, step):
 
     self._current_index = (self._current_index + step) % len(self._keys)
+
+  def move_random(self):
+
+    # TODO: What if its not a good item to randomize?
+
+    self._current_index = random.choice(range(len(self._keys)))
 
   def next(self):
 

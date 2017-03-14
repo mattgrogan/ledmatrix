@@ -71,10 +71,6 @@ class Indoor_App(Indicator_App):
 
     then = then.replace(tzinfo=None)
 
-    print "Time string: %s" % d["time"]
-    print "Now: %s" % now
-    print "Then: %s" % then
-
     last_update_secs = (now - then).total_seconds()
 
     if last_update_secs < 120:

@@ -91,7 +91,7 @@ class Indicator_Frame(object):
         self.device.display()
       except StopIteration:
         self.current_hold = 0
-        if self.current_cycle < self.cycles:
+        if self.current_cycle <= self.cycles:
           self.current_cycle += 1
           self.indicator_image.reset()
           self.state = PAUSE

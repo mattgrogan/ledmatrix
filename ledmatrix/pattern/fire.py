@@ -8,6 +8,8 @@ from colour import Color
 #import randomcolor
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
+from components import App
+
 
 def hex_to_rgb(value):
   value = value.lstrip('#')
@@ -15,7 +17,7 @@ def hex_to_rgb(value):
   return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
 
-class Pattern_Fire(object):
+class Pattern_Fire(App):
   """ Create a fire animation """
 
   def __init__(self, device):
