@@ -2,40 +2,16 @@
 from PIL import Image, ImageDraw, ImageFont
 
 from info.data import NOAA_Current_Observation
-from components import Text
-
-
-class Icon(object):
-  """ Create an icon image """
-
-  def __init__(self):
-
-    sunny = [0x020, 0x422, 0x204, 0x0F0,
-             0x1F8, 0xDF8, 0x1FB, 0x1F8,
-             0x0F0, 0x204, 0x442, 0x040]
-
-    self.image = Image.new("RGB", (12, 12))
-    pix = self.image.load()
-
-    for x in range(12):
-      for y in range(12):
-        row = sunny[y]
-        cell = row & (1 << (12 - x - 1))
-        pix[x, y] = (255, 0, 0) if cell else (0, 0, 0)
-
-  @property
-  def size(self):
-    return self.image.size
-
+from components import Text, Icon
 
 class Indicator_Image(object):
 
-  def __init__(self, device, text):
+  def __init__(self, device, icon_name, text):
 
     self.device = device
     self.text = text
 
-    self.icon_img = Icon()
+    self.icon_img = Icon.Icon(icon_name)
     self.text_img = Text(text)
 
     self.image = Image.new(self.device.mode, device.size)
@@ -64,7 +40,7 @@ class Indicator_Image(object):
 
     im = self.text_img.crop(self.device.size)
     im.load()
-    self.image.paste(im, (0, self.icon_img.size[1]))
+    self.image.paste(im, (0, self.icon_img.image.size[1]))
 
   def next(self):
 
@@ -87,7 +63,7 @@ class Indicator_Frame(object):
 
   def __init__(self, device, text):
 
-    self.indicator_frame = Indicator_Image(device, text)
+    self.indicator_frame = Indicator_Image(device, "sunny", text)
     w, h = self.indicator_frame.image.size
     self.device = device
 
