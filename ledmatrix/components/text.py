@@ -6,10 +6,11 @@ from components import Font_Mixin, Viewport_Mixin, Viewport_NoScroll_Mixin
 class Text(Font_Mixin, Viewport_Mixin):
   """ Write text to an image """
 
-  def __init__(self, text, font="MEDIUM"):
+  def __init__(self, text, color="#FFFFFF", font="MEDIUM"):
 
     self.text = text
     self.font = font
+    self.color = color
 
     self.update()
 
@@ -25,7 +26,7 @@ class Text(Font_Mixin, Viewport_Mixin):
 
     # Add the text
     draw = ImageDraw.Draw(self.image)
-    draw.text((0, 0), text, font=self.font)
+    draw.text((0, 0), text, font=self.font, fill=self.color)
 
   @property
   def size(self):

@@ -23,9 +23,9 @@ class Indoor_App(Indicator_App):
 
     # Build frame
     icon = Icon.Icon("lightning")
-    text1 = NoScroll_Text(self.temp, font="MEDIUM")
-    text2 = NoScroll_Text(self.rh, font="MEDIUM")
-    text3 = NoScroll_Text(self.last_update, font="MEDIUM")
+    text1 = NoScroll_Text(self.temp, font="MEDIUM", color="#88fc95")
+    text2 = NoScroll_Text(self.rh, font="MEDIUM", color="#88fc95")
+    text3 = NoScroll_Text(self.last_update, font="MEDIUM", color="#444444")
 
     # Frame
     f = Indicator_Frame(device)
