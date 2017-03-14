@@ -73,8 +73,16 @@ FINISHED = 3
 
 
 class Indicator_Frame(object):
+  """
+  The frame object handles the animations. You must initialize and then add
+  individual items to the frame. There is a scroll down animation
+  at the beginning. Then a pause. And finally the items scroll to the left.
+  """
 
   def __init__(self, device):
+    """
+    Create an image and set some options
+    """
 
     self.device = device
     self.indicator_image = Indicator_Image(device)
@@ -100,8 +108,12 @@ class Indicator_Frame(object):
     self.state = SCROLL_IN
 
   def draw_frame(self):
+    """
+    Draw the frame differently based on the current animation state.
+    """
 
     if self.state == SCROLL_IN:
+      # We're scrolling down from the top
       self.indicator_image.build_image()
       self.device.clear()
       w, h = self.indicator_image.image.size
@@ -130,7 +142,6 @@ class Indicator_Frame(object):
       try:
         self.indicator_image.next()
         self.indicator_image.build_image()
-        # self.indicator_image.image.load()
         self.device.image = self.indicator_image.image
         self.device.display()
       except StopIteration:
@@ -157,34 +168,50 @@ class App(object):
 
 class Indicator_App(App):
   """
-  Application to show information on the screen.
+  Application to show information on the screen. This class handles the
+  movement between different frames in the same application.
   """
 
   def __init__(self, device):
+    """
+    Initialize the item with the device (required for height and width)
+    """
 
     self.device = device
     self._current_frame = 0
     self._frames = []
 
   def add_frame(self, frame):
+    """
+    Add a frame to this Application. The frames will be scrolled down and
+    then to the left.
+    """
 
     self._frames.append(frame)
 
   @property
   def current_frame(self):
+    """
+    Helper to point to the current frame
+    """
 
     if len(self._frames) > self._current_frame:
       return self._frames[self._current_frame]
 
   def next(self):
+    """
+    Move to the next frame, or cycle back to the first frame.
+    """
     self._current_frame += 1
 
     if self._current_frame >= len(self._frames):
       self._current_frame = 0
 
   def draw_frame(self):
+    """
+    Move to next frame if required. Draw the current frame.
+    """
 
-    # TODO: Check if current frame is finished
     if self.current_frame.is_finished:
       self.next()
       self.current_frame.reset()
@@ -214,6 +241,7 @@ class Weather_App(Indicator_App):
                      (5, sunny.size[1] + Text("hi").size[1] + 2))
 
     self.add_frame(w_frame)
+    self.add_frame(Indicator_Frame(device))  # Add a blank frame
 
   @property
   def temp(self):

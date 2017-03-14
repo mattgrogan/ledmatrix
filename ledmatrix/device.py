@@ -111,6 +111,7 @@ class RGB_Matrix(Device):
   def clear(self):
 
     self._matrix.Clear()
+    self.image = Image.new(self.mode, self.size)
 
 
 class Tk_Image(Device):
