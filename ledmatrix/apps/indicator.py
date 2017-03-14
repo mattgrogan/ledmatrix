@@ -1,5 +1,5 @@
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import time
 
 from components import Icon, Text, NoScroll_Text
@@ -70,6 +70,7 @@ SCROLL_IN = 0
 PAUSE = 1
 SCROLL_LEFT = 2
 FINISHED = 3
+FADE_OUT = 4
 
 
 class Indicator_Frame(object):
@@ -90,6 +91,9 @@ class Indicator_Frame(object):
     # How long to pause?
     self.frame_hold = 20
     self.current_hold = 0
+
+    # Brightness
+    self.brightness = 1.0
 
     # What's the bottom?
     self.y_loc = self.device.height - 1
@@ -148,6 +152,20 @@ class Indicator_Frame(object):
       except StopIteration:
         self.indicator_image.reset()
         self.current_hold = 0
+        self.state = FADE_OUT
+
+    elif self.state == FADE_OUT:
+      self.indicator_image.build_image()
+      enhancer = ImageEnhance.Brightness(self.indicator_image.image)
+      self.brightness -= 0.05
+
+      if self.brightness >= 0:
+        im = enhancer.enhance(self.brightness)
+        self.device.image = im
+        self.device.display()
+      else:
+        self.brightness = 1
+        self.indicator_image.reset()
         self.state = FINISHED
 
     return 50
