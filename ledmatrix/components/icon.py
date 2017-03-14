@@ -1,7 +1,7 @@
 import PIL.Image as Image
-from components import Viewport_Mixin
+from components import Viewport_NoScroll_Mixin
 
-class Icon(Viewport_Mixin):
+class Icon(Viewport_NoScroll_Mixin):
   """ Create an icon image """
 
   @staticmethod
