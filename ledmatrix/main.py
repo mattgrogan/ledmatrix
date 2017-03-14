@@ -2,14 +2,19 @@ import argparse
 import os
 import time
 
+import influxdb
+
 from animation import Gif_Playlist
-from apps import Weather_App
+from apps import Weather_App, Indoor_App
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 GENGIFS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gifs/"))
+
+INFLUX_HOST = "ledmatrix"
+INFLUX_DB = "home"
 
 
 def main():
@@ -31,8 +36,11 @@ def main():
 
   dev = ui.matrix
 
-  controller.items.append("Indicator", Weather_App(dev, "KLGA"))
+  influx = influxdb.InfluxDBClient(
+      INFLUX_HOST, 8086, database=INFLUX_DB, timeout=10)
 
+  controller.items.append("Indicator", Weather_App(dev, "KLGA"))
+  controller.items.append("Indoor", Indoor_App(dev, influx))
   #controller.items.append("Emoji", Emoji(dev))
 
   controller.items.append("Snake", Game_Snake(dev))
