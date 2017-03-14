@@ -22,7 +22,7 @@ class Indoor_App(Indicator_App):
     self._last_attempt = None
 
     # Build frame
-    icon = Icon.Icon("lightning", color="#FF0000")
+    icon = Icon.Icon("house", color="#DB0D3D")
     text1 = NoScroll_Text(self.temp, font="MEDIUM", color="#88fc95")
     text2 = NoScroll_Text(self.rh, font="MEDIUM", color="#88fc95")
     text3 = NoScroll_Text(self.last_update, font="MEDIUM", color="#444444")
