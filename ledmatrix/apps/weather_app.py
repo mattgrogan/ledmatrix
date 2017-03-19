@@ -31,10 +31,6 @@ class Weather_App(Indicator_App):
 
   def long_text(self):
     text = self.cc["weather"]
-    #text += "  RH: "
-    #text += self.cc["relative_humidity"]
-    #text += "%  "
-    #text += self.cc["observation_time"]
     return text
 
   def weather(self):
