@@ -21,12 +21,20 @@ class Weather_App(Indicator_App):
 
     self.add_frame(indicator)
 
+    date_frame = Indicator(device)
+    date_frame.icon("sunny", color="#FFFF00")
+    date_frame.icon_text(self.temp)
+    date_frame.line1(self.time, scroll=False)
+    date_frame.line2(self.date)
+
+    self.add_frame(date_frame)
+
   def long_text(self):
     text = self.cc["weather"]
-    text += "  RH: "
-    text += self.cc["relative_humidity"]
-    text += "%  "
-    text += self.cc["observation_time"]
+    #text += "  RH: "
+    #text += self.cc["relative_humidity"]
+    #text += "%  "
+    #text += self.cc["observation_time"]
     return text
 
   def weather(self):
