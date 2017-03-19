@@ -1,5 +1,5 @@
 import time
-from components import Indicator_App, Icon, Text, NoScroll_Text, Indicator_Frame
+from components import Indicator_App, Indicator
 from info.data import NOAA_Current_Observation
 
 
@@ -13,26 +13,16 @@ class Weather_App(Indicator_App):
     self.station = station
     self.cc = NOAA_Current_Observation(station)
 
-    # Build frames
-    sunny = Icon.Icon("sunny", color="#FFFF00")
-    temp_text = NoScroll_Text(self.temp)
-    time_text = NoScroll_Text(self.time)
-    long_text = Text(self.long_text)
+    indicator = Indicator(device)
+    indicator.icon("sunny", color="#FFFF00")
+    indicator.icon_text(self.temp)
+    indicator.line1(self.time, scroll=False)
+    indicator.line2(self.long_text)
 
-    # Weather Frame
-    w_frame = Indicator_Frame(device)
-    w_frame.icon("sunny", color="#FFFF00")
-    w_frame.add_item(temp_text, (sunny.size[0] + 2, 4))
-    w_frame.add_item(long_text, (0, sunny.size[1] + 1))
-    w_frame.add_item(time_text, (5, sunny.size[1] + long_text.size[1] + 2))
-
-    self.add_frame(w_frame)
-    self.add_frame(Indicator_Frame(device))  # Add a blank frame
+    self.add_frame(indicator)
 
   def long_text(self):
     text = self.cc["weather"]
-    text += "  Winds "
-    text += self.cc["wind_string"]
     text += "  RH: "
     text += self.cc["relative_humidity"]
     text += "%  "

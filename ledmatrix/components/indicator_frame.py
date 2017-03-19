@@ -1,5 +1,5 @@
 from PIL import Image, ImageEnhance
-from components import Icon, Indicator_Image
+from components import Icon, Text, NoScroll_Text, Indicator_Image
 
 
 SCROLL_IN = 0
@@ -39,17 +39,6 @@ class Indicator_Frame(object):
     self.y_loc = self.device.height - 1
 
     self.state = SCROLL_IN
-
-    # Positions
-    self.icon_position = (0, 0)
-
-  def icon(self, name, color):
-    """ Set the icon """
-
-    self.icon = Icon.Icon(name, color)
-    # TODO: Is this a problem if we add change the icon later icons?
-    self.add_item(self.icon, self.icon_position)
-
 
 
   def add_item(self, item, xy):
