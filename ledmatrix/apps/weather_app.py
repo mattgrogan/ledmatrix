@@ -21,7 +21,7 @@ class Weather_App(Indicator_App):
 
     # Weather Frame
     w_frame = Indicator_Frame(device)
-    w_frame.add_item(sunny, (1, 1))
+    w_frame.icon("sunny", color="#FFFF00")
     w_frame.add_item(temp_text, (sunny.size[0] + 2, 4))
     w_frame.add_item(long_text, (0, sunny.size[1] + 1))
     w_frame.add_item(time_text, (5, sunny.size[1] + long_text.size[1] + 2))
