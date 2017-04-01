@@ -40,7 +40,7 @@ def main():
       INFLUX_HOST, 8086, database=INFLUX_DB, timeout=10)
 
   controller.items.append("Indicator", Weather_App(dev, "KLGA"))
-  #controller.items.append("Indoor", Indoor_App(dev, influx))
+  controller.items.append("Indoor", Indoor_App(dev, influx))
 
   controller.items.append("Snake", Game_Snake(dev))
 
