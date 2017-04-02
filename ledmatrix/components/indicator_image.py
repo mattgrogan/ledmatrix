@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 
 class Indicator_Image(object):
@@ -41,7 +41,7 @@ class Indicator_Image(object):
 
     # Set the brightness
     enhancer = ImageEnhance.Brightness(self.image)
-    self.image = enhancer.enhance()
+    self.image = enhancer.enhance(self.brightness)
 
   def next(self):
     """
@@ -63,6 +63,8 @@ class Indicator_Image(object):
     """
     Reset the positions of each child item.
     """
+
+    # TODO: Set brightness here!
 
     for item, xy in self._items:
       item.reset()

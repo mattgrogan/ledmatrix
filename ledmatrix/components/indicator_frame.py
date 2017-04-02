@@ -31,10 +31,6 @@ class Indicator_Frame(object):
     self.frame_hold = 20
     self.current_hold = 0
 
-    # Brightness
-    self.brightness = 1.0
-    self.in_brightness = 0.0
-
     # How many cycles to scroll
     self.cycles = 1
     self.current_cycle = 1
@@ -54,8 +50,10 @@ class Indicator_Frame(object):
 
   def reset(self, scroll_in=False):
     if scroll_in:
+      self.indicator_image.brightness = 1.0
       self.state = SCROLL_IN
     else:
+      self.indicator_image.brightness = 0.0
       self.state = FADE_IN
 
   def draw_frame(self):
@@ -83,17 +81,14 @@ class Indicator_Frame(object):
         self.state = PAUSE
 
     elif self.state == FADE_IN:
-      self.indicator_image.build_image()
-      enhancer = ImageEnhance.Brightness(self.indicator_image.image)
-      self.in_brightness += 0.01
 
-      if self.in_brightness <= MAX_FADE_IN:
-        im = enhancer.enhance(self.in_brightness)
-        self.brightness = self.in_brightness
-        self.device.image = im
+      self.indicator_image.brightness += 0.01
+
+      if self.indicator_image.brightness <= MAX_FADE_IN:
+        self.indicator_image.build_image()
+        self.device.image = self.indicator_image.image
         self.device.display()
       else:
-        self.in_brightness = 0
         self.indicator_image.reset()
         self.state = PAUSE
 
@@ -122,15 +117,13 @@ class Indicator_Frame(object):
 
     elif self.state == FADE_OUT:
       self.indicator_image.build_image()
-      enhancer = ImageEnhance.Brightness(self.indicator_image.image)
-      self.brightness -= 0.01
+      self.indicator_image.brightness -= 0.01
 
-      if self.brightness >= 0:
-        im = enhancer.enhance(self.brightness)
-        self.device.image = im
+      if self.indicator_image.brightness >= 0:
+        self.indicator_image.build_image()
+        self.device.image = self.indicator_image.image
         self.device.display()
       else:
-        self.brightness = MAX_FADE_IN
         self.indicator_image.reset()
         self.state = FINISHED
 
