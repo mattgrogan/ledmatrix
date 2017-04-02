@@ -16,6 +16,7 @@ class Indicator_Image(object):
 
     self.device = device
     self._items = []
+    self.brightness = 1.0
 
   def add_item(self, item, xy):
     """
@@ -37,6 +38,10 @@ class Indicator_Image(object):
       im = item.crop(self.device.size)
       im.load()  # Force the crop
       self.image.paste(im, xy)
+
+    # Set the brightness
+    enhancer = ImageEnhance.Brightness(self.image)
+    self.image = enhancer.enhance()
 
   def next(self):
     """

@@ -7,6 +7,9 @@ PAUSE = 1
 SCROLL_LEFT = 2
 FINISHED = 3
 FADE_OUT = 4
+FADE_IN = 5
+
+MAX_FADE_IN = 0.60
 
 
 class Indicator_Frame(object):
@@ -30,6 +33,7 @@ class Indicator_Frame(object):
 
     # Brightness
     self.brightness = 1.0
+    self.in_brightness = 0.0
 
     # How many cycles to scroll
     self.cycles = 1
@@ -40,7 +44,6 @@ class Indicator_Frame(object):
 
     self.state = SCROLL_IN
 
-
   def add_item(self, item, xy):
     self.indicator_image.add_item(item, xy)
 
@@ -49,8 +52,11 @@ class Indicator_Frame(object):
 
     return self.state == FINISHED
 
-  def reset(self):
-    self.state = SCROLL_IN
+  def reset(self, scroll_in=False):
+    if scroll_in:
+      self.state = SCROLL_IN
+    else:
+      self.state = FADE_IN
 
   def draw_frame(self):
     """
@@ -74,6 +80,21 @@ class Indicator_Frame(object):
       # Check have we scrolled all the way?
       if self.y_loc < 0:
         self.y_loc = h
+        self.state = PAUSE
+
+    elif self.state == FADE_IN:
+      self.indicator_image.build_image()
+      enhancer = ImageEnhance.Brightness(self.indicator_image.image)
+      self.in_brightness += 0.01
+
+      if self.in_brightness <= MAX_FADE_IN:
+        im = enhancer.enhance(self.in_brightness)
+        self.brightness = self.in_brightness
+        self.device.image = im
+        self.device.display()
+      else:
+        self.in_brightness = 0
+        self.indicator_image.reset()
         self.state = PAUSE
 
     elif self.state == PAUSE:
@@ -109,7 +130,7 @@ class Indicator_Frame(object):
         self.device.image = im
         self.device.display()
       else:
-        self.brightness = 1
+        self.brightness = MAX_FADE_IN
         self.indicator_image.reset()
         self.state = FINISHED
 
