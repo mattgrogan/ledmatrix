@@ -9,7 +9,8 @@ FINISHED = 3
 FADE_OUT = 4
 FADE_IN = 5
 
-MAX_FADE_IN = 0.60
+MAX_FADE_IN = 0.70
+PAUSE_FRAMES = 500
 
 
 class Indicator_Frame(object):
@@ -28,7 +29,7 @@ class Indicator_Frame(object):
     self.indicator_image = Indicator_Image(device)
 
     # How long to pause?
-    self.frame_hold = 20
+    self.frame_hold = PAUSE_FRAMES
     self.current_hold = 0
 
     # How many cycles to scroll
@@ -60,14 +61,14 @@ class Indicator_Frame(object):
 
     if self.state == SCROLL_IN:
       # We're scrolling down from the top
-      self.indicator_image.build_image()
+
       self.device.clear()
       try:
         self.indicator_image.move_down()
-
       except StopIteration:
         self.state = PAUSE
 
+      self.indicator_image.build_image()
       self.device.image.paste(self.indicator_image.image, (0, 0))
       self.device.display()
 
@@ -107,7 +108,6 @@ class Indicator_Frame(object):
           self.state = FADE_OUT
 
     elif self.state == FADE_OUT:
-      self.indicator_image.build_image()
       self.indicator_image.brightness -= 0.01
 
       if self.indicator_image.brightness >= 0:

@@ -33,15 +33,12 @@ class Indicator_Image(object):
     Move the image down by one
     """
 
-    w, h = self.image.size
-    self.image = self.image.crop((0, self.y_loc, w - 1, h - 1))
-    self.image.load()
+    w, h = self.device.size
 
     self.y_loc -= 1
 
     # Check have we scrolled all the way?
     if self.y_loc < 0:
-      self.y_loc = h
       raise StopIteration
 
   def build_image(self):
@@ -57,6 +54,10 @@ class Indicator_Image(object):
       im = item.crop(self.device.size)
       im.load()  # Force the crop
       self.image.paste(im, xy)
+
+    w, h = self.image.size
+    self.image = self.image.crop((0, self.y_loc, w - 1, h - 1))
+    self.image.load()
 
     # Set the brightness
     enhancer = ImageEnhance.Brightness(self.image)
@@ -83,5 +84,14 @@ class Indicator_Image(object):
     Reset the positions of each child item.
     """
 
+    #w, h = self.device.size
+    self.y_loc = 0  # Reset for frade in
+
     for item, xy in self._items:
       item.reset()
+
+  def display(self):
+    """
+    Display the image on the device
+    """
+    pass
