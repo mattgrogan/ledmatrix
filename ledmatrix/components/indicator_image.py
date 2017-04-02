@@ -8,7 +8,7 @@ class Indicator_Image(object):
   to each component.
   """
 
-  def __init__(self, device):
+  def __init__(self, device, image_control):
     """
     The device is needed for its dimensions. The items will be cropped to
     fit within the screen.
@@ -17,6 +17,7 @@ class Indicator_Image(object):
     self.device = device
     self._items = []
     self.brightness = 1.0
+    self.image_control = image_control
 
     # What's the bottom?
     self.y_loc = self.device.height - 1
@@ -94,4 +95,9 @@ class Indicator_Image(object):
     """
     Display the image on the device
     """
-    pass
+
+    self.image_control.update(self)
+
+    self.build_image()
+    self.device.image.paste(self.image, (0, 0))
+    self.device.display()

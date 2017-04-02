@@ -1,5 +1,5 @@
 from PIL import Image, ImageEnhance
-from components import Icon, Text, NoScroll_Text, Indicator_Image
+from components import Icon, Text, NoScroll_Text, Indicator_Image, Indicator_Image_Control, Image_Pause_Control, Image_ScrollDown_Control, Image_FadeIn_Control, Image_FadeOut_Control, Image_ScrollLeft_Control
 
 
 SCROLL_IN = 0
@@ -10,7 +10,7 @@ FADE_OUT = 4
 FADE_IN = 5
 
 MAX_FADE_IN = 0.70
-PAUSE_FRAMES = 500
+PAUSE_FRAMES = 10
 
 
 class Indicator_Frame(object):
@@ -26,17 +26,10 @@ class Indicator_Frame(object):
     """
 
     self.device = device
-    self.indicator_image = Indicator_Image(device)
+    ic = Indicator_Image_Control()
+    self.indicator_image = Indicator_Image(device, ic)
 
-    # How long to pause?
-    self.frame_hold = PAUSE_FRAMES
-    self.current_hold = 0
-
-    # How many cycles to scroll
-    self.cycles = 1
-    self.current_cycle = 1
-
-    self.state = SCROLL_IN
+    self.reset(scroll_in=True)
 
   def add_item(self, item, xy):
     self.indicator_image.add_item(item, xy)
@@ -50,8 +43,11 @@ class Indicator_Frame(object):
     if scroll_in:
       self.indicator_image.brightness = 1.0
       self.state = SCROLL_IN
+      self.device.clear()
+      self.indicator_image.image_control = Image_ScrollDown_Control()
     else:
       self.indicator_image.brightness = 0.0
+      self.indicator_image.image_control = Image_FadeIn_Control(0.70)
       self.state = FADE_IN
 
   def draw_frame(self):
@@ -59,63 +55,29 @@ class Indicator_Frame(object):
     Draw the frame differently based on the current animation state.
     """
 
-    if self.state == SCROLL_IN:
-      # We're scrolling down from the top
+    try:
+      self.indicator_image.display()
+    except StopIteration:
 
-      self.device.clear()
-      try:
-        self.indicator_image.move_down()
-      except StopIteration:
+      if self.state == SCROLL_IN:
+        self.indicator_image.image_control = Image_Pause_Control(PAUSE_FRAMES)
         self.state = PAUSE
 
-      self.indicator_image.build_image()
-      self.device.image.paste(self.indicator_image.image, (0, 0))
-      self.device.display()
-
-    elif self.state == FADE_IN:
-
-      self.indicator_image.brightness += 0.01
-
-      if self.indicator_image.brightness <= MAX_FADE_IN:
-        self.indicator_image.build_image()
-        self.device.image = self.indicator_image.image
-        self.device.display()
-      else:
-        self.indicator_image.reset()
+      elif self.state == FADE_IN:
         self.state = PAUSE
+        self.indicator_image.image_control = Image_Pause_Control(PAUSE_FRAMES)
 
-    elif self.state == PAUSE:
-      self.indicator_image.build_image()
-      self.current_hold += 1
-      self.device.image = self.indicator_image.image
-      self.device.display()
-      if self.current_hold > self.frame_hold:
+      elif self.state == PAUSE:
+        self.indicator_image.image_control = Image_ScrollLeft_Control()
         self.state = SCROLL_LEFT
 
-    elif self.state == SCROLL_LEFT:
-      try:
-        self.indicator_image.next()
-        self.indicator_image.build_image()
-        self.device.image = self.indicator_image.image
-        self.device.display()
-      except StopIteration:
-        self.current_hold = 0
-        if self.current_cycle < self.cycles:
-          self.current_cycle += 1
-          self.indicator_image.reset()
-          self.state = PAUSE
-        else:
-          self.state = FADE_OUT
+      elif self.state == SCROLL_LEFT:
+        self.state = FADE_OUT
+        self.indicator_image.image_control = Image_FadeOut_Control()
 
-    elif self.state == FADE_OUT:
-      self.indicator_image.brightness -= 0.01
-
-      if self.indicator_image.brightness >= 0:
-        self.indicator_image.build_image()
-        self.device.image = self.indicator_image.image
-        self.device.display()
-      else:
+      elif self.state == FADE_OUT:
         self.indicator_image.reset()
+        self.indicator_image.image_control = Indicator_Image_Control()
         self.state = FINISHED
 
     return 50
