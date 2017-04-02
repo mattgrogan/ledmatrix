@@ -35,9 +35,6 @@ class Indicator_Frame(object):
     self.cycles = 1
     self.current_cycle = 1
 
-    # What's the bottom?
-    self.y_loc = self.device.height - 1
-
     self.state = SCROLL_IN
 
   def add_item(self, item, xy):
@@ -65,20 +62,14 @@ class Indicator_Frame(object):
       # We're scrolling down from the top
       self.indicator_image.build_image()
       self.device.clear()
-      w, h = self.indicator_image.image.size
-      self.indicator_image.image = self.indicator_image.image.crop(
-          (0, self.y_loc, w - 1, h - 1))
-      self.indicator_image.image.load()
-      self.device.image.paste(self.indicator_image.image, (0, 0))
+      try:
+        self.indicator_image.move_down()
 
-      self.device.display()
-
-      self.y_loc -= 1
-
-      # Check have we scrolled all the way?
-      if self.y_loc < 0:
-        self.y_loc = h
+      except StopIteration:
         self.state = PAUSE
+
+      self.device.image.paste(self.indicator_image.image, (0, 0))
+      self.device.display()
 
     elif self.state == FADE_IN:
 
