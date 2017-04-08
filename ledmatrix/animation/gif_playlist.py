@@ -46,17 +46,17 @@ class Gif_Playlist(object):
 
     if command == "LEFT":
       self.items.next()
-      self.items.current_item.start()
+      self.items.current_item.start(self.timeout_ms)
     elif command == "RIGHT":
       self.items.prev()
-      self.items.current_item.start()
+      self.items.current_item.start(self.timeout_ms)
 
   def draw_frame(self):
     """ Draw the frame of the current image """
 
     if self.items.current_item.is_finished:
       self.items.next()
-      self.items.current_item.start()
+      self.items.current_item.start(self.timeout_ms)
 
     im, dur = self.items.current_item.draw_frame()
 
