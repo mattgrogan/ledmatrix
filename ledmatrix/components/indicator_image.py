@@ -99,6 +99,9 @@ class Indicator_Image(object):
     self.image_control.update(self)
 
     self.build_image()
-    self.device.clear()
+    # self.device.clear()
+    self.device.blank_image()
+    # TODO: Do I really have to paste here?
+    # Problem clear() causes flicker....
     self.device.image.paste(self.image, (0, 0))
     self.device.display()

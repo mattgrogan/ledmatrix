@@ -22,6 +22,10 @@ class Device(object):
 
     raise NotImplementedError()
 
+  def blank_image(self):
+    """ Just blank image, don't clear matrix """
+    self.image = Image.new(self.mode, self.size)
+
   def clear(self):
 
     self.image = Image.new(self.mode, self.size)
