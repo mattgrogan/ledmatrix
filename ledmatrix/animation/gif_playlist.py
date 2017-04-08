@@ -36,6 +36,8 @@ class Gif_Playlist(object):
     files = [name for name in glob.glob(os.path.join(
         self.folder, '*.gif')) if os.path.isfile(os.path.join(self.folder, name))]
 
+    random.shuffle(files)
+
     for filename in files:
       self.items.append(filename, Gif_Player(filename))
 
