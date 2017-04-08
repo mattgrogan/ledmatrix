@@ -35,7 +35,7 @@ class Indoor_App(Indicator_App):
     f.add_item(text3, (0, icon.size[1] + 2 + text1.size[1]))
 
     self.add_frame(f)
-    self.add_frame(Indicator_Frame(device))
+    #self.add_frame(Indicator_Frame(device))
 
   def _timeout_expired(self):
     """
