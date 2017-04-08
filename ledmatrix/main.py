@@ -39,9 +39,6 @@ def main():
   influx = influxdb.InfluxDBClient(
       INFLUX_HOST, 8086, database=INFLUX_DB, timeout=10)
 
-  controller.items.append("GIF", Gif_Playlist(
-     dev, GENGIFS_FOLDER, timeout_ms=10000))
-  
   controller.items.append("Indicator", Weather_App(dev, "KLGA"))
   controller.items.append("Indoor", Indoor_App(dev, influx))
 
@@ -50,6 +47,8 @@ def main():
   controller.items.append("Munch", Pattern_Munch(dev))
   controller.items.append("Fire", Pattern_Fire(dev))
 
+  controller.items.append("GIF", Gif_Playlist(
+     dev, GENGIFS_FOLDER, timeout_ms=10000))
 
   ui.mainloop()
 
