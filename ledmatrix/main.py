@@ -5,7 +5,7 @@ import time
 import influxdb
 
 from animation import Gif_Playlist
-from apps import Weather_App, Indoor_App
+from apps import Weather_App, Indoor_App, Sun_App
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
@@ -48,12 +48,14 @@ def main():
   controller.items.append("Fire", Pattern_Fire(dev))
 
   controller.items.append("GIF", Gif_Playlist(
-     dev, GENGIFS_FOLDER, timeout_ms=10000))
+      dev, GENGIFS_FOLDER, timeout_ms=10000))
 
   ui.mainloop()
 
 if __name__ == "__main__":
   try:
+    sun = Sun_App(None)
+    sun.update_data()
     main()
   except KeyboardInterrupt:
     pass
