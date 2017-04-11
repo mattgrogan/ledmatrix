@@ -48,7 +48,6 @@ class NOAA_Forecast(Throttle_Mixin):
 
     try:
       r = requests.get(self.url, params=self._opts, timeout=self.timeout)
-      print r.url
     except:
       log.exception("Exception")
       return False
