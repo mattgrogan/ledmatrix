@@ -5,7 +5,7 @@ import time
 import influxdb
 
 from animation import Gif_Playlist
-from apps import Weather_App, Indoor_App, Sun_App
+#from apps import Weather_App, Indoor_App, Sun_App
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
