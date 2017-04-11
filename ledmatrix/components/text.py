@@ -19,7 +19,7 @@ class Text(Font_Mixin, Viewport_Mixin):
 
   def update(self):
 
-    text = self.data_mapper.data()[self.data_field]
+    text = self.data_mapper[self.data_field]
     w, h = self.font.getsize(text)
 
     # Create the blank image for this frame

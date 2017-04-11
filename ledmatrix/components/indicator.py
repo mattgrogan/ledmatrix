@@ -19,7 +19,6 @@ class Indicator(Indicator_Frame):
     self.line2_pos = (0, 24)
 
     # Construct itself
-    self.data_mapper.data()
     self.icon(self.data_mapper)
     self.icon_text(self.data_mapper, "line1")
     self.line1(self.data_mapper, "line2", scroll=False)
