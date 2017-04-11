@@ -36,7 +36,7 @@ class NOAA_Current_Observation(Throttle_Mixin):
     if name in self.current_obs.keys():
       return self.current_obs[name]
     else:
-      return None
+      return ""
 
   def _fetch_data(self):
 

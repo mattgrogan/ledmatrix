@@ -68,7 +68,6 @@ class Throttle_Mixin(object):
         log.error("Failed to update data")
         self.failure()
     else:
-      log.debug("Update not required")
       pass
 
   @property

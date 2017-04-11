@@ -54,8 +54,6 @@ def main():
 
 if __name__ == "__main__":
   try:
-    sun = Sun_App(None)
-    sun.update_data()
     main()
   except KeyboardInterrupt:
     pass
