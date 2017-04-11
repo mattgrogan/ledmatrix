@@ -16,14 +16,6 @@ log = logging.getLogger("ledmatrix")
 logging.basicConfig()
 log.setLevel(logging.DEBUG)
 
-# handler = logging.handlers.RotatingFileHandler(
-#     log_path, maxBytes=1000000, backupCount=3)
-# formatter = logging.Formatter(
-#     '%(asctime)s %(levelname)s %(module)s:%(lineno)d - %(message)s')
-# handler.setFormatter(formatter)
-#
-# log.addHandler(handler)
-
 
 class Sunrise_Sunset(Throttle_Mixin):
 
