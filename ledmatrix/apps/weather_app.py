@@ -1,6 +1,6 @@
 import time
 from components import Indicator_App, Indicator
-from info.data import NOAA_Current_Observation
+from data.current_conditions import NOAA_Current_Observation
 
 
 class Weather_App(Indicator_App):
