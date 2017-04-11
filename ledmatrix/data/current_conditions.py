@@ -3,7 +3,7 @@ import logging
 import requests
 import xml.etree.ElementTree as ET
 
-from throttle_mixin import Throttle_Mixin
+from utils.throttle_mixin import Throttle_Mixin
 
 log = logging.getLogger("ledmatrix")
 logging.basicConfig()

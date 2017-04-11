@@ -1,23 +1,6 @@
 import time
+from data.utils.indicator_mapper import Indicator_Data_Map
 from data.current_conditions import NOAA_Current_Observation
-
-
-class Indicator_Data_Map(object):
-
-  def init(self):
-    self._items = {}
-
-  def __getitem__(self, key):
-    item = self._items[key]
-    if callable(item):
-      item = item()  # call it if it's a lambda
-
-    return item
-
-  def __setitem__(self, key, val):
-    if self._items is None:
-      self._items = {}
-    self._items[key] = val
 
 
 class Current_Obs_Mapper(Indicator_Data_Map):

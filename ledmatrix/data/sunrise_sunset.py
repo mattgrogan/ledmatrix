@@ -10,7 +10,7 @@ import logging
 import logging.handlers
 
 
-from throttle_mixin import Throttle_Mixin
+from utils.throttle_mixin import Throttle_Mixin
 
 log = logging.getLogger("ledmatrix")
 logging.basicConfig()

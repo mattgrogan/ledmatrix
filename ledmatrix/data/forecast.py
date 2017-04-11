@@ -2,7 +2,7 @@ import requests
 import json
 import logging
 
-from throttle_mixin import Throttle_Mixin
+from utils.throttle_mixin import Throttle_Mixin
 
 log = logging.getLogger("ledmatrix")
 logging.basicConfig()
