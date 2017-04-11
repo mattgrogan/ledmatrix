@@ -11,6 +11,7 @@ from games import Game_Snake
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
 from data.mappers.current_obs import Current_Obs_Mapper
 from data.mappers.sunrise_sunset import Sunrise_Mapper
+from data.mappers.indoor_temp import Indoor_Mapper
 # from components.indicator_app import Indicator_App
 from components.indicator import Indicator
 # from components.indicator2 import Indicator2
@@ -50,6 +51,9 @@ def main():
 
   sunrise = Sunrise_Mapper(40.7127837,  -74.0059413)
   controller.items.append("Sunrise", Indicator(dev, sunrise))
+
+  indoor = Indoor_Mapper()
+  controller.items.append("Indoor", Indicator(dev, indoor))
 
   # controller.items.append("Indoor", Indoor_App(dev, influx))
   #
