@@ -55,6 +55,9 @@ class Indicator_Frame(object):
     Draw the frame differently based on the current animation state.
     """
 
+    if self.state == FINISHED:
+      self.reset()
+
     try:
       self.indicator_image.display()
     except StopIteration:

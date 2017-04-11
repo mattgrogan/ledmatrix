@@ -6,9 +6,10 @@ from components import Font_Mixin, Viewport_Mixin, Viewport_NoScroll_Mixin
 class Text(Font_Mixin, Viewport_Mixin):
   """ Write text to an image """
 
-  def __init__(self, text, color="#FFFFFF", font="MEDIUM"):
+  def __init__(self, data_mapper, data_field=None, color="#FFFFFF", font="MEDIUM"):
 
-    self.text = text
+    self.data_mapper = data_mapper
+    self.data_field = data_field
     self.font = font
     self.color = color
 
@@ -18,7 +19,7 @@ class Text(Font_Mixin, Viewport_Mixin):
 
   def update(self):
 
-    text = self.text()
+    text = self.data_mapper.data()[self.data_field]
     w, h = self.font.getsize(text)
 
     # Create the blank image for this frame

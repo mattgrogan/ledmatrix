@@ -10,7 +10,11 @@ class Icon(Viewport_NoScroll_Mixin):
   """ Create an icon image """
 
   @staticmethod
-  def Icon(icon_name, color="#FFFFFF"):
+  # def Icon(icon_name, color="#FFFFFF"):
+  def Icon(data):
+
+    icon_name = data.data()["icon_name"]
+    color = data.data()["icon_color"]
 
     return Icon.Build(BMP[icon_name], color)
 
