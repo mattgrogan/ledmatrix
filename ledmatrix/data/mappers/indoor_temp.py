@@ -23,7 +23,7 @@ class Indoor_Mapper(Indicator_Data_Map):
 
     self.init()
 
-    text = lambda: "Temp: %i RH: %i%%" % (
+    text = lambda: "%iF %i%% RH" % (
         self._data["temp_f"],
         self._data["humidity"]
     )

@@ -5,16 +5,13 @@ import time
 import influxdb
 
 from animation import Gif_Playlist
-#from apps import Weather_App, Indoor_App, Sun_App
 from controller import LEDMatrix_Controller
 from games import Game_Snake
 from pattern import Pattern_Fire, Pattern_Munch, Pattern_Sine
 from data.mappers.current_obs import Current_Obs_Mapper
 from data.mappers.sunrise_sunset import Sunrise_Mapper
 from data.mappers.indoor_temp import Indoor_Mapper
-# from components.indicator_app import Indicator_App
 from components.indicator import Indicator
-# from components.indicator2 import Indicator2
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 GENGIFS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gifs/"))
@@ -55,15 +52,13 @@ def main():
   indoor = Indoor_Mapper()
   controller.items.append("Indoor", Indicator(dev, indoor))
 
-  # controller.items.append("Indoor", Indoor_App(dev, influx))
-  #
-  # controller.items.append("Snake", Game_Snake(dev))
+  controller.items.append("Snake", Game_Snake(dev))
   #
   # controller.items.append("Munch", Pattern_Munch(dev))
   # controller.items.append("Fire", Pattern_Fire(dev))
   #
-  # controller.items.append("GIF", Gif_Playlist(
-  #     dev, GENGIFS_FOLDER, timeout_ms=10000))
+  controller.items.append("GIF", Gif_Playlist(
+      dev, GENGIFS_FOLDER, timeout_ms=10000))
 
   ui.mainloop()
 

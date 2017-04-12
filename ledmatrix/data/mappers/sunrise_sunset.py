@@ -11,7 +11,7 @@ class Sunrise_Mapper(Indicator_Data_Map):
     self._data = Sunrise_Sunset(lat, lng)
     self.init()
 
-    text = lambda: "Sunrise: {0} Sunset: {1}".format(
+    text = lambda: "{0} RISE - {1} SET".format(
         self._data["sunrise"].strftime("%I:%M %p").lstrip("0"),
         self._data["sunset"].strftime("%I:%M %p").lstrip("0")
     )
