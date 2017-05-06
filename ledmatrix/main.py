@@ -1,3 +1,5 @@
+import logging
+import logging.handlers
 import argparse
 import os
 import time
@@ -19,6 +21,19 @@ GENGIFS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gifs/"))
 INFLUX_HOST = "ledmatrix"
 INFLUX_DB = "home"
 
+LOG_FILENAME = "log/ledmatrix.log"
+
+# Set up logging
+current_dir = os.path.dirname(os.path.abspath(__file__))
+log_path = os.path.normpath(os.path.join(current_dir, LOG_FILENAME))
+log = logging.getLogger("ledmatrix")
+log.setLevel(logging.INFO)
+handler = logging.handlers.RotatingFileHandler(
+    log_path, maxBytes=1000000, backupCount=3)
+formatter = logging.Formatter(
+    '%(asctime)s %(levelname)s %(module)s:%(lineno)d - %(message)s')
+handler.setFormatter(formatter)
+log.addHandler(handler)
 
 def main():
 

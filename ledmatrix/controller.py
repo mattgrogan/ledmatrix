@@ -1,6 +1,8 @@
 import time
+import logging
 
 from menu import Menu
+log = logging.getLogger("ledmatrix")
 
 
 class LEDMatrix_Controller(object):
@@ -57,6 +59,7 @@ class LEDMatrix_Controller(object):
       requested_delay_ms = self.items.current_item.draw_frame()
       if self.items.current_item.is_finished:
         self.items.move_random()
+        log.info("Starting: %s", self.items.current_item_name)
     else:
       requested_delay_ms = 25
 
