@@ -76,10 +76,12 @@ class Throttle_Mixin(object):
 
     # Is this the first time we've run?
     if self._next_run is None:
+      log.info("Should run (first run)")
       return True
 
     # Has the time expired
     if datetime.datetime.now() > self._next_run:
+      log.info("Should run (time expired)")
       return True
 
     return False

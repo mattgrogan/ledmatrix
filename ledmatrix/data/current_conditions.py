@@ -6,8 +6,6 @@ import xml.etree.ElementTree as ET
 from utils.throttle_mixin import Throttle_Mixin
 
 log = logging.getLogger("ledmatrix")
-logging.basicConfig()
-log.setLevel(logging.DEBUG)
 
 
 class NOAA_Current_Observation(Throttle_Mixin):
@@ -25,30 +23,39 @@ class NOAA_Current_Observation(Throttle_Mixin):
     # Use the Mixin to throttle requests
     self.every(60 * 30, self._fetch_data)
 
+    log.info("Current conditions initialized")
+
   def __getitem__(self, name):
     """
     Checks for new data and returns the appropriate value.
     """
 
     # Call mixin
+    #log.info("calling mixin run_pending")
     self.run_pending()
+    #log.info("mixin run_pending() completed")
 
     if name in self.current_obs.keys():
+      log.info("returning %s" % name)
       return self.current_obs[name]
     else:
+      log.debug("key %s not found" % name)
       return ""
 
   def _fetch_data(self):
 
     # Attempt a connection
     try:
-      r = requests.get(self.url)
+      log.info("Attempting connection")
+      r = requests.get(self.url, timeout=10)
+      log.info("Request complete")
     except:
       log.exception("Exception")
       return False
 
     if r.status_code == requests.codes.ok:
       # Parse the data
+      log.info("Request successful")
       root = ET.fromstring(r.content)
       for child in root:
         self.current_obs[child.tag] = child.text
