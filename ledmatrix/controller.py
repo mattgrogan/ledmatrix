@@ -57,7 +57,9 @@ class LEDMatrix_Controller(object):
 
     if self.is_running:
       requested_delay_ms = self.items.current_item.draw_frame()
+
       if self.items.current_item.is_finished:
+        log.info("Finished: %s", self.items.current_item_name)
         self.items.move_random()
         log.info("Starting: %s", self.items.current_item_name)
     else:
