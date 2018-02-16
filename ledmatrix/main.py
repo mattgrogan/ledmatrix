@@ -14,9 +14,11 @@ from data.mappers.current_obs import Current_Obs_Mapper
 from data.mappers.sunrise_sunset import Sunrise_Mapper
 from data.mappers.indoor_temp import Indoor_Mapper
 from components.indicator import Indicator
+from gif_icons import Gif_Icon
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 GENGIFS_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gifs/"))
+GIFICON_FOLDER = os.path.normpath(os.path.join(current_dir, "../icons/gif_icons/"))
 
 INFLUX_HOST = "ledmatrix"
 INFLUX_DB = "home"
@@ -56,6 +58,8 @@ def main():
 
   influx = influxdb.InfluxDBClient(
       INFLUX_HOST, 8086, database=INFLUX_DB, timeout=10)
+
+  controller.items.append("Icons", Gif_Icon(dev, GIFICON_FOLDER + "/1629_icon_thumb.gif"))
 
   current_obs = Current_Obs_Mapper("KLGA")
   controller.items.append("Current Conditions",
