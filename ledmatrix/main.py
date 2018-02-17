@@ -59,25 +59,28 @@ def main():
   influx = influxdb.InfluxDBClient(
       INFLUX_HOST, 8086, database=INFLUX_DB, timeout=10)
 
-  controller.items.append("Icons", Gif_Icon(dev, GIFICON_FOLDER + "/1629_icon_thumb.gif"))
+  controller.items.append("GIF", Gif_Playlist(
+      dev, GIFICON_FOLDER, timeout_ms=10000))
 
-  current_obs = Current_Obs_Mapper("KLGA")
-  controller.items.append("Current Conditions",
-                          Indicator(dev, current_obs))
-
-  sunrise = Sunrise_Mapper(40.7127837,  -74.0059413)
-  controller.items.append("Sunrise", Indicator(dev, sunrise))
-
-  indoor = Indoor_Mapper()
-  controller.items.append("Indoor", Indicator(dev, indoor))
-
-  controller.items.append("Snake", Game_Snake(dev))
+  # controller.items.append("Icons", Gif_Icon(dev, GIFICON_FOLDER + "/1629_icon_thumb.gif"))
+  #
+  # current_obs = Current_Obs_Mapper("KLGA")
+  # controller.items.append("Current Conditions",
+  #                         Indicator(dev, current_obs))
+  #
+  # sunrise = Sunrise_Mapper(40.7127837,  -74.0059413)
+  # controller.items.append("Sunrise", Indicator(dev, sunrise))
+  #
+  # indoor = Indoor_Mapper()
+  # controller.items.append("Indoor", Indicator(dev, indoor))
+  #
+  # controller.items.append("Snake", Game_Snake(dev))
   #
   # controller.items.append("Munch", Pattern_Munch(dev))
   # controller.items.append("Fire", Pattern_Fire(dev))
   #
-  controller.items.append("GIF", Gif_Playlist(
-      dev, GENGIFS_FOLDER, timeout_ms=10000))
+  #controller.items.append("GIF", Gif_Playlist(
+  #    dev, GENGIFS_FOLDER, timeout_ms=10000))
 
   ui.mainloop()
 
