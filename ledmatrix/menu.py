@@ -40,10 +40,11 @@ class Menu(object):
 
   def move_random(self):
 
-    self._current_index = random.choice(range(len(self._keys)))
+    #self._current_index = random.choice(range(len(self._keys)))
+    self._current_index = random.randint(0, len(self._keys)-1)
 
     while self.current_item.is_playlist == False:
-      self._current_index = random.choice(range(len(self._keys)))
+      self._current_index = random.randint(0, len(self._keys)-1)
 
   def next(self):
 

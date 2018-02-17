@@ -59,8 +59,17 @@ def main():
   influx = influxdb.InfluxDBClient(
       INFLUX_HOST, 8086, database=INFLUX_DB, timeout=10)
 
-  controller.items.append("GIF", Gif_Playlist(
-      dev, GIFICON_FOLDER, timeout_ms=10000))
+  # FOR NEW GIFS ONLY
+  import glob
+  import os
+  import random
+  files = [name for name in glob.glob(os.path.join(
+      GIFICON_FOLDER, '*.gif')) if os.path.isfile(os.path.join(GIFICON_FOLDER, name))]
+
+  random.shuffle(files)
+
+  for filename in files:
+    controller.items.append(os.path.basename(filename), Gif_Icon(dev, filename, timeout_ms=10000))
 
   # controller.items.append("Icons", Gif_Icon(dev, GIFICON_FOLDER + "/1629_icon_thumb.gif"))
   #
