@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>LaMetric error</title>
+	<link href="/assets/dev/css/normalize.css" rel="stylesheet" type="text/css"/>
+	<link href="/assets/dev/css/lametric.css" rel="stylesheet" type="text/css"/>
+	<link href="/assets/css/main.css" rel="stylesheet" type="text/css"/>
+	<style>
+		#content {
+			max-width: 640px;
+			margin: auto;
+		}
+	</style>
+</head>
+<body class="not-fixed-page errorPage">
+
+<header>
+	<div class="inner">
+	<div id="logo">
+		<a href="http://lametric.com/" class="logo">
+			<img src="https://developer.lametric.com/assets/store/images/logo.png" width="143" height="35"/>
+		</a>
+		<a href="https://developer.lametric.com/" class="logo-title">Developer</a>
+	</div>
+
+		<ul class="main-menu">
+		<li><a class="btn-blue" href="https://developer.lametric.com/register">Sign up</a></li>
+		<li>
+			<a class="btn-empty" href="https://developer.lametric.com/login">Sign in</a>
+			<input type="hidden" id="userLogged" value="0">
+			<input type="hidden" id="userLoggedId" value="0">
+		</li>
+	</ul>
+	
+<!--	<button id="mobile-menu-toggle" class="mobile mobile-menu-toggle"><span>Menu</span></button>-->
+</div>
+</header>
+<div id="page">
+	<div class="wrap">
+		<div class="errorInfo">
+			<h1>404</h1>
+			<h2>ERROR</h2>
+			<p>Unable to find a route to match the URI: content/apps/icon_thumbs/11328_icon_thumb.gif</p>
+
+		</div>
+	</div>
+</div>
+
+<div id="footer">
+	<div class="inner">
+		<ul>
+			<li>
+				<a href="http://help.lametric.com/support/discussions">LaMetric Community</a>
+			</li>
+			<li>
+				<a href="http://lametric.com/affiliates">Affiliates</a>
+			</li>
+			<li>
+				<a href="http://lametric.com/legal/terms">Terms</a>
+			</li>
+			<li>
+				<a href="https://drive.google.com/folderview?id=0B_ma0M1JvDGFVjIxMnVRQlJRNWs&usp=sharing">Press kit</a>
+			</li>
+			<li>
+				<a href="mailto:info@lametric.com?subject=LaMetric">Contact us</a>
+			</li>
+		</ul>
+		<p>© 2018 All Rights Reserved</p>
+	</div>
+</div>
+
+
+<!-- Facebook Pixel Code -->
+<script>
+	var hostArray = window.location.host.split( '.' );
+	!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+		n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+		document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+	fbq('init', '1684204011830901');
+	fbq('track', "Developers");
+</script>
+<noscript><img height="1" width="1" style="display:none"
+			   src="https://www.facebook.com/tr?id=1684204011830901&ev=Developers&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-267362-60', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
