@@ -36,7 +36,7 @@ class NOAA_Current_Observation(Throttle_Mixin):
     #log.info("mixin run_pending() completed")
 
     if name in self.current_obs.keys():
-      log.info("returning %s" % name)
+      #log.info("returning %s" % name)
       return self.current_obs[name]
     else:
       log.debug("key %s not found" % name)

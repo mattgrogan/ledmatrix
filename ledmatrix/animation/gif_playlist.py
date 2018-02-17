@@ -1,11 +1,15 @@
 import glob
 import os
 import random
+import logging
+
 
 from gif_player import Gif_Player
 from menu import Menu
 
 TIMEOUT_MS = 1000
+
+log = logging.getLogger("ledmatrix")
 
 
 class Gif_Playlist(object):
@@ -58,6 +62,7 @@ class Gif_Playlist(object):
 
     if self.items.current_item.is_finished:
       self.items.next()
+      log.info("Starting: %s", self.items.current_item_name)
       self.items.current_item.start(self.timeout_ms)
 
     im, dur = self.items.current_item.draw_frame()

@@ -50,6 +50,9 @@ class Indicator_Frame(object):
       self.indicator_image.image_control = Image_FadeIn_Control(0.70)
       self.state = FADE_IN
 
+  def handle_input(self, command):
+    pass
+
   def draw_frame(self):
     """
     Draw the frame differently based on the current animation state.
